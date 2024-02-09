@@ -1,0 +1,1215 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title style="font-family: 'Pacifico', cursive">Hatley</title>
+    <link rel="icon" href="./imgs/Logo.png" />
+    <link rel="stylesheet" href="./assests/css/bootstrap.min.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Courgette&family=Pacifico&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      #center-text {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+      }
+      #chat-circle {
+        position: fixed;
+        bottom: 50px;
+        right: 50px;
+
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        color: white;
+        padding: 28px;
+        cursor: pointer;
+      }
+
+      .btn#my-btn {
+        background: white;
+        padding-top: 13px;
+        padding-bottom: 12px;
+        border-radius: 45px;
+        padding-right: 40px;
+        padding-left: 40px;
+        color: #0084ff;
+      }
+      #chat-overlay {
+        background: rgba(255, 255, 255, 0.1);
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        display: none;
+      }
+
+      .chat-box {
+        display: none;
+        background: #efefef;
+        position: fixed;
+        right: 30px;
+        bottom: 50px;
+        width: 350px;
+        max-width: 85vw;
+        max-height: 100vh;
+        border-radius: 5px;
+        /*   box-shadow: 0px 5px 35px 9px #464a92; */
+        box-shadow: 0px 5px 35px 9px #ccc;
+      }
+      .chat-box-toggle {
+        float: right;
+        margin-right: 15px;
+        cursor: pointer;
+      }
+      .chat-box-header {
+        background: #0084ff;
+        height: 100px;
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+        color: white;
+        text-align: center;
+        font-size: 20px;
+        padding-top: 17px;
+      }
+      .chat-box-body {
+        position: relative;
+        height: 370px;
+        height: auto;
+        border: 1px solid #ccc;
+        overflow: hidden;
+      }
+      .chat-box-body:after {
+        content: "";
+        background-image: url("./imgs/back1.jpg");
+        background-size: cover;
+        opacity: 0.1;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        height: 100%;
+        position: absolute;
+        z-index: -1;
+      }
+      #chat-input {
+        background: #f4f7f9;
+        width: 100%;
+        position: relative;
+        height: 47px;
+        padding-top: 10px;
+        padding-right: 50px;
+        padding-bottom: 10px;
+        padding-left: 15px;
+        border: none;
+        resize: none;
+        outline: none;
+        border: 1px solid #ccc;
+        color: #888;
+        border-top: none;
+        border-bottom-right-radius: 5px;
+        border-bottom-left-radius: 5px;
+        overflow: hidden;
+      }
+      .chat-input > form {
+        margin-bottom: 0;
+      }
+      #chat-input::-webkit-input-placeholder {
+        /* Chrome/Opera/Safari */
+        color: #ccc;
+      }
+      #chat-input::-moz-placeholder {
+        /* Firefox 19+ */
+        color: #ccc;
+      }
+      #chat-input:-ms-input-placeholder {
+        /* IE 10+ */
+        color: #ccc;
+      }
+      #chat-input:-moz-placeholder {
+        /* Firefox 18- */
+        color: #ccc;
+      }
+      .chat-submit {
+        position: absolute;
+        bottom: 3px;
+        right: 10px;
+        background: transparent;
+        box-shadow: none;
+        border: none;
+        border-radius: 50%;
+        color: #5a5eb9;
+        width: 35px;
+        height: 35px;
+      }
+      .chat-logs {
+        padding: 15px;
+        height: 370px;
+        overflow-y: scroll;
+      }
+
+      .chat-logs::-webkit-scrollbar-track {
+        -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+        background-color: #f5f5f5;
+      }
+
+      .chat-logs::-webkit-scrollbar {
+        width: 5px;
+        background-color: #f5f5f5;
+      }
+
+      .chat-logs::-webkit-scrollbar-thumb {
+        background-color: #5a5eb9;
+      }
+
+      @media only screen and (max-width: 500px) {
+        .chat-logs {
+          height: 40vh;
+        }
+      }
+
+      .chat-msg.user > .msg-avatar img {
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        float: left;
+        width: 15%;
+      }
+      .chat-msg.self > .msg-avatar img {
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        float: right;
+        width: 15%;
+      }
+      .cm-msg-text {
+        background: white;
+        padding: 10px 15px 10px 15px;
+        color: #666;
+        max-width: 75%;
+        float: left;
+        margin-left: 10px;
+        position: relative;
+        margin-bottom: 20px;
+        border-radius: 30px;
+      }
+      .chat-msg {
+        clear: both;
+      }
+      .chat-msg.self > .cm-msg-text {
+        float: right;
+        margin-right: 10px;
+        background: #5a5eb9;
+        color: white;
+      }
+      .cm-msg-button > ul > li {
+        list-style: none;
+        float: left;
+        width: 50%;
+      }
+      .cm-msg-button {
+        clear: both;
+        margin-bottom: 70px;
+      }
+      body {
+        background: #fbfbfd;
+      }
+
+      .new_footer_area {
+        background: #fbfbfd;
+      }
+
+      .new_footer_top {
+        padding: 120px 0px 270px;
+        position: relative;
+        overflow-x: hidden;
+      }
+      .new_footer_area .footer_bottom {
+        padding-top: 5px;
+        padding-bottom: 50px;
+      }
+      .footer_bottom {
+        font-size: 14px;
+        font-weight: 300;
+        line-height: 20px;
+        color: #7f88a6;
+        padding: 27px 0px;
+      }
+      .new_footer_top .company_widget p {
+        font-size: 16px;
+        font-weight: 300;
+        line-height: 28px;
+        color: #6a7695;
+        margin-bottom: 20px;
+      }
+      .new_footer_top .company_widget .f_subscribe_two .btn_get {
+        border-width: 1px;
+        margin-top: 20px;
+      }
+      .btn_get_two:hover {
+        background: transparent;
+        color: #0084ff;
+      }
+      .btn_get:hover {
+        color: #fff;
+        background: #0084ff;
+        border-color: #0084ff;
+        -webkit-box-shadow: none;
+        box-shadow: none;
+      }
+      a:hover,
+      a:focus,
+      .btn:hover,
+      .btn:focus,
+      button:hover,
+      button:focus {
+        text-decoration: none;
+        outline: none;
+      }
+
+      .new_footer_top .f_widget.about-widget .f_list li a:hover {
+        color: #0084ff;
+      }
+      .new_footer_top .f_widget.about-widget .f_list li {
+        margin-bottom: 11px;
+      }
+      .f_widget.about-widget .f_list li:last-child {
+        margin-bottom: 0px;
+      }
+      .f_widget.about-widget .f_list li {
+        margin-bottom: 15px;
+      }
+      .f_widget.about-widget .f_list {
+        margin-bottom: 0px;
+      }
+      .new_footer_top .f_social_icon a {
+        width: 44px;
+        height: 44px;
+        line-height: 43px;
+        background: transparent;
+        border: 1px solid #e2e2eb;
+        font-size: 24px;
+      }
+      .f_social_icon a {
+        width: 46px;
+        height: 46px;
+        border-radius: 50%;
+        font-size: 14px;
+        line-height: 45px;
+        color: #0084ff;
+        display: inline-block;
+        background: #ebeef5;
+        text-align: center;
+        -webkit-transition: all 0.2s linear;
+        -o-transition: all 0.2s linear;
+        transition: all 0.2s linear;
+      }
+      .ti-facebook:before {
+        content: "\e741";
+      }
+      .ti-twitter-alt:before {
+        content: "\e74b";
+      }
+      .ti-vimeo-alt:before {
+        content: "\e74a";
+      }
+      .ti-pinterest:before {
+        content: "\e731";
+      }
+
+      .btn_get_two {
+        -webkit-box-shadow: none;
+        box-shadow: none;
+        background: #0084ff;
+        border-color: #0084ff;
+        color: #fff;
+      }
+
+      .btn_get_two:hover {
+        background: transparent;
+        color: #0084ff;
+      }
+
+      .new_footer_top .f_social_icon a:hover {
+        background: #0084ff;
+        border-color: #0084ff;
+        color: white;
+      }
+      .new_footer_top .f_social_icon a + a {
+        margin-left: 4px;
+      }
+      .new_footer_top .f-title {
+        margin-bottom: 30px;
+        color: #263b5e;
+      }
+      .f_600 {
+        font-weight: 600;
+      }
+      .f_size_18 {
+        font-size: 18px;
+      }
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6 {
+        color: #4b505e;
+      }
+      .new_footer_top .f_widget.about-widget .f_list li a {
+        color: #6a7695;
+      }
+
+      .new_footer_top .footer_bg {
+        position: absolute;
+        bottom: 0;
+        background: url("https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEigB8iI5tb8WSVBuVUGc9UjjB8O0708X7Fdic_4O1LT4CmLHoiwhanLXiRhe82yw0R7LgACQ2IhZaTY0hhmGi0gYp_Ynb49CVzfmXtYHUVKgXXpWvJ_oYT8cB4vzsnJLe3iCwuzj-w6PeYq_JaHmy_CoGoa6nw0FBo-2xLdOPvsLTh_fmYH2xhkaZ-OGQ/s16000/footer_bg.png")
+          no-repeat scroll center 0;
+        width: 100%;
+        height: 266px;
+      }
+
+      .new_footer_top .footer_bg .footer_bg_one {
+        background: url("https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEia0PYPxwT5ifToyP3SNZeQWfJEWrUENYA5IXM6sN5vLwAKvaJS1pQVu8mOFFUa_ET4JuHNTFAxKURFerJYHDUWXLXl1vDofYXuij45JZelYOjEFoCOn7E6Vxu0fwV7ACPzArcno1rYuVxGB7JY6G7__e4_KZW4lTYIaHSLVaVLzklZBLZnQw047oq5-Q/s16000/volks.gif")
+          no-repeat center center;
+        width: 330px;
+        height: 105px;
+        background-size: 100%;
+        position: absolute;
+        bottom: 0;
+        left: 30%;
+        -webkit-animation: myfirst 22s linear infinite;
+        animation: myfirst 22s linear infinite;
+      }
+
+      .new_footer_top .footer_bg .footer_bg_two {
+        background: url("https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhyLGwEUVwPK6Vi8xXMymsc-ZXVwLWyXhogZxbcXQYSY55REw_0D4VTQnsVzCrL7nsyjd0P7RVOI5NKJbQ75koZIalD8mqbMquP20fL3DxsWngKkOLOzoOf9sMuxlbyfkIBTsDw5WFUj-YJiI50yzgVjF8cZPHhEjkOP_PRTQXDHEq8AyWpBiJdN9SfQA/s16000/cyclist.gif")
+          no-repeat center center;
+        width: 88px;
+        height: 100px;
+        background-size: 100%;
+        bottom: 0;
+        left: 38%;
+        position: absolute;
+        -webkit-animation: myfirst 30s linear infinite;
+        animation: myfirst 30s linear infinite;
+      }
+
+      @-moz-keyframes myfirst {
+        0% {
+          left: -25%;
+        }
+        100% {
+          left: 100%;
+        }
+      }
+
+      @-webkit-keyframes myfirst {
+        0% {
+          left: -25%;
+        }
+        100% {
+          left: 100%;
+        }
+      }
+
+      @keyframes myfirst {
+        0% {
+          left: -25%;
+        }
+        100% {
+          left: 100%;
+        }
+      }
+
+      /*************footer End*****************/
+    </style>
+    <script src="./assests/js/bootstrap.bundle.min.js" defer></script>
+  </head>
+  <body>
+    <div class="container">
+      <header
+        class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom"
+      >
+        <h1 style="font-family: 'Pacifico', cursive; color: #0084ff">Hatley</h1>
+        <div class="col-md-3 mb-2 mb-md-0">
+          <a
+            href="#"
+            onclick="login(this)"
+            class="d-inline-flex link-body-emphasis text-decoration-none"
+          >
+            <img src="./imgs/8841405-ai.png" width="100px" alt="" />
+          </a>
+        </div>
+
+        <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+          <li><a href="#" class="nav-link px-2 link-secondary">Home</a></li>
+          <li><a href="/Profile.html" class="nav-link px-2">My Orders</a></li>
+          <li><a href="/AboutUs.html" class="nav-link px-2">About</a></li>
+          <li>
+            <a href="/ContactUs.html" class="nav-link px-2">Contact Us</a>
+          </li>
+          <li>
+            <a href="#" class="nav-link px-2"
+              >EN&nbsp;<img
+                src="./imgs/world.jpg"
+                width="30px"
+                height="30px"
+                alt=""
+            /></a>
+          </li>
+        </ul>
+
+        <div class="col-md-3 text-end">
+          <a
+            href="./Profile.html"
+            id="after"
+            style="display: none; text-decoration: none; color: inherit"
+          >
+            <h4 style="font-family: cursive; display: inline">User Name</h4>
+            <img
+              src="imgs/default photo.jpg"
+              style="width: 40px; border-radius: 80%"
+              alt=""
+          /></a>
+          <a
+            href="./Login.html"
+            type="button"
+            class="btn btn-outline-primary me-2 prof"
+          >
+            Login
+          </a>
+          <a href="./SignUp.html" type="button" class="btn btn-primary prof"
+            >Sign-up</a
+          >
+
+          <span class="dropdown">
+            <a
+              class="dropdown-toggle"
+              type="button"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              <img
+                src="./imgs/notification.jpg"
+                width="50px"
+                style="cursor: pointer"
+              />
+            </a>
+            <ul class="dropdown-menu" style="width: 400px; padding: 10px">
+              <div class="card" style="padding: 15px">
+                <div class="d-flex justify-content-between">
+                  <span class="d-flex justify-content-start">
+                    <img
+                      src="imgs/default photo.jpg"
+                      width="40px"
+                      style="border-radius: 80%; margin-right: 10px"
+                      alt=""
+                    />
+                    <h4>Amir</h4></span
+                  >
+                  <span>NOW</span>
+                  <span>⭐⭐⭐</span>
+                </div>
+                <div class="d-flex justify-content-between">
+                  <h5>Price</h5>
+                  <h5>10 LE</h5>
+                </div>
+                <div class="d-flex justify-content-between">
+                  <h5>Time</h5>
+                  <h5>15 min</h5>
+                </div>
+                <div class="d-flex justify-content-between">
+                  <button class="btn btn-danger">Ignore</button>
+                  <button class="btn btn-success">Accept</button>
+                </div>
+              </div>
+              <br />
+              <div class="card" style="padding: 15px">
+                <div class="d-flex justify-content-between">
+                  <span class="d-flex justify-content-start">
+                    <img
+                      src="imgs/default photo.jpg"
+                      width="40px"
+                      style="border-radius: 80%; margin-right: 10px"
+                      alt=""
+                    />
+                    <h4>Amir</h4></span
+                  >
+                  <span>1 minute ago</span>
+                  <span>⭐⭐⭐</span>
+                </div>
+                <div class="d-flex justify-content-between">
+                  <h5>Price</h5>
+                  <h5>10 LE</h5>
+                </div>
+                <div class="d-flex justify-content-between">
+                  <h5>Time</h5>
+                  <h5>15 min</h5>
+                </div>
+                <div class="d-flex justify-content-between">
+                  <button class="btn btn-danger">Ignore</button>
+                  <button class="btn btn-success">Accept</button>
+                </div>
+              </div>
+              <br />
+              <div class="card" style="padding: 15px">
+                <div class="d-flex justify-content-between">
+                  <span class="d-flex justify-content-start">
+                    <img
+                      src="imgs/default photo.jpg"
+                      width="40px"
+                      style="border-radius: 80%; margin-right: 10px"
+                      alt=""
+                    />
+                    <h4>Amir</h4></span
+                  >
+                  <span>1 minute ago</span>
+                  <span>⭐⭐⭐</span>
+                </div>
+                <div class="d-flex justify-content-between">
+                  <h5>Price</h5>
+                  <h5>10 LE</h5>
+                </div>
+                <div class="d-flex justify-content-between">
+                  <h5>Time</h5>
+                  <h5>15 min</h5>
+                </div>
+                <div class="d-flex justify-content-between">
+                  <button class="btn btn-danger">Ignore</button>
+                  <button class="btn btn-success">Accept</button>
+                </div>
+              </div>
+              <br />
+              <div class="card" style="padding: 15px">
+                <div class="d-flex justify-content-between">
+                  <span class="d-flex justify-content-start">
+                    <img
+                      src="imgs/default photo.jpg"
+                      width="40px"
+                      style="border-radius: 80%; margin-right: 10px"
+                      alt=""
+                    />
+                    <h4>Amir</h4></span
+                  >
+                  <span>3 minute ago</span>
+                  <span>⭐⭐⭐</span>
+                </div>
+                <div class="d-flex justify-content-between">
+                  <h5>Price</h5>
+                  <h5>10 LE</h5>
+                </div>
+                <div class="d-flex justify-content-between">
+                  <h5>Time</h5>
+                  <h5>15 min</h5>
+                </div>
+                <div class="d-flex justify-content-between">
+                  <button class="btn btn-danger">Ignore</button>
+                  <button class="btn btn-success">Accept</button>
+                </div>
+              </div>
+              <br />
+              <div class="card" style="padding: 15px">
+                <div class="d-flex justify-content-between">
+                  <span class="d-flex justify-content-start">
+                    <img
+                      src="imgs/default photo.jpg"
+                      width="40px"
+                      style="border-radius: 80%; margin-right: 10px"
+                      alt=""
+                    />
+                    <h4>Amir</h4></span
+                  >
+                  <span>5 min ago</span>
+                  <span>⭐⭐⭐</span>
+                </div>
+                <div class="d-flex justify-content-between">
+                  <h5>Price</h5>
+                  <h5>10 LE</h5>
+                </div>
+                <div class="d-flex justify-content-between">
+                  <h5>Time</h5>
+                  <h5>15 min</h5>
+                </div>
+                <div class="d-flex justify-content-between">
+                  <button class="btn btn-danger">Ignore</button>
+                  <button class="btn btn-success">Accept</button>
+                </div>
+              </div>
+              <br />
+              <div class="card" style="padding: 15px">
+                <div class="d-flex justify-content-between">
+                  <span class="d-flex justify-content-start">
+                    <img
+                      src="imgs/default photo.jpg"
+                      width="40px"
+                      style="border-radius: 80%; margin-right: 10px"
+                      alt=""
+                    />
+                    <h4>Amir</h4></span
+                  >
+                  <span>10 min ago</span>
+                  <span>⭐⭐⭐</span>
+                </div>
+                <div class="d-flex justify-content-between">
+                  <h5>Price</h5>
+                  <h5>10 LE</h5>
+                </div>
+                <div class="d-flex justify-content-between">
+                  <h5>Time</h5>
+                  <h5>15 min</h5>
+                </div>
+                <div class="d-flex justify-content-between">
+                  <button class="btn btn-danger">Ignore</button>
+                  <button class="btn btn-success">Accept</button>
+                </div>
+              </div>
+              <br />
+              <div class="card" style="padding: 15px">
+                <div class="d-flex justify-content-between">
+                  <span class="d-flex justify-content-start">
+                    <img
+                      src="imgs/default photo.jpg"
+                      width="40px"
+                      style="border-radius: 80%; margin-right: 10px"
+                      alt=""
+                    />
+                    <h4>Amir</h4></span
+                  >
+                  <span>10 min ago</span>
+                  <span>⭐⭐⭐</span>
+                </div>
+                <div class="d-flex justify-content-between">
+                  <h5>Price</h5>
+                  <h5>10 LE</h5>
+                </div>
+                <div class="d-flex justify-content-between">
+                  <h5>Time</h5>
+                  <h5>15 min</h5>
+                </div>
+                <div class="d-flex justify-content-between">
+                  <button class="btn btn-danger">Ignore</button>
+                  <button class="btn btn-success">Accept</button>
+                </div>
+              </div>
+              <br />
+            </ul>
+          </span>
+        </div>
+      </header>
+      <div
+        class="position-relative d-flex overflow-hidden p-3 p-md-5 m-md-3 bg-body-tertiary"
+        style="
+          background: linear-gradient(180deg, #000, #0084ff 30%, #24a800 70%);
+
+          border-radius: 20px !important;
+          height: 100vh;
+        "
+      >
+        <div class="col-md-12 mx-auto my-5">
+          <h1
+            class="display-3 fw-bold"
+            style="color: aliceblue; font-family: cursive"
+          >
+            Hatley Application
+          </h1>
+          <h3
+            class="fw-normal text-muted mb-3"
+            style="
+              line-height: 2;
+              font-family: 'Courgette', cursive;
+              margin-top: 100px;
+              color: azure !important;
+            "
+          >
+            Lorem ipsum, dolor sit amet consectetur adipisicing elit.<br />
+            Vel cumque expedita rem earum quae, porro,
+            <br />
+            voluptatum vero sequi hic placeat
+            <br />
+            voluptate cupiditate! Vitae, molestias explicabo?
+          </h3>
+          <div class="d-flex gap-3 justify-content-left lead fw-normal">
+            <h4
+              style="
+                margin-top: 100px;
+                font-family: 'Courgette';
+                color: aliceblue;
+              "
+            >
+              Download Our Application
+            </h4>
+            <br />
+            <a style="margin-top: 100px" class="btn btn-outline-light" href="#">
+              <img src="imgs/playstore.png" width="20px" alt="" /> Download
+            </a>
+            <img
+              src="./imgs/home.png"
+              width="400px"
+              style="
+                position: absolute;
+                right: 2%;
+                top: 50px;
+                width: 600px;
+                height: 600px;
+
+                border-radius: 21px;
+              "
+            />
+            <a style="margin-top: 100px" class="btn btn-dark" href="#">
+              <img src="imgs/app-store.png" width="20px" alt="" /> Download
+            </a>
+          </div>
+        </div>
+        <div class="product-device shadow-sm d-none d-md-block"></div>
+        <div
+          class="product-device product-device-2 shadow-sm d-none d-md-block"
+        ></div>
+      </div>
+      <br />
+      <br />
+      <!--Simple About -->
+      <section>
+        <div class="row featurette">
+          <div
+            class="col-md-7 d-flex align-items-center justify-content-center"
+          >
+            <h2
+              class="featurette-heading fw-normal lh-1"
+              style="
+                font-family: 'Courgette', cursive;
+                font-size: 3rem !important;
+              "
+            >
+              Easy Order
+            </h2>
+          </div>
+          <div class="col-md-5">
+            <img src="imgs/about 1.jpg" width="350px" alt="" />
+          </div>
+        </div>
+        <br /><br />
+        <div class="row featurette">
+          <div
+            class="col-md-7 order-md-2 d-flex align-items-center justify-content-center"
+          >
+            <h2
+              class="featurette-heading fw-normal lh-1"
+              style="
+                font-family: 'Courgette', cursive;
+                font-size: 3rem !important;
+              "
+            >
+              Fast Delivery
+            </h2>
+          </div>
+          <div
+            class="col-md-5 order-md-1 d-flex align-items-center justify-content-center"
+          >
+            <img src="imgs/back3.png" width="450px" alt="" />
+          </div>
+        </div>
+        <center>
+          <h3 style="font-family: 'Courgette', cursive">Make Your Order now</h3>
+          <br />
+          <a href="Profile.html" class="btn btn-success">Create Order</a>
+          <br />
+          <br />
+        </center>
+      </section>
+      <div id="body">
+        <div id="chat-circle" class="btn btn-raised">
+          <div id="chat-overlay"></div>
+          <img src="imgs/chat.png" width="50px" alt="" />
+        </div>
+
+        <div class="chat-box">
+          <div
+            class="chat-box-header d-flex justify-content-between"
+            style="padding: auto 10px"
+          >
+            <span
+              ><img
+                src="imgs/default photo.jpg"
+                width="50px"
+                style="border-radius: 80%"
+                alt=""
+              />
+              <h6 style="color: #ebeef5">user name</h6></span
+            >
+            <span> Chats</span>
+            <span>
+              <span class="chat-box-toggle"
+                ><i class="material-icons">&times;</i></span
+              ></span
+            >
+          </div>
+          <div class="chat-box-body">
+            <div class="chat-box-overlay"></div>
+            <div class="chat-logs"></div>
+            <!--chat-log -->
+          </div>
+          <div class="chat-input">
+            <form>
+              <input
+                type="text"
+                id="chat-input"
+                placeholder="Send a message..."
+              />
+              <button type="submit" class="chat-submit" id="chat-submit">
+                <i class="material-icons">send</i>
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+      <button type="button" class="btn btn-primary" id="liveToastBtn">
+        Show Inside notification
+      </button>
+      <button class="btn btn-primary" onclick="showNotification()">
+        Show Outside Notification
+      </button>
+      <!--Footer-->
+      <section>
+        <footer class="new_footer_area bg_color">
+          <div class="new_footer_top">
+            <div class="container">
+              <div class="row">
+                <div class="col-lg-3 col-md-6">
+                  <div
+                    class="f_widget company_widget wow fadeInLeft"
+                    data-wow-delay="0.2s"
+                    style="
+                      visibility: visible;
+                      animation-delay: 0.2s;
+                      animation-name: fadeInLeft;
+                    "
+                  >
+                    <h3 class="f-title f_600 t_color f_size_18">
+                      Get in Touch
+                    </h3>
+                    <p>
+                      Don’t miss any updates of our new templates and
+                      extensions.!
+                    </p>
+                    <form
+                      action="#"
+                      class="f_subscribe_two mailchimp"
+                      method="post"
+                      novalidate="true"
+                      _lpchecked="1"
+                    >
+                      <input
+                        type="text"
+                        name="EMAIL"
+                        class="form-control memail"
+                        placeholder="Email"
+                      />
+                      <button class="btn btn_get btn_get_two" type="submit">
+                        Subscribe
+                      </button>
+                      <p class="mchimp-errmessage" style="display: none"></p>
+                      <p class="mchimp-sucmessage" style="display: none"></p>
+                    </form>
+                  </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                  <div
+                    class="f_widget about-widget pl_70 wow fadeInLeft"
+                    data-wow-delay="0.4s"
+                    style="
+                      visibility: visible;
+                      animation-delay: 0.4s;
+                      animation-name: fadeInLeft;
+                    "
+                  >
+                    <h3 class="f-title f_600 t_color f_size_18">Download</h3>
+                    <ul class="list-unstyled f_list">
+                      <li><a href="#">Company</a></li>
+                      <li><a href="#">Android App</a></li>
+                      <li><a href="#">ios App</a></li>
+                      <li><a href="#">Desktop</a></li>
+                      <li><a href="#">Projects</a></li>
+                      <li><a href="#">My tasks</a></li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                  <div
+                    class="f_widget about-widget pl_70 wow fadeInLeft"
+                    data-wow-delay="0.6s"
+                    style="
+                      visibility: visible;
+                      animation-delay: 0.6s;
+                      animation-name: fadeInLeft;
+                    "
+                  >
+                    <h3 class="f-title f_600 t_color f_size_18">Help</h3>
+                    <ul class="list-unstyled f_list">
+                      <li><a href="#">FAQ</a></li>
+                      <li><a href="#">Term &amp; conditions</a></li>
+                      <li><a href="#">Reporting</a></li>
+                      <li><a href="#">Documentation</a></li>
+                      <li><a href="#">Support Policy</a></li>
+                      <li><a href="#">Privacy</a></li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                  <div
+                    class="f_widget social-widget pl_70 wow fadeInLeft"
+                    data-wow-delay="0.8s"
+                    style="
+                      visibility: visible;
+                      animation-delay: 0.8s;
+                      animation-name: fadeInLeft;
+                    "
+                  >
+                    <h3 class="f-title f_600 t_color f_size_18">
+                      Team Solutions
+                    </h3>
+                    <div class="f_social_icon">
+                      <a href="#" class="fab fa-facebook"
+                        ><img src="imgs/facebook.png" width="30px" alt=""
+                      /></a>
+                      <a href="#" class="fab fa-twitter"
+                        ><img src="imgs/twitter.png" width="30px" alt=""
+                      /></a>
+                      <a href="#" class="fab fa-linkedin"
+                        ><img src="imgs/whatsapp.png" width="30px" alt=""
+                      /></a>
+                      <a href="#" class="fab fa-pinterest"
+                        ><img src="imgs/instagram.png" width="30px" alt=""
+                      /></a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="footer_bg">
+              <div class="footer_bg_one"></div>
+              <div class="footer_bg_two"></div>
+            </div>
+          </div>
+        </footer>
+      </section>
+    </div>
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+      <div
+        id="liveToast"
+        class="toast"
+        role="alert"
+        aria-live="assertive"
+        aria-atomic="true"
+      >
+        <div class="toast-header">
+          <img
+            src="imgs/alert.png"
+            width="50px"
+            class="rounded me-2"
+            alt="..."
+          />
+          <strong class="me-auto">New Offer</strong>
+          <small>11 mins ago</small>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="toast"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="toast-body">This is a message.</div>
+      </div>
+    </div>
+
+    <script>
+      function showNotification() {
+        var title = "New Message";
+        var options = {
+          body: "You have a new offer on your order.",
+          icon: "./imgs/new.png",
+        };
+        // Check if the browser supports the Notification API
+        if (!("Notification" in window)) {
+          console.error("This browser does not support desktop notifications.");
+          return;
+        }
+
+        // Check if the user has granted permission to show notifications
+        if (Notification.permission === "granted") {
+          // If permission is granted, create and show the notification
+          var notification = new Notification(title, options);
+        } else if (Notification.permission !== "denied") {
+          // If permission is not denied, request permission from the user
+          Notification.requestPermission().then(function (permission) {
+            if (permission === "granted") {
+              // If permission is granted after request, create and show the notification
+              var notification = new Notification(title, options);
+            }
+          });
+        }
+      }
+
+      document
+        .getElementById("liveToastBtn")
+        .addEventListener("click", function () {
+          // Create a new toast
+          toast = document.getElementById("liveToast");
+
+          // Add the toast to the container
+          // document.querySelector(".toast-container").appendChild(toast);
+
+          // Initialize the Bootstrap Toast component
+          var bootstrapToast = new bootstrap.Toast(toast);
+
+          // Show the toast
+          bootstrapToast.show();
+        });
+
+      function login(e) {
+        let btn = document.getElementsByClassName("prof");
+        Object.entries(btn).map((e) => (e[1].style.display = "none"));
+        console.log("done");
+        document.getElementById("after").style.display = "inline";
+      }
+      document.addEventListener("DOMContentLoaded", function () {
+        var INDEX = 0;
+        document
+          .getElementById("chat-submit")
+          .addEventListener("click", function (e) {
+            e.preventDefault();
+            var msg = document.getElementById("chat-input").value;
+            if (msg.trim() == "") {
+              return false;
+            }
+            generate_message(msg, "self");
+            var buttons = [
+              {
+                name: "Existing User",
+                value: "existing",
+              },
+              {
+                name: "New User",
+                value: "new",
+              },
+            ];
+            setTimeout(function () {
+              generate_message(msg, "user");
+            }, 1000);
+          });
+
+        function generate_message(msg, type) {
+          INDEX++;
+          var chatLogs = document.querySelector(".chat-logs");
+          var str = "";
+          str +=
+            "<div id='cm-msg-" + INDEX + "' class=\"chat-msg " + type + '">';
+          str += '          <span class="msg-avatar">';
+          str +=
+            '            <img src="https:\/\/image.crisp.im\/avatar\/operator\/196af8cc-f6ad-4ef7-afd1-c45d5231387c\/240\/?1483361727745">';
+          str += "          <\/span>";
+          str += '          <div class="cm-msg-text">';
+          str += msg;
+          str += "          <\/div>";
+          str += "        <\/div>";
+          chatLogs.insertAdjacentHTML("beforeend", str);
+          var currentMessage = document.getElementById("cm-msg-" + INDEX);
+          currentMessage.style.display = "none";
+          fadeIn(currentMessage, 300);
+          if (type == "self") {
+            document.getElementById("chat-input").value = "";
+          }
+          chatLogs.scrollTop = chatLogs.scrollHeight;
+        }
+
+        function generate_button_message(msg, buttons) {
+          INDEX++;
+          var btn_obj = buttons
+            .map(function (button) {
+              return (
+                '              <li class="button"><a href="javascript:;" class="btn btn-primary chat-btn" chat-value="' +
+                button.value +
+                '">' +
+                button.name +
+                "<\/a><\/li>"
+              );
+            })
+            .join("");
+          var chatLogs = document.querySelector(".chat-logs");
+          var str = "";
+          str += "<div id='cm-msg-" + INDEX + '\' class="chat-msg user">';
+          str += '          <span class="msg-avatar">';
+          str +=
+            '            <img src="https:\/\/image.crisp.im\/avatar\/operator\/196af8cc-f6ad-4ef7-afd1-c45d5231387c\/240\/?1483361727745">';
+          str += "          <\/span>";
+          str += '          <div class="cm-msg-text">';
+          str += msg;
+          str += "          <\/div>";
+          str += '          <div class="cm-msg-button">';
+          str += "            <ul>";
+          str += btn_obj;
+          str += "            <\/ul>";
+          str += "          <\/div>";
+          str += "        <\/div>";
+          chatLogs.insertAdjacentHTML("beforeend", str);
+          var currentMessage = document.getElementById("cm-msg-" + INDEX);
+          currentMessage.style.display = "none";
+          fadeIn(currentMessage, 300);
+          chatLogs.scrollTop = chatLogs.scrollHeight;
+          document.getElementById("chat-input").disabled = false;
+        }
+
+        document.addEventListener("click", function (event) {
+          if (event.target.classList.contains("chat-btn")) {
+            var value = event.target.getAttribute("chat-value");
+            var name = event.target.innerHTML;
+            document.getElementById("chat-input").disabled = false;
+            generate_message(name, "self");
+          }
+        });
+
+        document
+          .getElementById("chat-circle")
+          .addEventListener("click", function () {
+            document.getElementById("chat-circle").style.display = "none";
+            document.querySelector(".chat-box").style.display = "block";
+          });
+
+        document
+          .querySelector(".chat-box-toggle")
+          .addEventListener("click", function () {
+            document.getElementById("chat-circle").style.display = "block";
+            document.querySelector(".chat-box").style.display = "none";
+          });
+
+        // Helper function to fade in an element
+        function fadeIn(element, duration) {
+          var opacity = 0;
+          var interval = 50;
+          var delta = interval / duration;
+
+          function increaseOpacity() {
+            opacity += delta;
+            element.style.opacity = opacity;
+
+            if (opacity >= 1) {
+              clearInterval(fadeInterval);
+            }
+          }
+
+          var fadeInterval = setInterval(increaseOpacity, interval);
+        }
+      });
+    </script>
+  </body>
+</html>

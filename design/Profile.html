@@ -1,0 +1,2194 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title style="font-family: 'Pacifico', cursive">Hatley</title>
+    <link rel="icon" href="./imgs/Logo.png" />
+    <link rel="stylesheet" href="./assests/css/bootstrap.min.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Courgette&family=Pacifico&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: cursive;
+        background: #fbfbfd;
+      }
+
+      .new_footer_area {
+        background: #fbfbfd;
+      }
+
+      .new_footer_top {
+        padding: 120px 0px 270px;
+        position: relative;
+        overflow-x: hidden;
+      }
+      .new_footer_area .footer_bottom {
+        padding-top: 5px;
+        padding-bottom: 50px;
+      }
+      .footer_bottom {
+        font-size: 14px;
+        font-weight: 300;
+        line-height: 20px;
+        color: #7f88a6;
+        padding: 27px 0px;
+      }
+      .new_footer_top .company_widget p {
+        font-size: 16px;
+        font-weight: 300;
+        line-height: 28px;
+        color: #6a7695;
+        margin-bottom: 20px;
+      }
+      .new_footer_top .company_widget .f_subscribe_two .btn_get {
+        border-width: 1px;
+        margin-top: 20px;
+      }
+      .btn_get_two:hover {
+        background: transparent;
+        color: #0084ff;
+      }
+      .btn_get:hover {
+        color: #fff;
+        background: #0084ff;
+        border-color: #0084ff;
+        -webkit-box-shadow: none;
+        box-shadow: none;
+      }
+      a:hover,
+      a:focus,
+      .btn:hover,
+      .btn:focus,
+      button:hover,
+      button:focus {
+        text-decoration: none;
+        outline: none;
+      }
+
+      .new_footer_top .f_widget.about-widget .f_list li a:hover {
+        color: #5e2ced;
+      }
+      .new_footer_top .f_widget.about-widget .f_list li {
+        margin-bottom: 11px;
+      }
+      .f_widget.about-widget .f_list li:last-child {
+        margin-bottom: 0px;
+      }
+      .f_widget.about-widget .f_list li {
+        margin-bottom: 15px;
+      }
+      .f_widget.about-widget .f_list {
+        margin-bottom: 0px;
+      }
+      .new_footer_top .f_social_icon a {
+        width: 44px;
+        height: 44px;
+        line-height: 43px;
+        background: transparent;
+        border: 1px solid #e2e2eb;
+        font-size: 24px;
+      }
+      .f_social_icon a {
+        width: 46px;
+        height: 46px;
+        border-radius: 50%;
+        font-size: 14px;
+        line-height: 45px;
+        color: #858da8;
+        display: inline-block;
+        background: #ebeef5;
+        text-align: center;
+        -webkit-transition: all 0.2s linear;
+        -o-transition: all 0.2s linear;
+        transition: all 0.2s linear;
+      }
+      .ti-facebook:before {
+        content: "\e741";
+      }
+      .ti-twitter-alt:before {
+        content: "\e74b";
+      }
+      .ti-vimeo-alt:before {
+        content: "\e74a";
+      }
+      .ti-pinterest:before {
+        content: "\e731";
+      }
+
+      .btn_get_two {
+        -webkit-box-shadow: none;
+        box-shadow: none;
+        background: #0084ff;
+        border-color: #0084ff;
+        color: #fff;
+      }
+
+      .btn_get_two:hover {
+        background: transparent;
+        color: #0084ff;
+      }
+
+      .new_footer_top .f_social_icon a:hover {
+        background: #0084ff;
+        border-color: #0084ff;
+        color: white;
+      }
+      .new_footer_top .f_social_icon a + a {
+        margin-left: 4px;
+      }
+      .new_footer_top .f-title {
+        margin-bottom: 30px;
+        color: #263b5e;
+      }
+      .f_600 {
+        font-weight: 600;
+      }
+      .f_size_18 {
+        font-size: 18px;
+      }
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6 {
+        color: #4b505e;
+      }
+      h4 {
+        display: inline;
+      }
+      .new_footer_top .f_widget.about-widget .f_list li a {
+        color: #6a7695;
+      }
+
+      .new_footer_top .footer_bg {
+        position: absolute;
+        bottom: 0;
+        background: url("https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEigB8iI5tb8WSVBuVUGc9UjjB8O0708X7Fdic_4O1LT4CmLHoiwhanLXiRhe82yw0R7LgACQ2IhZaTY0hhmGi0gYp_Ynb49CVzfmXtYHUVKgXXpWvJ_oYT8cB4vzsnJLe3iCwuzj-w6PeYq_JaHmy_CoGoa6nw0FBo-2xLdOPvsLTh_fmYH2xhkaZ-OGQ/s16000/footer_bg.png")
+          no-repeat scroll center 0;
+        width: 100%;
+        height: 266px;
+      }
+
+      .new_footer_top .footer_bg .footer_bg_one {
+        background: url("https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEia0PYPxwT5ifToyP3SNZeQWfJEWrUENYA5IXM6sN5vLwAKvaJS1pQVu8mOFFUa_ET4JuHNTFAxKURFerJYHDUWXLXl1vDofYXuij45JZelYOjEFoCOn7E6Vxu0fwV7ACPzArcno1rYuVxGB7JY6G7__e4_KZW4lTYIaHSLVaVLzklZBLZnQw047oq5-Q/s16000/volks.gif")
+          no-repeat center center;
+        width: 330px;
+        height: 105px;
+        background-size: 100%;
+        position: absolute;
+        bottom: 0;
+        left: 30%;
+        -webkit-animation: myfirst 22s linear infinite;
+        animation: myfirst 22s linear infinite;
+      }
+
+      .new_footer_top .footer_bg .footer_bg_two {
+        background: url("https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhyLGwEUVwPK6Vi8xXMymsc-ZXVwLWyXhogZxbcXQYSY55REw_0D4VTQnsVzCrL7nsyjd0P7RVOI5NKJbQ75koZIalD8mqbMquP20fL3DxsWngKkOLOzoOf9sMuxlbyfkIBTsDw5WFUj-YJiI50yzgVjF8cZPHhEjkOP_PRTQXDHEq8AyWpBiJdN9SfQA/s16000/cyclist.gif")
+          no-repeat center center;
+        width: 88px;
+        height: 100px;
+        background-size: 100%;
+        bottom: 0;
+        left: 38%;
+        position: absolute;
+        -webkit-animation: myfirst 30s linear infinite;
+        animation: myfirst 30s linear infinite;
+      }
+
+      @-moz-keyframes myfirst {
+        0% {
+          left: -25%;
+        }
+        100% {
+          left: 100%;
+        }
+      }
+
+      @-webkit-keyframes myfirst {
+        0% {
+          left: -25%;
+        }
+        100% {
+          left: 100%;
+        }
+      }
+
+      @keyframes myfirst {
+        0% {
+          left: -25%;
+        }
+        100% {
+          left: 100%;
+        }
+      }
+      .prof {
+        display: none;
+      }
+      .slider {
+        -webkit-appearance: none;
+        width: 100%;
+        height: 15px;
+
+        border-radius: 5px;
+        background: #fff;
+        border: 1px #0084ff solid;
+        outline: none;
+        opacity: 0.7;
+        -webkit-transition: 0.2s;
+        transition: opacity 0.2s;
+      }
+
+      .slider:hover {
+        opacity: 1;
+      }
+
+      .slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 25px;
+        height: 25px;
+        border-radius: 50%;
+        background: #0084ff;
+        cursor: pointer;
+      }
+
+      .slider::-moz-range-thumb {
+        width: 25px;
+        height: 25px;
+        border-radius: 50%;
+        background: #0084ff;
+        cursor: pointer;
+      }
+      .card {
+        margin-bottom: 15px;
+        padding: 15px;
+      }
+
+      .box {
+        width: 40%;
+        margin: 0 auto;
+        background: rgba(255, 255, 255, 0.2);
+        padding: 35px;
+        border: 2px solid #fff;
+        border-radius: 20px/50px;
+        background-clip: padding-box;
+        text-align: center;
+      }
+
+      .button {
+        font-size: 1em;
+        padding: 10px;
+        color: #fff;
+        border: 2px solid #06d85f;
+        border-radius: 20px/50px;
+        text-decoration: none;
+        cursor: pointer;
+        transition: all 0.3s ease-out;
+      }
+      .button:hover {
+        background: #06d85f;
+      }
+
+      .overlay {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: rgba(0, 0, 0, 0.7);
+        transition: opacity 500ms;
+        visibility: hidden;
+        opacity: 0;
+      }
+      .overlay:target {
+        visibility: visible;
+        opacity: 1;
+      }
+
+      .popup {
+        margin: 70px auto;
+        padding: 20px;
+        background: #fff;
+        border-radius: 5px;
+        width: 30%;
+        position: relative;
+        transition: all 5s ease-in-out;
+      }
+
+      .popup h2 {
+        margin-top: 0;
+        color: #333;
+        font-family: Tahoma, Arial, sans-serif;
+      }
+      .popup .close {
+        position: absolute;
+        top: 20px;
+        right: 30px;
+        transition: all 200ms;
+        font-size: 30px;
+        font-weight: bold;
+        text-decoration: none;
+        color: #333;
+      }
+      .popup .close:hover {
+        color: #06d85f;
+      }
+      .popup .content {
+        max-height: 30%;
+        overflow: auto;
+      }
+
+      @media screen and (max-width: 700px) {
+        .box {
+          width: 70%;
+        }
+        .popup {
+          width: 70%;
+        }
+      }
+
+      .wrapper {
+        margin: 0 auto;
+        max-width: 960px;
+        width: 100%;
+      }
+
+      .master {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        -webkit-box-pack: start;
+        -ms-flex-pack: start;
+        justify-content: flex-start;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        padding-top: 40px;
+      }
+
+      h1 {
+        margin-bottom: 20px;
+      }
+
+      h2 {
+        line-height: 160%;
+        margin-bottom: 20px;
+        text-align: center;
+      }
+
+      .rating-component {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
+        justify-content: center;
+        margin-bottom: 10px;
+      }
+
+      .rating-component .status-msg {
+        margin-bottom: 10px;
+        text-align: center;
+      }
+
+      .rating-component .status-msg strong {
+        display: block;
+        font-weight: bold;
+        margin-bottom: 10px;
+      }
+
+      .rating-component .stars-box {
+        -ms-flex-item-align: center;
+        align-self: center;
+        margin-bottom: 15px;
+      }
+
+      .rating-component .stars-box .star {
+        color: #ccc;
+        cursor: pointer;
+      }
+
+      .rating-component .stars-box .star.hover {
+        color: #0084ff;
+      }
+
+      .rating-component .stars-box .star.selected {
+        color: #0084ff;
+      }
+
+      .feedback-tags {
+        min-height: 119px;
+      }
+
+      .feedback-tags .tags-container {
+        display: none;
+      }
+
+      .feedback-tags .tags-container .question-tag {
+        text-align: center;
+        margin-bottom: 40px;
+      }
+
+      .feedback-tags .tags-box {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        text-align: center;
+        display: flex;
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
+        justify-content: center;
+        -webkit-box-orient: horizontal;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: row;
+        flex-direction: row;
+        -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+      }
+
+      .feedback-tags .tags-container .make-compliment {
+        padding-bottom: 20px;
+      }
+
+      .feedback-tags .tags-container .make-compliment .compliment-container {
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        color: #000;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
+        justify-content: center;
+      }
+
+      .feedback-tags
+        .tags-container
+        .make-compliment
+        .compliment-container
+        .fa-smile-wink {
+        color: #0084ff;
+        cursor: pointer;
+        font-size: 40px;
+        margin-top: 15px;
+        -webkit-animation-name: compliment;
+        animation-name: compliment;
+        -webkit-animation-duration: 2s;
+        animation-duration: 2s;
+        -webkit-animation-iteration-count: 1;
+        animation-iteration-count: 1;
+      }
+
+      .feedback-tags
+        .tags-container
+        .make-compliment
+        .compliment-container
+        .list-of-compliment {
+        display: none;
+        margin-top: 15px;
+      }
+
+      .feedback-tags .tag {
+        border: 1px solid #0084ff;
+        border-radius: 5px;
+        color: #0084ff;
+        cursor: pointer;
+        margin-bottom: 10px;
+        margin-left: 10px;
+        padding: 10px;
+      }
+
+      .feedback-tags .tag.choosed {
+        background-color: #0084ff;
+        color: #fff;
+      }
+
+      .list-of-compliment ul {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-orient: horizontal;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: row;
+        flex-direction: row;
+        -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
+        justify-content: center;
+      }
+
+      .list-of-compliment ul li {
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        cursor: pointer;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
+        justify-content: center;
+        margin-bottom: 10px;
+        margin-left: 20px;
+        min-width: 90px;
+      }
+
+      .list-of-compliment ul li:first-child {
+        margin-left: 0;
+      }
+
+      .list-of-compliment ul li .icon-compliment {
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        border: 2px solid #0084ff;
+        border-radius: 50%;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
+        justify-content: center;
+        height: 70px;
+        margin-bottom: 15px;
+        overflow: hidden;
+        padding: 0 10px;
+        -webkit-transition: 0.5s;
+        transition: 0.5s;
+        width: 70px;
+      }
+
+      .list-of-compliment ul li .icon-compliment i {
+        color: #0084ff;
+        font-size: 30px;
+        -webkit-transition: 0.5s;
+        transition: 0.5s;
+      }
+
+      .list-of-compliment ul li.actived .icon-compliment {
+        background-color: #0084ff;
+        -webkit-transition: 0.5s;
+        transition: 0.5s;
+      }
+
+      .list-of-compliment ul li.actived .icon-compliment i {
+        color: #fff;
+        -webkit-transition: 0.5s;
+        transition: 0.5s;
+      }
+
+      .button-box .done {
+        background-color: #0084ff;
+        border: 1px solid #0084ff;
+        border-radius: 3px;
+        color: #fff;
+        cursor: pointer;
+        display: none;
+        min-width: 100px;
+        padding: 10px;
+      }
+
+      .button-box .done:disabled,
+      .button-box .done[disabled] {
+        border: 1px solid #628ccc;
+        background-color: #628ccc;
+        color: #fff;
+        cursor: initial;
+      }
+
+      .submited-box {
+        display: none;
+        padding: 20px;
+      }
+
+      .submited-box .loader,
+      .submited-box .success-message {
+        display: none;
+      }
+
+      .submited-box .loader {
+        border: 5px solid transparent;
+        border-top: 5px solid #4dc7b7;
+        border-bottom: 5px solid #0084ff;
+        border-radius: 50%;
+        width: 60px;
+        height: 60px;
+        -webkit-animation: spin 0.8s linear infinite;
+        animation: spin 0.8s linear infinite;
+      }
+
+      @-webkit-keyframes compliment {
+        1% {
+          -webkit-transform: rotate(0deg);
+          transform: rotate(0deg);
+        }
+
+        25% {
+          -webkit-transform: rotate(-30deg);
+          transform: rotate(-30deg);
+        }
+
+        50% {
+          -webkit-transform: rotate(30deg);
+          transform: rotate(30deg);
+        }
+
+        75% {
+          -webkit-transform: rotate(-30deg);
+          transform: rotate(-30deg);
+        }
+
+        100% {
+          -webkit-transform: rotate(0deg);
+          transform: rotate(0deg);
+        }
+      }
+
+      @keyframes compliment {
+        1% {
+          -webkit-transform: rotate(0deg);
+          transform: rotate(0deg);
+        }
+
+        25% {
+          -webkit-transform: rotate(-30deg);
+          transform: rotate(-30deg);
+        }
+
+        50% {
+          -webkit-transform: rotate(30deg);
+          transform: rotate(30deg);
+        }
+
+        75% {
+          -webkit-transform: rotate(-30deg);
+          transform: rotate(-30deg);
+        }
+
+        100% {
+          -webkit-transform: rotate(0deg);
+          transform: rotate(0deg);
+        }
+      }
+
+      @-webkit-keyframes spin {
+        0% {
+          -webkit-transform: rotate(0deg);
+          transform: rotate(0deg);
+        }
+
+        100% {
+          -webkit-transform: rotate(360deg);
+          transform: rotate(360deg);
+        }
+      }
+
+      @keyframes spin {
+        0% {
+          -webkit-transform: rotate(0deg);
+          transform: rotate(0deg);
+        }
+
+        100% {
+          -webkit-transform: rotate(360deg);
+          transform: rotate(360deg);
+        }
+      }
+
+      /*************footer End*****************/
+    </style>
+    <script src="./assests/js/bootstrap.bundle.min.js" defer></script>
+  </head>
+  <body>
+    <div class="container">
+      <header
+        class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom"
+      >
+        <h1 style="font-family: 'Pacifico', cursive; color: #0084ff">Hatley</h1>
+        <div class="col-md-3 mb-2 mb-md-0">
+          <a
+            href="#"
+            onclick="login(this)"
+            class="d-inline-flex link-body-emphasis text-decoration-none"
+          >
+            <img src="./imgs/8841405-ai.png" width="100px" alt="" />
+          </a>
+        </div>
+
+        <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+          <li><a href="#" class="nav-link px-2 link-secondary">Home</a></li>
+          <li><a href="#" class="nav-link px-2">My Orders</a></li>
+          <li><a href="#" class="nav-link px-2">About</a></li>
+          <li><a href="#" class="nav-link px-2">Contact Us</a></li>
+          <li><a href="#" class="nav-link px-2">Support</a></li>
+          <li>
+            <a href="#" class="nav-link px-2"
+              >EN&nbsp;<img
+                src="./imgs/world.jpg"
+                width="30px"
+                height="30px"
+                alt=""
+            /></a>
+          </li>
+        </ul>
+
+        <div class="col-md-3 text-end">
+          <a
+            href="./Profile.html"
+            id="after"
+            style="display: inline; text-decoration: none; color: inherit"
+          >
+            <h4 style="font-family: cursive; display: inline">User Name</h4>
+            <img
+              src="imgs/default photo.jpg"
+              style="width: 40px; border-radius: 80%"
+              alt=""
+          /></a>
+          <a
+            href="./Login.html"
+            type="button"
+            class="btn btn-outline-primary me-2 prof"
+          >
+            Login
+          </a>
+          <a href="./SignUp.html" type="button" class="btn btn-primary prof"
+            >Sign-up</a
+          >
+          <img src="./imgs/notification.jpg" width="50px" />
+        </div>
+      </header>
+      <main class="d-flex flex-nowrap">
+        <div
+          class="d-flex flex-column flex-shrink-0 p-3 bg-body-tertiary"
+          style="width: 280px"
+        >
+          <a
+            href="/"
+            class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none"
+          >
+            <img
+              src="imgs/default photo.jpg"
+              style="width: 100px; border-radius: 80%; margin-right: 10px"
+              alt=""
+            />
+            <span class="fs-4" style="font-family: cursive">Profile</span>
+          </a>
+          <br /><br />
+          <ul class="nav nav-pills flex-column mb-auto">
+            <li class="nav-item">
+              <a
+                href="#"
+                class="nav-link active act"
+                onclick="active(this)"
+                aria-current="page"
+              >
+                <img
+                  class="bi pe-none me-2"
+                  src="imgs/setting.png"
+                  width="16"
+                  height="16"
+                />
+
+                Settings
+              </a>
+            </li>
+
+            <li>
+              <a
+                href="#"
+                class="nav-link link-body-emphasis act"
+                onclick="active(this)"
+              >
+                <img
+                  src="imgs/orders.png"
+                  class="bi pe-none me-2"
+                  width="16"
+                  height="16"
+                />
+
+                My Orders
+              </a>
+            </li>
+            <li>
+              <a
+                href="#"
+                class="nav-link link-body-emphasis act"
+                onclick="active(this)"
+              >
+                <img
+                  src="imgs/track.png"
+                  class="bi pe-none me-2"
+                  width="16"
+                  height="16"
+                />
+
+                Tracking Orders
+              </a>
+            </li>
+            <li>
+              <a
+                href="#"
+                class="nav-link link-body-emphasis act"
+                onclick="active(this)"
+              >
+                <img
+                  src="imgs/new.png"
+                  class="bi pe-none me-2"
+                  width="16"
+                  height="16"
+                />
+
+                New Order
+              </a>
+            </li>
+            <li>
+              <a
+                href="#"
+                class="nav-link link-body-emphasis act"
+                onclick="active(this)"
+              >
+                <img src="" class="bi pe-none me-2" width="16" height="16" />
+
+                Deliveries
+              </a>
+            </li>
+            <li>
+              <a
+                href="#"
+                class="nav-link link-body-emphasis text-danger act"
+                onclick="active(this)"
+              >
+                <img
+                  src="imgs/logout.png"
+                  class="bi pe-none me-2"
+                  width="16"
+                  height="16"
+                />
+
+                Log out
+              </a>
+            </li>
+          </ul>
+          <hr />
+          <div class="dropdown">
+            <a
+              href="#"
+              class="d-flex align-items-center link-body-emphasis text-decoration-none dropdown-toggle"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+            >
+              <img
+                src="./imgs/default photo.jpg"
+                alt=""
+                width="32"
+                height="32"
+                class="rounded-circle me-2"
+              />
+              <strong>More </strong>
+            </a>
+            <ul class="dropdown-menu text-small shadow">
+              <li><a class="dropdown-item" href="#">New Order...</a></li>
+
+              <li><hr class="dropdown-divider" /></li>
+              <li><a class="dropdown-item" href="#">Log out</a></li>
+            </ul>
+          </div>
+        </div>
+        <!--Settings-->
+        <div style="margin-left: 50px; width: 100%" class="sect">
+          <div class="d-flex justify-content-md-between">
+            <h1 style="margin-bottom: 20px">User name</h1>
+            <span
+              ><p style="display: inline">(45)</p>
+              <h1 style="display: inline">⭐⭐⭐⭐⭐ 5 / 5</h1></span
+            >
+          </div>
+
+          <hr class="divider" width="100%" />
+          <br />
+          <div class="row g-3">
+            <div class="col-sm-6">
+              <label for="firstName" class="form-label">First name</label>
+              <input
+                disabled
+                type="text"
+                class="form-control"
+                id="firstName"
+                placeholder=""
+                value="John"
+                required=""
+              />
+              <div class="invalid-feedback">Valid first name is required.</div>
+            </div>
+
+            <div class="col-sm-6">
+              <label for="lastName" class="form-label">Last name</label>
+              <input
+                disabled
+                type="text"
+                class="form-control"
+                id="lastName"
+                placeholder=""
+                value="DOE"
+                required=""
+              />
+              <div class="invalid-feedback">Valid last name is required.</div>
+            </div>
+
+            <div class="col-6">
+              <label for="username" class="form-label">Email</label>
+              <div class="input-group has-validation">
+                <span class="input-group-text">@</span>
+                <input
+                  disabled
+                  type="text"
+                  class="form-control"
+                  id="username"
+                  placeholder="Username"
+                  required=""
+                  value="JohnDoe@gmail.com"
+                />
+                <div class="invalid-feedback">Your username is required.</div>
+              </div>
+            </div>
+
+            <div class="col-6">
+              <label for="email" class="form-label"
+                >Password <span class="text-body-secondary"></span
+              ></label>
+              <input
+                disabled
+                type="password"
+                class="form-control"
+                id="email"
+                value="541584585"
+                placeholder="you@example.com"
+              />
+              <div class="invalid-feedback">
+                Please enter a valid email address for shipping updates.
+              </div>
+            </div>
+
+            <div class="col-6">
+              <label for="address" class="form-label">ID Card</label>
+              <input
+                disabled
+                type="text"
+                class="form-control"
+                id="address"
+                placeholder="123456789012345"
+                required=""
+              />
+              <div class="invalid-feedback">
+                Please enter your shipping address.
+              </div>
+            </div>
+            <div class="col-6">
+              <label for="address" class="form-label">City</label>
+              <input
+                disabled
+                type="text"
+                class="form-control"
+                id="address"
+                value="Assuit"
+                required=""
+              />
+              <div class="invalid-feedback">
+                Please enter your shipping address.
+              </div>
+            </div>
+
+            <div class="col-12">
+              <label for="address2" class="form-label">Address </label>
+              <textarea class="form-control" disabled id="" cols="30">
+Lorem ipsum dolor, sit amet consectetur adipisicing elit. Debitis, eaque.</textarea
+              >
+            </div>
+          </div>
+          <br />
+          <div class="d-flex justify-content-end">
+            <button class="btn btn-outline-primary" onclick="edit(this)">
+              Edit
+            </button>
+            <button class="btn btn-success" id="save" style="display: none">
+              Save Changes
+            </button>
+          </div>
+        </div>
+        <!--MY ORDERS-->
+        <div style="margin-left: 50px; width: 100%; display: none" class="sect">
+          <h1 style="margin-bottom: 20px">My Orders</h1>
+          <hr class="divider" width="100%" />
+          <div class="row">
+            <div class="col-12" style="margin-bottom: 20px">
+              <div class="card" style="padding: 20px">
+                <div>
+                  <img src="imgs/Completed.png" width="50px" alt="" />
+                  <h3 style="display: inline-block; margin-left: 20px">
+                    Order Status :<span style="color: #198754"> Completed</span>
+                  </h3>
+                  <br />
+                  <br />
+                  <div class="d-flex justify-content-md-between">
+                    <h4 style="display: inline-block">ID</h4>
+
+                    <h4>15525</h4>
+                  </div>
+                  <div class="d-flex justify-content-md-between">
+                    <h4 style="display: inline-block">Date</h4>
+
+                    <h4>15/5/2023 10:30:05</h4>
+                  </div>
+                  <div class="d-flex justify-content-md-between">
+                    <h4 style="display: inline-block">price</h4>
+
+                    <h4>15 EG</h4>
+                  </div>
+                  <div class="d-flex justify-content-md-between">
+                    <h4 style="display: inline-block">Details</h4>
+
+                    <h4>
+                      Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    </h4>
+                  </div>
+                  <br /><br />
+                  <div class="d-flex justify-content-between">
+                    <button class="btn btn-danger" style="margin-right: 20px">
+                      Report Issuie
+                    </button>
+                    <button class="btn btn-primary">Re-Order</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <br />
+            <div class="col-12" style="margin-bottom: 20px">
+              <div class="card" style="padding: 20px">
+                <div>
+                  <img src="imgs/pending.png" width="50px" alt="" />
+                  <h3 style="display: inline-block; margin-left: 20px">
+                    Order Status :<span style="color: #ffc107"> Pending</span>
+                  </h3>
+                  <br />
+                  <br />
+                  <div class="d-flex justify-content-md-between">
+                    <h4 style="display: inline-block">ID</h4>
+
+                    <h4>15525</h4>
+                  </div>
+                  <div class="d-flex justify-content-md-between">
+                    <h4 style="display: inline-block">Date</h4>
+
+                    <h4>15/5/2023 10:30:05</h4>
+                  </div>
+                  <div class="d-flex justify-content-md-between">
+                    <h4 style="display: inline-block">price</h4>
+
+                    <h4>15 EG</h4>
+                  </div>
+                  <div class="d-flex justify-content-md-between">
+                    <h4 style="display: inline-block">Details</h4>
+
+                    <h4>
+                      Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    </h4>
+                  </div>
+                  <br /><br />
+                  <div class="d-flex justify-content-between">
+                    <button class="btn btn-danger" style="margin-right: 20px">
+                      Report Issuie
+                    </button>
+                    <button class="btn btn-primary">Re-Order</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <br />
+            <div class="col-12">
+              <div class="card" style="padding: 20px">
+                <div>
+                  <img src="imgs/cancelled.png" width="50px" alt="" />
+                  <h3 style="display: inline-block; margin-left: 20px">
+                    Order Status :<span style="color: #dc3545">
+                      UnCompleted</span
+                    >
+                  </h3>
+                  <br />
+                  <br />
+                  <div class="d-flex justify-content-md-between">
+                    <h4 style="display: inline-block">ID</h4>
+
+                    <h4>15525</h4>
+                  </div>
+                  <div class="d-flex justify-content-md-between">
+                    <h4 style="display: inline-block">Date</h4>
+
+                    <h4>15/5/2023 10:30:05</h4>
+                  </div>
+                  <div class="d-flex justify-content-md-between">
+                    <h4 style="display: inline-block">price</h4>
+
+                    <h4>15 EG</h4>
+                  </div>
+                  <div class="d-flex justify-content-md-between">
+                    <h4 style="display: inline-block">Details</h4>
+
+                    <h4>
+                      Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    </h4>
+                  </div>
+                  <br /><br />
+                  <div class="d-flex justify-content-between">
+                    <button class="btn btn-danger" style="margin-right: 20px">
+                      Report Issuie
+                    </button>
+                    <button class="btn btn-primary">Re-Order</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--Tracking order-->
+        <div style="margin-left: 50px; width: 100%; display: none" class="sect">
+          <h1 style="margin-bottom: 20px">Tracking Orders</h1>
+          <hr class="divider" width="100%" />
+          <div>
+            <div class="row">
+              <div class="col-12">
+                <h3>Deliver TO</h3>
+                <div class="card" style="padding: 20px">
+                  <div>
+                    <img src="imgs/location.png" width="50px" alt="" />
+                    <h3 style="display: inline; margin-left: 20px">Assuit</h3>
+                  </div>
+                </div>
+                <br />
+                <h3>Order Status</h3>
+                <div class="card" style="padding: 20px">
+                  <div class="d-flex justify-content-between">
+                    <div>
+                      <img src="imgs/location.png" width="50px" alt="" />
+                      <h3 style="display: inline; margin-left: 20px">Assuit</h3>
+                    </div>
+                    <span> 15:01:18 11/11/2023</span>
+                  </div>
+
+                  <div
+                    style="
+                      transform: rotateY(45deg);
+                      color: transparent;
+                      border: 2px solid #0084ff;
+                      width: 7px;
+                      border-width: 0 8px 0 0;
+                      height: 60px;
+                      margin-left: 22px;
+                      margin-top: 10px;
+                      margin-bottom: 10px;
+                    "
+                  >
+                    asdafgggg
+                  </div>
+                  <div class="d-flex justify-content-between">
+                    <div>
+                      <img src="imgs/location.png" width="50px" alt="" />
+                      <h3 style="display: inline; margin-left: 20px">In Way</h3>
+                    </div>
+                    <span> 15:01:18 11/11/2023</span>
+                  </div>
+                  <div
+                    style="
+                      transform: rotateY(45deg);
+                      color: transparent;
+                      border: 2px solid #0084ff;
+                      width: 7px;
+                      border-width: 0 8px 0 0;
+                      height: 60px;
+                      margin-left: 22px;
+                      margin-top: 10px;
+                      margin-bottom: 10px;
+                    "
+                  >
+                    asdafgggg
+                  </div>
+                  <div class="d-flex justify-content-between">
+                    <div>
+                      <img src="imgs/location.png" width="50px" alt="" />
+                      <h3 style="display: inline; margin-left: 20px">
+                        Moved to market
+                      </h3>
+                    </div>
+                    <span> 15:01:18 11/11/2023</span>
+                  </div>
+                  <div
+                    style="
+                      transform: rotateY(45deg);
+                      color: transparent;
+                      border: 2px solid #0084ff;
+                      width: 7px;
+                      border-width: 0 8px 0 0;
+                      height: 60px;
+                      margin-left: 22px;
+                      margin-top: 10px;
+                      margin-bottom: 10px;
+                    "
+                  >
+                    asdafgggg
+                  </div>
+                  <div class="d-flex justify-content-between">
+                    <div>
+                      <img src="imgs/location.png" width="50px" alt="" />
+                      <h3 style="display: inline; margin-left: 20px">
+                        Order Placed
+                      </h3>
+                    </div>
+                    <span> 15:01:18 11/11/2023</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--New Order-->
+        <div style="margin-left: 50px; width: 100%; display: none" class="sect">
+          <h1 style="margin-bottom: 20px">New Order</h1>
+          <hr class="divider" width="100%" />
+          <div class="row">
+            <h3>Order Details</h3>
+            <div class="form-floating">
+              <textarea
+                class="form-control"
+                placeholder="Leave a comment here"
+                id="floatingTextarea2"
+                style="height: 100px"
+              ></textarea>
+              <label for="floatingTextarea2" style="padding-left: 30px"
+                >Describe Your Order</label
+              >
+            </div>
+            <br /><br />
+            <br />
+            <div class="form-floating col-6" style="margin-top: 15px">
+              <select
+                class="form-select"
+                id="floatingSelect"
+                aria-label="Floating label select example"
+              >
+                <option selected disabled>City</option>
+                <option value="1">Assuit</option>
+                <option value="2">Cairo</option>
+                <option value="3">Alex</option>
+              </select>
+              <label for="floatingSelect" style="padding-left: 30px"
+                >Select the City</label
+              >
+            </div>
+            <div class="form-floating col-6" style="margin-top: 15px">
+              <select
+                class="form-select"
+                id="floatingSelect"
+                aria-label="Floating label select example"
+              >
+                <option selected disabled>region</option>
+                <option value="1">Assuit</option>
+                <option value="2">abutig</option>
+                <option value="3">sedfa</option>
+              </select>
+              <label for="floatingSelect" style="padding-left: 30px"
+                >Select the Region</label
+              >
+            </div>
+            <div class="col-6" style="margin-top: 15px">
+              <span class="d-flex justify-content-between"
+                ><h5>Time for Order</h5>
+                <p>Value: <span id="demo"></span></p
+              ></span>
+              <input
+                type="range"
+                min="10"
+                max="100"
+                value="1"
+                class="slider"
+                id="myRange"
+              />
+            </div>
+            <div class="form-floating mb-3 col-6" style="margin-top: 15px">
+              <input
+                type="text"
+                class="form-control"
+                id="floatingInput"
+                placeholder="10 LE"
+              />
+              <label for="floatingInput" style="padding-left: 30px"
+                >Price</label
+              >
+            </div>
+            <h4 class="mb-3">Payment</h4>
+            <div class="my-3">
+              <div class="form-check">
+                <input
+                  id="credit"
+                  name="paymentMethod"
+                  type="radio"
+                  class="form-check-input"
+                  checked=""
+                  required=""
+                />
+                <label class="form-check-label" for="credit">Credit card</label>
+              </div>
+              <div class="form-check">
+                <input
+                  id="debit"
+                  name="paymentMethod"
+                  type="radio"
+                  class="form-check-input"
+                  required=""
+                />
+                <label class="form-check-label" for="debit">Debit card</label>
+              </div>
+              <div class="form-check">
+                <input
+                  id="paypal"
+                  name="paymentMethod"
+                  type="radio"
+                  class="form-check-input"
+                  required=""
+                />
+                <label class="form-check-label" for="paypal">Cash</label>
+              </div>
+            </div>
+            <div class="row gy-3" style="display: none">
+              <div class="col-md-6">
+                <label for="cc-name" class="form-label">Name on card</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="cc-name"
+                  placeholder=""
+                  required=""
+                />
+                <small class="text-body-secondary"
+                  >Full name as displayed on card</small
+                >
+                <div class="invalid-feedback">Name on card is required</div>
+              </div>
+
+              <div class="col-md-6">
+                <label for="cc-number" class="form-label"
+                  >Credit card number</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="cc-number"
+                  placeholder=""
+                  required=""
+                />
+                <div class="invalid-feedback">
+                  Credit card number is required
+                </div>
+              </div>
+
+              <div class="col-md-3">
+                <label for="cc-expiration" class="form-label">Expiration</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="cc-expiration"
+                  placeholder=""
+                  required=""
+                />
+                <div class="invalid-feedback">Expiration date required</div>
+              </div>
+
+              <div class="col-md-3">
+                <label for="cc-cvv" class="form-label">CVV</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="cc-cvv"
+                  placeholder=""
+                  required=""
+                />
+                <div class="invalid-feedback">Security code required</div>
+              </div>
+            </div>
+            <div class="d-flex col-12 justify-content-end">
+              <button class="btn btn-primary">Make order</button>
+            </div>
+          </div>
+        </div>
+        <!--Deliveries-->
+        <div style="margin-left: 50px; width: 100%; display: none" class="sect">
+          <h1 style="margin-bottom: 20px">Deliveries</h1>
+          <hr class="divider" width="100%" />
+          <div class="row">
+            <h3>My Old deliveries</h3>
+            <div class="col-6">
+              <div class="card">
+                <div class="d-flex justify-content-between">
+                  <span class="d-flex justify-content-start">
+                    <img
+                      src="imgs/default photo.jpg"
+                      style="
+                        width: 60px;
+                        margin-right: 10px;
+                        border-radius: 80%;
+                      "
+                      alt=""
+                    />
+                    <h5>mohaned medo</h5> </span
+                  ><span><h5>Your Rate ⭐⭐⭐</h5></span>
+                </div>
+                <br />
+                <div class="col-12">
+                  <h5>your review</h5>
+                  <textarea class="form-control" disabled>
+ Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta blanditiis ....</textarea
+                  >
+                  <br />
+                  <div class="d-flex justify-content-between">
+                    <button class="btn btn-danger">Report</button
+                    ><button class="btn btn-outline-primary">
+                      View Public Profile
+                    </button>
+                    <button class="btn btn-primary">contact</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="card">
+                <div class="d-flex justify-content-between">
+                  <span class="d-flex justify-content-start">
+                    <img
+                      src="imgs/default photo.jpg"
+                      style="
+                        width: 60px;
+                        margin-right: 10px;
+                        border-radius: 80%;
+                      "
+                      alt=""
+                    />
+                    <h5>Ahmed omar</h5></span
+                  ><span>
+                    <a href="#popup1" style="text-decoration: none"
+                      ><h5>
+                        Add Rate
+                        <img
+                          src="imgs/plus.png"
+                          width="40px"
+                          style="cursor: pointer"
+                          alt=""
+                        /></h5></a
+                  ></span>
+                </div>
+                <br />
+                <div class="col-12">
+                  <h5>Add Review</h5>
+                  <textarea class="form-control" disabled>
+ Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta blanditiis ....</textarea
+                  >
+                  <br />
+                  <div class="d-flex justify-content-between">
+                    <button class="btn btn-danger">Report</button
+                    ><button class="btn btn-outline-primary">
+                      View Public Profile
+                    </button>
+                    <button class="btn btn-primary">contact</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="card">
+                <div class="d-flex justify-content-between">
+                  <span class="d-flex justify-content-start">
+                    <img
+                      src="imgs/default photo.jpg"
+                      style="
+                        width: 60px;
+                        margin-right: 10px;
+                        border-radius: 80%;
+                      "
+                      alt=""
+                    />
+                    <h5>sabry ali</h5></span
+                  ><span><h5>Your Rate ⭐⭐⭐</h5></span>
+                </div>
+                <br />
+                <div class="col-12">
+                  <h5>your review</h5>
+                  <textarea class="form-control" disabled>
+ Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta blanditiis ....</textarea
+                  >
+                  <br />
+                  <div class="d-flex justify-content-between">
+                    <button class="btn btn-danger">Report</button
+                    ><button class="btn btn-outline-primary">
+                      View Public Profile
+                    </button>
+                    <button class="btn btn-primary">contact</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="card">
+                <div class="d-flex justify-content-between">
+                  <span class="d-flex justify-content-start">
+                    <img
+                      src="imgs/default photo.jpg"
+                      style="
+                        width: 60px;
+                        margin-right: 10px;
+                        border-radius: 80%;
+                      "
+                      alt=""
+                    />
+                    <h5>andrew salem</h5></span
+                  ><span><h5>Your Rate ⭐⭐⭐</h5></span>
+                </div>
+                <br />
+                <div class="col-12">
+                  <h5>your review</h5>
+                  <textarea class="form-control" disabled>
+ Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta blanditiis ....</textarea
+                  >
+                  <br />
+                  <div class="d-flex justify-content-between">
+                    <button class="btn btn-danger">Report</button
+                    ><button class="btn btn-outline-primary">
+                      View Public Profile
+                    </button>
+                    <button class="btn btn-primary">contact</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="card">
+                <div class="d-flex justify-content-between">
+                  <span class="d-flex justify-content-start">
+                    <img
+                      src="imgs/default photo.jpg"
+                      style="
+                        width: 60px;
+                        margin-right: 10px;
+                        border-radius: 80%;
+                      "
+                      alt=""
+                    />
+                    <h5>mostafa ahmed</h5></span
+                  ><span><h5>Your Rate ⭐⭐⭐</h5></span>
+                </div>
+                <br />
+                <div class="col-12">
+                  <h5>your review</h5>
+                  <textarea class="form-control" disabled>
+ Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta blanditiis ....</textarea
+                  >
+                  <br />
+                  <div class="d-flex justify-content-between">
+                    <button class="btn btn-danger">Report</button
+                    ><button class="btn btn-outline-primary">
+                      View Public Profile
+                    </button>
+                    <button class="btn btn-primary">contact</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="card">
+                <div class="d-flex justify-content-between">
+                  <span class="d-flex justify-content-start">
+                    <img
+                      src="imgs/default photo.jpg"
+                      style="
+                        width: 60px;
+                        margin-right: 10px;
+                        border-radius: 80%;
+                      "
+                      alt=""
+                    />
+                    <h5>ahmed ghazaly</h5></span
+                  ><span><h5>Your Rate ⭐⭐⭐</h5></span>
+                </div>
+                <br />
+                <div class="col-12">
+                  <h5>your review</h5>
+                  <textarea class="form-control" disabled>
+ Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta blanditiis ....</textarea
+                  >
+                  <br />
+                  <div class="d-flex justify-content-between">
+                    <button class="btn btn-danger">Report</button
+                    ><button class="btn btn-outline-primary">
+                      View Public Profile
+                    </button>
+                    <button class="btn btn-primary">contact</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="card">
+                <div class="d-flex justify-content-between">
+                  <span class="d-flex justify-content-start">
+                    <img
+                      src="imgs/default photo.jpg"
+                      style="
+                        width: 60px;
+                        margin-right: 10px;
+                        border-radius: 80%;
+                      "
+                      alt=""
+                    />
+                    <h5>abdallah mahfouz</h5></span
+                  >
+                  <span><h5>Your Rate ⭐⭐⭐</h5></span>
+                </div>
+                <br />
+                <div class="col-12">
+                  <h5>your review</h5>
+                  <textarea class="form-control" disabled>
+ Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta blanditiis ....</textarea
+                  >
+                  <br />
+                  <div class="d-flex justify-content-between">
+                    <button class="btn btn-danger">Report</button
+                    ><button class="btn btn-outline-primary">
+                      View Public Profile
+                    </button>
+                    <button class="btn btn-primary">contact</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="card">
+                <div class="d-flex justify-content-between">
+                  <span class="d-flex justify-content-start">
+                    <img
+                      src="imgs/default photo.jpg"
+                      style="
+                        width: 60px;
+                        margin-right: 10px;
+                        border-radius: 80%;
+                      "
+                      alt=""
+                    />
+                    <h5>karem mohamed</h5></span
+                  >
+                  <span><h5>Your Rate ⭐⭐⭐</h5></span>
+                </div>
+                <br />
+                <div class="col-12">
+                  <h5>your review</h5>
+                  <textarea class="form-control" disabled>
+ Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta blanditiis ....</textarea
+                  >
+                  <br />
+                  <div class="d-flex justify-content-between">
+                    <button class="btn btn-danger">Report</button
+                    ><button class="btn btn-outline-primary">
+                      View Public Profile
+                    </button>
+                    <button class="btn btn-primary">contact</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="card">
+                <div class="d-flex justify-content-between">
+                  <span class="d-flex justify-content-start">
+                    <img
+                      src="imgs/default photo.jpg"
+                      style="
+                        width: 60px;
+                        margin-right: 10px;
+                        border-radius: 80%;
+                      "
+                      alt=""
+                    />
+                    <h5>fawzey anwar</h5></span
+                  >
+                  <span><h5>Your Rate ⭐⭐⭐</h5></span>
+                </div>
+                <br />
+                <div class="col-12">
+                  <h5>your review</h5>
+                  <textarea class="form-control" disabled>
+ Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta blanditiis ....</textarea
+                  >
+                  <br />
+                  <div class="d-flex justify-content-between">
+                    <button class="btn btn-danger">Report</button
+                    ><button class="btn btn-outline-primary">
+                      View Public Profile
+                    </button>
+                    <button class="btn btn-primary">contact</button>
+                  </div>
+                </div>
+                <br />
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--Poupup-->
+
+        <div id="popup1" class="overlay">
+          <div class="popup">
+            <h2>Rate & Review</h2>
+            <a class="close" href="#">&times;</a>
+            <div class="content">
+              <div class="wrapper">
+                <div class="master">
+                  <h1>Review And rating</h1>
+                  <h2>How was your experience about our product?</h2>
+
+                  <div class="rating-component">
+                    <div class="status-msg">
+                      <label>
+                        <input
+                          class="rating_msg"
+                          type="hidden"
+                          name="rating_msg"
+                          value=""
+                        />
+                      </label>
+                    </div>
+                    <div class="stars-box">
+                      <i
+                        class="star fa fa-star"
+                        title="1 star"
+                        data-message="Poor"
+                        data-value="1"
+                      ></i>
+                      <i
+                        class="star fa fa-star"
+                        title="2 stars"
+                        data-message="Too bad"
+                        data-value="2"
+                      ></i>
+                      <i
+                        class="star fa fa-star"
+                        title="3 stars"
+                        data-message="Average quality"
+                        data-value="3"
+                      ></i>
+                      <i
+                        class="star fa fa-star"
+                        title="4 stars"
+                        data-message="Nice"
+                        data-value="4"
+                      ></i>
+                      <i
+                        class="star fa fa-star"
+                        title="5 stars"
+                        data-message="very good qality"
+                        data-value="5"
+                      ></i>
+                    </div>
+                    <div class="starrate">
+                      <label>
+                        <input
+                          class="ratevalue"
+                          type="hidden"
+                          name="rate_value"
+                          value=""
+                        />
+                      </label>
+                    </div>
+                  </div>
+
+                  <div class="feedback-tags">
+                    <div class="tags-container" data-tag-set="1">
+                      <div class="question-tag">
+                        Why was your experience so bad?
+                      </div>
+                    </div>
+                    <div class="tags-container" data-tag-set="2">
+                      <div class="question-tag">
+                        Why was your experience so bad?
+                      </div>
+                    </div>
+
+                    <div class="tags-container" data-tag-set="3">
+                      <div class="question-tag">
+                        Why was your average rating experience ?
+                      </div>
+                    </div>
+                    <div class="tags-container" data-tag-set="4">
+                      <div class="question-tag">
+                        Why was your experience good?
+                      </div>
+                    </div>
+
+                    <div class="tags-container" data-tag-set="5">
+                      <div class="make-compliment">
+                        <div class="compliment-container">
+                          Give a compliment
+                          <i class="far fa-smile-wink"></i>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="tags-box">
+                      <input
+                        type="text"
+                        class="tag form-control"
+                        name="comment"
+                        id="inlineFormInputName"
+                        placeholder="please enter your review"
+                      />
+                      <input
+                        type="hidden"
+                        name="product_id"
+                        value="{{ $products->id }}"
+                      />
+                    </div>
+                  </div>
+
+                  <div class="button-box">
+                    <input
+                      type="submit"
+                      class="done btn btn-warning"
+                      disabled="disabled"
+                      value="Add review"
+                    />
+                  </div>
+
+                  <div class="submited-box">
+                    <div class="loader"></div>
+                    <div class="success-message">Thank you!</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+      <section>
+        <footer class="new_footer_area bg_color">
+          <div class="new_footer_top">
+            <div class="container">
+              <div class="row">
+                <div class="col-lg-3 col-md-6">
+                  <div
+                    class="f_widget company_widget wow fadeInLeft"
+                    data-wow-delay="0.2s"
+                    style="
+                      visibility: visible;
+                      animation-delay: 0.2s;
+                      animation-name: fadeInLeft;
+                    "
+                  >
+                    <h3 class="f-title f_600 t_color f_size_18">
+                      Get in Touch
+                    </h3>
+                    <p>
+                      Don’t miss any updates of our new templates and
+                      extensions.!
+                    </p>
+                    <form
+                      action="#"
+                      class="f_subscribe_two mailchimp"
+                      method="post"
+                      novalidate="true"
+                      _lpchecked="1"
+                    >
+                      <input
+                        type="text"
+                        name="EMAIL"
+                        class="form-control memail"
+                        placeholder="Email"
+                      />
+                      <button class="btn btn_get btn_get_two" type="submit">
+                        Subscribe
+                      </button>
+                      <p class="mchimp-errmessage" style="display: none"></p>
+                      <p class="mchimp-sucmessage" style="display: none"></p>
+                    </form>
+                  </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                  <div
+                    class="f_widget about-widget pl_70 wow fadeInLeft"
+                    data-wow-delay="0.4s"
+                    style="
+                      visibility: visible;
+                      animation-delay: 0.4s;
+                      animation-name: fadeInLeft;
+                    "
+                  >
+                    <h3 class="f-title f_600 t_color f_size_18">Download</h3>
+                    <ul class="list-unstyled f_list">
+                      <li><a href="#">Company</a></li>
+                      <li><a href="#">Android App</a></li>
+                      <li><a href="#">ios App</a></li>
+                      <li><a href="#">Desktop</a></li>
+                      <li><a href="#">Projects</a></li>
+                      <li><a href="#">My tasks</a></li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                  <div
+                    class="f_widget about-widget pl_70 wow fadeInLeft"
+                    data-wow-delay="0.6s"
+                    style="
+                      visibility: visible;
+                      animation-delay: 0.6s;
+                      animation-name: fadeInLeft;
+                    "
+                  >
+                    <h3 class="f-title f_600 t_color f_size_18">Help</h3>
+                    <ul class="list-unstyled f_list">
+                      <li><a href="#">FAQ</a></li>
+                      <li><a href="#">Term &amp; conditions</a></li>
+                      <li><a href="#">Reporting</a></li>
+                      <li><a href="#">Documentation</a></li>
+                      <li><a href="#">Support Policy</a></li>
+                      <li><a href="#">Privacy</a></li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                  <div
+                    class="f_widget social-widget pl_70 wow fadeInLeft"
+                    data-wow-delay="0.8s"
+                    style="
+                      visibility: visible;
+                      animation-delay: 0.8s;
+                      animation-name: fadeInLeft;
+                    "
+                  >
+                    <h3 class="f-title f_600 t_color f_size_18">
+                      Team Solutions
+                    </h3>
+                    <div class="f_social_icon">
+                      <a href="#" class="fab fa-facebook"
+                        ><img src="imgs/facebook.png" width="30px" alt=""
+                      /></a>
+                      <a href="#" class="fab fa-twitter"
+                        ><img src="imgs/twitter.png" width="30px" alt=""
+                      /></a>
+                      <a href="#" class="fab fa-linkedin"
+                        ><img src="imgs/whatsapp.png" width="30px" alt=""
+                      /></a>
+                      <a href="#" class="fab fa-pinterest"
+                        ><img src="imgs/instagram.png" width="30px" alt=""
+                      /></a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="footer_bg">
+              <div class="footer_bg_one"></div>
+              <div class="footer_bg_two"></div>
+            </div>
+          </div>
+        </footer>
+      </section>
+    </div>
+    <script>
+      function login(e) {
+        let btn = document.getElementsByClassName("prof");
+        Object.entries(btn).map((e) => (e[1].style.display = "none"));
+        console.log("done");
+        document.getElementById("after").style.display = "inline";
+      }
+      function edit(e) {
+        e.style.display = "none";
+        document.getElementById("save").style.display = "inline-block";
+      }
+      function active(e) {
+        console.log(e);
+        let list = document.getElementsByClassName(" act");
+        let sect = document.getElementsByClassName("sect");
+        Object.entries(list).map((li, index) => {
+          if (li[1] == e) {
+            li[1].classList.add("active");
+            sect[index].style.display = "block";
+          } else {
+            li[1].classList.remove("active");
+            sect[index].style.display = "none";
+          }
+        });
+      }
+      var slider = document.getElementById("myRange");
+      var output = document.getElementById("demo");
+      output.innerHTML = slider.value;
+
+      slider.oninput = function () {
+        output.innerHTML = this.value;
+      };
+      // Function to handle mouseover and mouseout events for star rating
+      function handleMouseover() {
+        var onStar = parseInt(this.dataset.value, 10);
+        var stars = this.parentElement.querySelectorAll("i.star");
+
+        stars.forEach(function (star, index) {
+          if (index < onStar) {
+            star.classList.add("hover");
+          } else {
+            star.classList.remove("hover");
+          }
+        });
+      }
+
+      function handleMouseout() {
+        var stars = this.parentElement.querySelectorAll("i.star");
+
+        stars.forEach(function (star) {
+          star.classList.remove("hover");
+        });
+      }
+
+      // Function to handle click event for star rating
+      function handleStarClick() {
+        console.log("hello");
+        var onStar = parseInt(this.dataset.value, 10);
+        var stars = this.parentElement.querySelectorAll("i.star");
+        var ratingMessage = this.dataset.message;
+
+        var msg = onStar > 1 ? onStar : onStar;
+        document.querySelector(".rating-component .starrate .ratevalue").value =
+          msg;
+
+        document.querySelector(".fa-smile-wink").style.display = "block";
+        document.querySelector(".button-box .done").style.display = "block";
+
+        if (onStar === 5) {
+          document
+            .querySelector(".button-box .done")
+            .removeAttribute("disabled");
+        } else {
+          document
+            .querySelector(".button-box .done")
+            .setAttribute("disabled", "true");
+        }
+
+        stars.forEach(function (star) {
+          star.classList.remove("selected");
+        });
+
+        for (var i = 0; i < onStar; i++) {
+          stars[i].classList.add("selected");
+        }
+
+        document.querySelector(".status-msg .rating_msg").value = ratingMessage;
+        document.querySelector(".status-msg").innerHTML = ratingMessage;
+        document.querySelectorAll("[data-tag-set]").forEach(function (element) {
+          element.style.display = "none";
+        });
+        document.querySelector(
+          "[data-tag-set='" + onStar + "']"
+        ).style.display = "block";
+      }
+
+      // Function to handle click event for feedback tags
+      function handleTagClick() {
+        var choosedTagsLength =
+          this.parentElement.querySelectorAll("div.tags-box input").length + 1;
+
+        if (this.classList.contains("choosed")) {
+          this.classList.remove("choosed");
+          choosedTagsLength -= 2;
+        } else {
+          this.classList.add("choosed");
+          document
+            .querySelector(".button-box .done")
+            .removeAttribute("disabled");
+        }
+
+        console.log(choosedTagsLength);
+
+        if (choosedTagsLength <= 0) {
+          document
+            .querySelector(".button-box .done")
+            .setAttribute("disabled", "true");
+        }
+      }
+
+      // Function to handle click event for smile-wink icon
+      function handleSmileWinkClick() {
+        this.style.display = "none";
+        document.querySelector(".list-of-compliment").style.display = "block";
+      }
+
+      // Function to handle click event for "Done" button
+      function handleDoneClick() {
+        document.querySelector(".rating-component").style.display = "none";
+        document.querySelector(".feedback-tags").style.display = "none";
+        document.querySelector(".button-box").style.display = "none";
+        document.querySelector(".submited-box").style.display = "block";
+        document.querySelector(".submited-box .loader").style.display = "block";
+
+        setTimeout(function () {
+          document.querySelector(".submited-box .loader").style.display =
+            "none";
+          document.querySelector(
+            ".submited-box .success-message"
+          ).style.display = "block";
+        }, 1500);
+      }
+
+      // Attach event listeners
+      document
+        .querySelectorAll(".rating-component .star")
+        .forEach(function (star) {
+          star.addEventListener("mouseover", handleMouseover);
+          star.addEventListener("mouseout", handleMouseout);
+          star.addEventListener("click", handleStarClick);
+        });
+
+      document.querySelectorAll(".feedback-tags").forEach(function (tag) {
+        tag.addEventListener("click", handleTagClick);
+      });
+
+      document
+        .querySelector(".compliment-container .fa-smile-wink")
+        .addEventListener("click", handleSmileWinkClick);
+
+      document
+        .querySelector(".done")
+        .addEventListener("click", handleDoneClick);
+    </script>
+  </body>
+</html>
