@@ -1,0 +1,19 @@
+{
+  "Version": 1,
+  "Hash": "OR/Rvb6FSh7gSbZ0/cELUt+Bo/TvRswrDExIDolAfMk=",
+  "Source": "Hatley",
+  "BasePath": "_content/Hatley",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "Hatley\\wwwroot",
+      "Source": "Hatley",
+      "ContentRoot": "E:\\College\\Graduation project\\Code\\Hatley\\wwwroot\\",
+      "BasePath": "_content/Hatley",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": []
+}
