@@ -3,11 +3,13 @@ using Microsoft.AspNetCore.Mvc;
 using Hatley.Services;
 using Hatley.Models;
 using Hatley.DTO;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Hatley.Controllers
 {
 	[Route("api/[controller]")]
 	[ApiController]
+	[Authorize]
 	public class UserController : ControllerBase
 	{
 		private readonly IUserDTORepo repo;

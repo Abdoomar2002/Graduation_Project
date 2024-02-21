@@ -22,7 +22,8 @@ namespace Hatley.Services
 			{
 				return null;
 			}
-			List<UserDTO> usersdto = users.Select(x=> new UserDTO() {
+			List<UserDTO> usersdto = users.Select(x => new UserDTO()
+			{
 				Id = x.User_ID,
 				Name = x.Name,
 				Email = x.Email,
@@ -37,35 +38,53 @@ namespace Hatley.Services
 		{
 
 			var user = context.users.FirstOrDefault(x => x.User_ID == id);
-			if(user == null)
+			if (user == null)
 			{
 				return null;
 			}
-			UserDTO userdto=new UserDTO()
+			UserDTO userdto = new UserDTO()
 			{
 				Id = user.User_ID,
 				Name = user.Name,
-				Email =user.Email,
-				phone=user.phone,
-				Password=user.Password
+				Email = user.Email,
+				phone = user.phone,
+				Password = user.Password
 			};
 			//double av = user.Rate.Average();
 			return userdto;
 		}
 
+		public UserDTO? Check(LoginDTO login)
+		{
+			var user = context.users.FirstOrDefault(x => x.Email == login.Email);
+			if (user == null)
+			{
+				return null;
+			}
+			UserDTO userdto = new UserDTO()
+			{
+				Id = user.User_ID,
+				Name = user.Name,
+				Email = user.Email,
+				phone = user.phone,
+				Password = user.Password
+			};
+			return userdto;
+		}
 
 
 		public int Create(UserDTO userdto)
 		{
-			var email= context.users.FirstOrDefault(x => x.Email == userdto.Email);
-			if (email == null) { 
-			user.Name = userdto.Name;
-			user.Email = userdto.Email;
-			user.phone = userdto.phone;
-			user.Password = userdto.Password;
-			context.users.Add(user);
-			int raw = context.SaveChanges();
-			return raw;
+			var email = context.users.FirstOrDefault(x => x.Email == userdto.Email);
+			if (email == null)
+			{
+				user.Name = userdto.Name;
+				user.Email = userdto.Email;
+				user.phone = userdto.phone;
+				user.Password = userdto.Password;
+				context.users.Add(user);
+				int raw = context.SaveChanges();
+				return raw;
 			}
 			return 0;
 			//context.users.Add(user);
@@ -80,12 +99,12 @@ namespace Hatley.Services
 			var olduser = context.users.FirstOrDefault(y => y.User_ID == id);
 			var email = context.users.FirstOrDefault(x => x.Email == userdto.Email);
 
-			if (olduser == null) 
-			{ 
+			if (olduser == null)
+			{
 				return -2;
 			}
 
-			
+
 			else if (email != null && email.User_ID == olduser.User_ID)
 			{
 				olduser.Name = userdto.Name;
@@ -104,7 +123,7 @@ namespace Hatley.Services
 			olduser.Email = userdto.Email;
 			olduser.phone = userdto.phone;
 			olduser.Password = userdto.Password;
-			int raw = context.SaveChanges();			
+			int raw = context.SaveChanges();
 			return raw;
 		}
 
@@ -121,6 +140,6 @@ namespace Hatley.Services
 			return -1;
 		}
 
-		
+
 	}
 }

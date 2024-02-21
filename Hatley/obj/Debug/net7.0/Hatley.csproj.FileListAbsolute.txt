@@ -229,3 +229,5 @@ E:\College\Graduation project\Code\Hatley\obj\Debug\net7.0\refint\Hatley.dll
 E:\College\Graduation project\Code\Hatley\obj\Debug\net7.0\Hatley.pdb
 E:\College\Graduation project\Code\Hatley\obj\Debug\net7.0\Hatley.genruntimeconfig.cache
 E:\College\Graduation project\Code\Hatley\obj\Debug\net7.0\ref\Hatley.dll
+E:\College\Graduation project\Code\Hatley\bin\Debug\net7.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+E:\College\Graduation project\Code\Hatley\bin\Debug\net7.0\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll

@@ -1,10 +1,10 @@
 ﻿using Hatley.DTO;
-using Hatley.Models;
 
 namespace Hatley.Services
 {
 	public interface IUserDTORepo
 	{
+		UserDTO? Check(LoginDTO login);
 		int Create(UserDTO userdto);
 		int Delete(int id);
 		UserDTO? GetUser(int id);
