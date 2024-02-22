@@ -10,5 +10,6 @@ namespace Hatley.Services
         int Insert(DeliveryDTO person);
         int Edit(int id, DeliveryDTO person);
         int Delete(int id);
+        DeliveryDTO? Check(LoginDTO login);
     }
 }

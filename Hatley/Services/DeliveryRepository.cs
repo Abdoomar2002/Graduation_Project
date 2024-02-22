@@ -3,6 +3,7 @@ using Hatley.Models;
 using Hatley.Controllers;
 using Microsoft.AspNetCore.Http.HttpResults;
 using System.Linq;
+using System;
 
 namespace Hatley.Services
 {
@@ -133,6 +134,29 @@ namespace Hatley.Services
                 return 0;
             }
             return -1;
+        }
+        public DeliveryDTO? Check(LoginDTO login)
+        {
+            var deliveryman = context.delivers.FirstOrDefault(x => x.Email == login.Email);
+            if (deliveryman == null)
+            {
+                return null;
+            }
+            DeliveryDTO delivery = new DeliveryDTO()
+            {
+                Id = deliveryman.Delivery_ID,
+                Name = deliveryman.Name,
+                Email = deliveryman.Email,
+                Phone = deliveryman.Phone,
+                Password = deliveryman.Password,
+                national_id = deliveryman.National_id,
+                front_National_ID_img = deliveryman.Front_National_ID_img,
+                back_National_ID_img = deliveryman.Back_National_ID_img,
+                face_with_National_ID_img = deliveryman.Front_National_ID_img,
+                Governorate_ID = deliveryman.Governorate_ID,
+                Zone_ID = deliveryman.Zone_ID
+            };
+            return delivery;
         }
     }
 }

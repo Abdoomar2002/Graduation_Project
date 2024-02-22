@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "OR/Rvb6FSh7gSbZ0/cELUt+Bo/TvRswrDExIDolAfMk=",
+  "Hash": "LlPnbiZllH45AUVrbzx5laumGs93QQOAo7bq9b9luc8=",
   "Source": "Hatley",
   "BasePath": "_content/Hatley",
   "Mode": "Default",
@@ -10,7 +10,7 @@
     {
       "Name": "Hatley\\wwwroot",
       "Source": "Hatley",
-      "ContentRoot": "E:\\College\\Graduation project\\Code\\Hatley\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Microsoft\\Downloads\\New folder\\Graduation_Project\\Hatley\\wwwroot\\",
       "BasePath": "_content/Hatley",
       "Pattern": "**"
     }
