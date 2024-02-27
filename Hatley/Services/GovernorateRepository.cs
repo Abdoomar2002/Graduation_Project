@@ -13,7 +13,7 @@ namespace Hatley.Services
             this.governorate = governorate;
             this.context = context;
         }
-        public List<GovernorateDTO> Displayall()
+        public List<GovernorateDTO>? Displayall()
         {
             List<Governorate> allgovernorates = context.governorates.ToList();
             if (allgovernorates == null)
@@ -27,7 +27,7 @@ namespace Hatley.Services
             }).ToList();
             return governoratesDTO;
         }
-        public GovernorateDTO Display(int id)
+        public GovernorateDTO? Display(int id)
         {
             var governorate = context.governorates.FirstOrDefault(x => x.Governorate_ID == id);
             if (governorate == null)

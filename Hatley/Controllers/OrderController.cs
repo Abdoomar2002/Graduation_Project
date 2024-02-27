@@ -1,5 +1,6 @@
 ﻿using Hatley.DTO;
 using Hatley.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,13 +8,19 @@ namespace Hatley.Controllers
 {
 	[Route("api/[controller]")]
 	[ApiController]
+	[Authorize]
 	public class OrderController : ControllerBase
 	{
 		private readonly IOrderDTORepo repo;
+		private readonly string? userType; 
+		private readonly IHttpContextAccessor httpContextAccessor;
 
-		public OrderController(IOrderDTORepo _Repo)
+		public OrderController(IOrderDTORepo _Repo, IHttpContextAccessor _httpContextAccessor)
         {
 			repo = _Repo;
+			httpContextAccessor = _httpContextAccessor;
+			userType = httpContextAccessor.HttpContext?.User.Claims.FirstOrDefault(c => c.Type == "type")?.Value;
+
 		}
 
 

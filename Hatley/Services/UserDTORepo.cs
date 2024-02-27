@@ -17,6 +17,7 @@ namespace Hatley.Services
 
 		public List<UserDTO>? GetUsers()
 		{
+			
 			List<User> users = context.users.ToList();
 			if (users == null)
 			{

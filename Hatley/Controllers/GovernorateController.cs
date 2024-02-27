@@ -1,5 +1,6 @@
 ﻿using Hatley.DTO;
 using Hatley.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,14 +8,21 @@ namespace Hatley.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class GovernorateController : ControllerBase
     {
         private readonly IGovernorateRepository governorateRepository;
-        public GovernorateController(IGovernorateRepository governorateRepository)
+		private readonly string? userType; 
+		private readonly IHttpContextAccessor httpContextAccessor;
+
+		public GovernorateController(IGovernorateRepository governorateRepository, IHttpContextAccessor _httpContextAccessor)
         {
             this.governorateRepository = governorateRepository;
-        }
-        [HttpGet]
+			httpContextAccessor = _httpContextAccessor;
+			userType = httpContextAccessor.HttpContext?.User.Claims.FirstOrDefault(c => c.Type == "type")?.Value;
+
+		}
+		[HttpGet]
         public IActionResult Displayall()
         {
             List<GovernorateDTO> governorates = governorateRepository.Displayall();

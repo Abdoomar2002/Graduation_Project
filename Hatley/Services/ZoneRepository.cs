@@ -14,7 +14,7 @@ namespace Hatley.Services
             this.context = context;
             this.zone = zone;
         }
-        public List<ZoneDTO> Displayall()
+        public List<ZoneDTO>? Displayall()
         {
             List<Zone> zones = context.zones.ToList();
             if(zones.Count == 0)
@@ -31,7 +31,7 @@ namespace Hatley.Services
             }).ToList();
             return zonesDTO;
         }
-        public ZoneDTO Display(int id)
+        public ZoneDTO? Display(int id)
         {
             var zone = context.zones.FirstOrDefault(x => x.Zone_ID == id);
             if (zone == null)

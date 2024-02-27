@@ -1,6 +1,7 @@
 ﻿using Hatley.DTO;
 using Hatley.Models;
 using Hatley.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,13 +9,19 @@ namespace Hatley.Controllers
 {
 	[Route("api/[controller]")]
 	[ApiController]
+	[Authorize]
 	public class CommentController : ControllerBase
 	{
 		private readonly ICommentRepo repo;
+		private readonly string? userType; 
+		private readonly IHttpContextAccessor httpContextAccessor;
 
-		public CommentController(ICommentRepo _repo)
+		public CommentController(ICommentRepo _repo, IHttpContextAccessor _httpContextAccessor)
         {
 			repo = _repo;
+			httpContextAccessor = _httpContextAccessor;
+			userType = httpContextAccessor.HttpContext?.User.Claims.FirstOrDefault(c => c.Type == "type")?.Value;
+
 		}
 
 

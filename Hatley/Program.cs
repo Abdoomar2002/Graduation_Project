@@ -42,6 +42,8 @@ namespace Hatley
 			builder.Services.AddScoped<Governorate>();
 			builder.Services.AddScoped<IZoneRepository, ZoneRepository>();
 			builder.Services.AddScoped<Zone>();
+			builder.Services.AddHttpContextAccessor();
+
 
 			builder.Services.AddAuthentication(options =>
 			{

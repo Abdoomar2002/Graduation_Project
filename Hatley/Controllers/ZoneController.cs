@@ -1,5 +1,6 @@
 ﻿using Hatley.DTO;
 using Hatley.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,14 +8,20 @@ namespace Hatley.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ZoneController : ControllerBase
     {
         private readonly IZoneRepository zoneRepository;
-        public ZoneController (IZoneRepository zoneRepository)
+		private readonly string? userType; 
+		private readonly IHttpContextAccessor httpContextAccessor;
+		public ZoneController (IZoneRepository zoneRepository, IHttpContextAccessor _httpContextAccessor)
         {
             this.zoneRepository = zoneRepository;
-        }
-        [HttpGet]
+			httpContextAccessor = _httpContextAccessor;
+			userType = httpContextAccessor.HttpContext?.User.Claims.FirstOrDefault(c => c.Type == "type")?.Value;
+
+		}
+		[HttpGet]
         public IActionResult Displayall()
         {
             List<ZoneDTO> zones = zoneRepository.Displayall();

@@ -4,6 +4,7 @@ using Hatley.Services;
 using Hatley.Models;
 using Hatley.DTO;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace Hatley.Controllers
 {
@@ -13,14 +14,26 @@ namespace Hatley.Controllers
 	public class UserController : ControllerBase
 	{
 		private readonly IUserDTORepo repo;
-		public UserController(IUserDTORepo _Repo)
+		private readonly string? userType; 
+		private readonly IHttpContextAccessor httpContextAccessor;
+		public UserController(IUserDTORepo _Repo,IHttpContextAccessor _httpContextAccessor)
 		{
 			repo = _Repo;
+			httpContextAccessor= _httpContextAccessor;
+			userType = httpContextAccessor.HttpContext?.User.Claims.FirstOrDefault(c => c.Type == "type")?.Value;
+			
 		}
+
+		
 
 		[HttpGet]
 		public IActionResult getall()
 		{
+			if(userType== "Delivery")
+			{
+				return Unauthorized();
+			}
+
 			List<UserDTO>? usersdto = repo.GetUsers();
 			return Ok(usersdto);
 		}
@@ -29,6 +42,11 @@ namespace Hatley.Controllers
 		[HttpGet("{id:int}")]
 		public IActionResult get(int id)
 		{
+			if (userType == "Delivery")
+			{
+				return Unauthorized();
+			}
+
 			var userdto = repo.GetUser(id);
 			if (userdto == null)
 			{
@@ -41,6 +59,11 @@ namespace Hatley.Controllers
 		[HttpPost]
 		public IActionResult add(UserDTO userdto)
 		{
+			if (userType == "Delivery")
+			{
+				return Unauthorized();
+			}
+
 			if (ModelState.IsValid == true)
 			{
 
@@ -60,6 +83,11 @@ namespace Hatley.Controllers
 		[HttpPut("{id:int}")]
 		public IActionResult update([FromRoute]int id,UserDTO userdto)
 		{
+			if (userType == "Delivery")
+			{
+				return Unauthorized();
+			}
+
 			if (ModelState.IsValid==true)
 			{
 				int raw=repo.Update(id, userdto);
@@ -86,6 +114,11 @@ namespace Hatley.Controllers
 		[HttpDelete("{id:int}")]
 		public IActionResult delete(int id)
 		{
+			if (userType == "Delivery")
+			{
+				return Unauthorized();
+			}
+
 			int raw = repo.Delete(id);
 			if (raw == -1)
 			{

@@ -1,6 +1,7 @@
 ﻿using Hatley.DTO;
 using Hatley.Models;
 using Hatley.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,14 +9,20 @@ namespace Hatley.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class DeliveryController : ControllerBase
     {
         private readonly IDeliveryRepository deliveryRepository;
-        public DeliveryController(IDeliveryRepository deliveryRepository)
+		private readonly string? userType; 
+		private readonly IHttpContextAccessor httpContextAccessor;
+		public DeliveryController(IDeliveryRepository deliveryRepository, IHttpContextAccessor _httpContextAccessor)
         {
             this.deliveryRepository = deliveryRepository;
-        }
-        [HttpGet]
+			httpContextAccessor = _httpContextAccessor;
+			userType = httpContextAccessor.HttpContext?.User.Claims.FirstOrDefault(c => c.Type == "type")?.Value;
+
+		}
+		[HttpGet]
         public IActionResult Displayall()
         {
             List<DeliveryDTO> deliveryMen = deliveryRepository.Displayall();
