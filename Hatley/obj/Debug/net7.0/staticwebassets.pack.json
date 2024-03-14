@@ -1,0 +1,45 @@
+{
+  "Files": [
+    {
+      "Id": "E:\\College\\Graduation project\\Code\\Hatley\\wwwroot\\Delivery_imgs\\05820ee5-7e90-481b-9849-8dba6433b56c_6.jpeg",
+      "PackagePath": "staticwebassets\\Delivery_imgs\\05820ee5-7e90-481b-9849-8dba6433b56c_6.jpeg"
+    },
+    {
+      "Id": "E:\\College\\Graduation project\\Code\\Hatley\\wwwroot\\Delivery_imgs\\45aaee08-be77-4310-beda-7e4168f5bdd2_5.jpeg",
+      "PackagePath": "staticwebassets\\Delivery_imgs\\45aaee08-be77-4310-beda-7e4168f5bdd2_5.jpeg"
+    },
+    {
+      "Id": "E:\\College\\Graduation project\\Code\\Hatley\\wwwroot\\Delivery_imgs\\7373984d-f135-40f8-ab1a-1231fb9d7ef0_7.jpeg",
+      "PackagePath": "staticwebassets\\Delivery_imgs\\7373984d-f135-40f8-ab1a-1231fb9d7ef0_7.jpeg"
+    },
+    {
+      "Id": "E:\\College\\Graduation project\\Code\\Hatley\\wwwroot\\Delivery_imgs\\8b241e0a-029c-4bfd-8ad5-66f28812308e_5.jpeg",
+      "PackagePath": "staticwebassets\\Delivery_imgs\\8b241e0a-029c-4bfd-8ad5-66f28812308e_5.jpeg"
+    },
+    {
+      "Id": "E:\\College\\Graduation project\\Code\\Hatley\\wwwroot\\Delivery_imgs\\9bc589ab-3ae2-430e-95c7-2b5ef033ad67_6.jpeg",
+      "PackagePath": "staticwebassets\\Delivery_imgs\\9bc589ab-3ae2-430e-95c7-2b5ef033ad67_6.jpeg"
+    },
+    {
+      "Id": "E:\\College\\Graduation project\\Code\\Hatley\\wwwroot\\Delivery_imgs\\d983b0b0-7783-41e3-8841-41f47e8aaaac_7.jpeg",
+      "PackagePath": "staticwebassets\\Delivery_imgs\\d983b0b0-7783-41e3-8841-41f47e8aaaac_7.jpeg"
+    },
+    {
+      "Id": "obj\\Debug\\net7.0\\staticwebassets\\msbuild.Hatley.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net7.0\\staticwebassets\\msbuild.build.Hatley.props",
+      "PackagePath": "build\\Hatley.props"
+    },
+    {
+      "Id": "obj\\Debug\\net7.0\\staticwebassets\\msbuild.buildMultiTargeting.Hatley.props",
+      "PackagePath": "buildMultiTargeting\\Hatley.props"
+    },
+    {
+      "Id": "obj\\Debug\\net7.0\\staticwebassets\\msbuild.buildTransitive.Hatley.props",
+      "PackagePath": "buildTransitive\\Hatley.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

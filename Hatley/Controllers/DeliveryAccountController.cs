@@ -22,16 +22,25 @@ namespace Hatley.Controllers
             this.config = config;
         }
         [HttpPost("register")]
-        public IActionResult Register(DeliveryDTO person)
+        public async Task<IActionResult> Insert([FromForm]DeliveryDTO deliveryDTO,
+			IFormFile frontImage, IFormFile backImage, IFormFile faceImage)
         {
-            if (ModelState.IsValid == true)
+            if(ModelState.IsValid == true)
             {
-                var raw = deliveryRepo.Insert(person);
-                if (raw == 0)
+                var raw = await deliveryRepo.Insert(deliveryDTO, frontImage, backImage, faceImage);
+                if (raw == "0")
                 {
                     return BadRequest("The email already exists");
                 }
-                return Ok();
+				if (raw == "1")
+				{
+					return BadRequest("error in save");
+				}
+				if (raw == "2")
+				{
+					return Ok("Delivery created successfully.");
+				}
+				return BadRequest(raw);
             }
             return BadRequest(ModelState);
         }

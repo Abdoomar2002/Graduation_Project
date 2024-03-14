@@ -22,7 +22,7 @@ namespace Hatley.Controllers
 			this.repo = repo;
 			this.config = config;
 		}
-		[HttpPost]
+		[HttpPost("register")]
         public IActionResult Rigister(UserDTO userdto) 
 		{
 			if (ModelState.IsValid == true)

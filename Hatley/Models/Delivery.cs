@@ -19,7 +19,8 @@ namespace Hatley.Models
 		public string Password { get; set; }
 		public string? Photo { get; set; }
 		[Required]
-		public int National_id { get; set; }
+		[StringLength(14)]
+		public string National_id { get; set; }
 		[Required]
 		public string Front_National_ID_img { get; set; }
 		[Required]

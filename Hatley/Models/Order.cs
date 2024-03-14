@@ -14,8 +14,8 @@ namespace Hatley.Models
 		public string location { get; set; }
 		[Required]
 		public double Price { get; set; }
-		public enum option { not_complete, on_prosess, complete }
-		public option status { get; set; }
+
+		public int? Status { get; set; } = 0;
 		public int? Delivery_ID { get; set; }
 		[ForeignKey("Delivery_ID")]
 		public Delivery? delivery { get; set; }

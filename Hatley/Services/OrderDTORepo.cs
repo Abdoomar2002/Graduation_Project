@@ -28,7 +28,7 @@ namespace Hatley.Services
 				description = x.description,
 				location = x.location,
 				price = x.Price,
-				status = (OrderDTO.option)x.status,
+				Status = x.Status,
 				User_ID = x.User_ID
 			}).ToList();
 			return ordersdto;
@@ -47,7 +47,7 @@ namespace Hatley.Services
 				description = order.description,
 				location = order.location,
 				price = order.Price,
-				status = (OrderDTO.option)order.status,
+				Status = order.Status,
 				User_ID = order.User_ID
 
 			};
@@ -70,7 +70,7 @@ namespace Hatley.Services
 			order.description = orderdto.description;
 			order.location = orderdto.location;
 			order.Price = orderdto.price;
-			order.status = (Order.option)orderdto.status;
+			//order.Status = orderdto.Status;
 			order.User_ID = orderdto.User_ID;
 			context.orders.Add(order);
 			int raw = context.SaveChanges();
@@ -87,7 +87,7 @@ namespace Hatley.Services
 			oldorder.description = orderdto.description;
 			oldorder.location = orderdto.location;
 			oldorder.Price = orderdto.price;
-			oldorder.status = (Order.option)orderdto.status;
+			//oldorder.Status = orderdto.Status;
 			//oldorder.User_ID = orderdto.User_ID;
 			int raw = context.SaveChanges();
 			return raw;

@@ -8,7 +8,7 @@ namespace Hatley.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     public class GovernorateController : ControllerBase
     {
         private readonly IGovernorateRepository governorateRepository;
@@ -25,13 +25,13 @@ namespace Hatley.Controllers
 		[HttpGet]
         public IActionResult Displayall()
         {
-            List<GovernorateDTO> governorates = governorateRepository.Displayall();
+            List<GovernorateDTO>? governorates = governorateRepository.Displayall();
             return Ok(governorates);
         }
         [HttpGet("{id:int}")]
         public IActionResult Display(int id)
         {
-            GovernorateDTO governorate = governorateRepository.Display(id);
+            GovernorateDTO? governorate = governorateRepository.Display(id);
             if (governorate == null)
             {
                 return NotFound("Not Found");

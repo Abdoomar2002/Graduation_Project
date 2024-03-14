@@ -8,7 +8,7 @@ namespace Hatley.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     public class ZoneController : ControllerBase
     {
         private readonly IZoneRepository zoneRepository;
@@ -24,13 +24,13 @@ namespace Hatley.Controllers
 		[HttpGet]
         public IActionResult Displayall()
         {
-            List<ZoneDTO> zones = zoneRepository.Displayall();
+            List<ZoneDTO>? zones = zoneRepository.Displayall();
             return Ok(zones);
         }
         [HttpGet("{id:int}")]
         public IActionResult Display(int id)
         {
-            ZoneDTO zone = zoneRepository.Display(id);
+            ZoneDTO? zone = zoneRepository.Display(id);
             if (zone == null)
             {
                 return NotFound("Not Found");

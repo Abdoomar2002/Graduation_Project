@@ -105,6 +105,17 @@ namespace Hatley
 			});
 
 
+			builder.Services.AddCors(
+				options =>
+				{
+					options.AddDefaultPolicy(cong =>
+					{
+						cong.AllowAnyMethod().
+						SetIsOriginAllowed((host) => true)
+						.AllowAnyHeader().AllowCredentials();
+					});
+				});
+
 			var app = builder.Build();
 
 			// Configure the HTTP request pipeline.
@@ -114,6 +125,7 @@ namespace Hatley
 				app.UseSwaggerUI();
 			}
 			app.UseRouting();
+			app.UseCors();
 			app.UseAuthentication();//Check JWT token
 			app.UseAuthorization();
 

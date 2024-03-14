@@ -1,5 +1,6 @@
 ﻿using Hatley.DTO;
 using Hatley.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Hatley.Services
 {
@@ -7,7 +8,8 @@ namespace Hatley.Services
     {
         List<DeliveryDTO>? Displayall();
         DeliveryDTO? Display(int id);
-        int Insert(DeliveryDTO person);
+		Task<string> Insert([FromForm] DeliveryDTO deliveryDTO,
+			IFormFile frontImage, IFormFile backImage, IFormFile faceImage);
         int Edit(int id, DeliveryDTO person);
         int Delete(int id);
         DeliveryDTO? Check(LoginDTO login);
