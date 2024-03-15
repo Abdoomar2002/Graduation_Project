@@ -1,10 +1,21 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StatusBar } from "expo-status-bar";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  ImageBackgroundBase,
+} from "react-native";
+import img from "./assets/images/Logo.png";
+import LinearGradient from "react-native-linear-gradient";
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
+      <View>
+        <Image source={img} style={styles.logo} />
+      </View>
+      <Text style={styles.foot}>@copyright</Text>
       <StatusBar style="auto" />
     </View>
   );
@@ -12,9 +23,19 @@ export default function App() {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: "space-around",
+    alignItems: "center",
+    backgroundColor: "white",
+    padding: 100,
+    height: "100%",
+  },
+  foot: {
+    position: "absolute",
+    bottom: 30,
+  },
+  logo: {
+    width: 250,
+    height: 200,
+    objectFit: "contain",
   },
 });
