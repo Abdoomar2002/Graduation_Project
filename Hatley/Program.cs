@@ -3,8 +3,10 @@ using Hatley.Models;
 using Hatley.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using SendEmailsWithDotNet5.Services;
 using System.Text;
 namespace Hatley
 {
@@ -42,8 +44,9 @@ namespace Hatley
 			builder.Services.AddScoped<Governorate>();
 			builder.Services.AddScoped<IZoneRepository, ZoneRepository>();
 			builder.Services.AddScoped<Zone>();
+			builder.Services.AddScoped<IMailingRepo, MailingRepo>();
 			builder.Services.AddHttpContextAccessor();
-
+			//builder.Services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
 
 			builder.Services.AddAuthentication(options =>
 			{

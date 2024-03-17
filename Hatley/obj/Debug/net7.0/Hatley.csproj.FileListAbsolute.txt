@@ -311,3 +311,11 @@ C:\Users\Microsoft\Downloads\New folder\Graduation_Project\Hatley\obj\Debug\net7
 C:\Users\Microsoft\Downloads\New folder\Graduation_Project\Hatley\obj\Debug\net7.0\Hatley.pdb
 C:\Users\Microsoft\Downloads\New folder\Graduation_Project\Hatley\obj\Debug\net7.0\Hatley.genruntimeconfig.cache
 C:\Users\Microsoft\Downloads\New folder\Graduation_Project\Hatley\obj\Debug\net7.0\ref\Hatley.dll
+E:\College\Graduation project\Code\Hatley\bin\Debug\net7.0\BouncyCastle.Cryptography.dll
+E:\College\Graduation project\Code\Hatley\bin\Debug\net7.0\MailKit.dll
+E:\College\Graduation project\Code\Hatley\bin\Debug\net7.0\MimeKit.dll
+E:\College\Graduation project\Code\Hatley\bin\Debug\net7.0\System.Formats.Asn1.dll
+E:\College\Graduation project\Code\Hatley\bin\Debug\net7.0\System.Security.Cryptography.Pkcs.dll
+E:\College\Graduation project\Code\Hatley\bin\Debug\net7.0\System.Text.Encoding.CodePages.dll
+E:\College\Graduation project\Code\Hatley\bin\Debug\net7.0\runtimes\win\lib\net7.0\System.Security.Cryptography.Pkcs.dll
+E:\College\Graduation project\Code\Hatley\bin\Debug\net7.0\runtimes\win\lib\net7.0\System.Text.Encoding.CodePages.dll
