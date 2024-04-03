@@ -8,7 +8,7 @@ namespace Hatley.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize]
+    [Authorize]
     public class ZoneController : ControllerBase
     {
         private readonly IZoneRepository zoneRepository;

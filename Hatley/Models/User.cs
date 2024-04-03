@@ -11,14 +11,12 @@ namespace Hatley.Models
 		[Required]
 		public string Name { get; set; }
 		[Required]
-		public string  phone { get; set; }
+		public string  Phone { get; set; }
 		[Required]
 		[EmailAddress]
 		public string Email { get; set; }
 		[Required]
 		public string Password { get; set; }
-
-		public double? rate { get; set; }
 		public string? Photo { get; set; }
 		public ICollection<Order> Orders { get; set; }=new List<Order>();
 

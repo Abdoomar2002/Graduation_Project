@@ -4,6 +4,7 @@ using Hatley.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Hatley.Migrations
 {
     [DbContext(typeof(appDB))]
-    partial class appDBModelSnapshot : ModelSnapshot
+    [Migration("20240330005313_add-rating")]
+    partial class addrating
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -178,11 +181,14 @@ namespace Hatley.Migrations
                     b.Property<double?>("East")
                         .HasColumnType("float");
 
+                    b.Property<string>("Location")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<double?>("North")
                         .HasColumnType("float");
 
                     b.Property<string>("Order_Governorate")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Order_Zone")

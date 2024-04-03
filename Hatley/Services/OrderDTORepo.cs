@@ -1,5 +1,6 @@
 ﻿using Hatley.DTO;
 using Hatley.Models;
+using MailKit.Search;
 using Microsoft.EntityFrameworkCore.Update.Internal;
 
 namespace Hatley.Services
@@ -25,13 +26,80 @@ namespace Hatley.Services
 			List<OrderDTO> ordersdto = orders.Select(x => new OrderDTO()
 			{
 				Id = x.Order_ID,
-				description = x.description,
-				location = x.location,
+				description = x.Description,
+				//location = x.Location,
 				price = x.Price,
-				Status = x.Status,
-				User_ID = x.User_ID
+				status = x.Status,
+				north = x.North,
+				east = x.East,
+				order_Governorate = x.Order_Governorate,
+				order_Zone = x.Order_Zone,
+				order_time = x.Order_time,
+				created = x.Created,
+				User_ID = x.User_ID,
+				Delivery_ID = x.Delivery_ID
 			}).ToList();
 			return ordersdto;
+		}
+
+		public List<OrderDTO>? GetOrdersForUserOrDelivery(string mail, string type)
+		{
+			if (type == "Delivery")
+			{
+				int deliveryrid = context.delivers
+								.Where(x => x.Email == mail)
+								.Select(x => x.Delivery_ID)
+								.FirstOrDefault();
+
+				List<Order> orders = context.orders.Where(x => x.Delivery_ID == deliveryrid).ToList();
+				if (orders.Count == 0)
+				{
+					return null;
+				}
+				List<OrderDTO> ordersdto = orders.Select(x => new OrderDTO()
+				{
+					Id = x.Order_ID,
+					description = x.Description,
+					price = x.Price,
+					order_Governorate = x.Order_Governorate,
+					order_Zone = x.Order_Zone,
+					north = x.North,
+					east = x.East,
+					created = x.Created,
+					order_time=x.Order_time,
+					status = x.Status,
+					User_ID = x.User_ID,
+					
+					Delivery_ID = x.Delivery_ID
+				}).ToList();
+				return ordersdto;
+			}
+
+			int userid = context.users
+						.Where(x => x.Email == mail)
+						.Select(x => x.User_ID)
+						.FirstOrDefault();
+
+			List<Order> ordersuser = context.orders.Where(x => x.User_ID == userid).ToList();
+			if (ordersuser.Count == 0)
+			{
+				return null;
+			}
+			List<OrderDTO> ordersdtouser = ordersuser.Select(x => new OrderDTO()
+			{
+				Id = x.Order_ID,
+				description = x.Description,
+				order_Governorate = x.Order_Governorate,
+				order_Zone = x.Order_Zone,
+				north = x.North,
+				east = x.East,
+				created = x.Created,
+				status = x.Status,
+				User_ID = x.User_ID,
+				Delivery_ID = x.Delivery_ID
+			}).ToList();
+			return ordersdtouser;
+
 		}
 
 		public OrderDTO? GetOrder(int id)
@@ -44,11 +112,18 @@ namespace Hatley.Services
 			OrderDTO orderdto = new OrderDTO()
 			{
 				Id = order.Order_ID,
-				description = order.description,
-				location = order.location,
+				description = order.Description,
+				//location = order.Location,
 				price = order.Price,
-				Status = order.Status,
-				User_ID = order.User_ID
+				status = order.Status,
+				north = order.North,
+				east = order.East,
+				order_Governorate = order.Order_Governorate,
+				order_Zone = order.Order_Zone,
+				order_time = order.Order_time,
+				created = order.Created,
+				User_ID = order.User_ID,
+				Delivery_ID=order.Delivery_ID
 
 			};
 			return orderdto;
@@ -67,11 +142,17 @@ namespace Hatley.Services
 				return -2;
 			}
 
-			order.description = orderdto.description;
-			order.location = orderdto.location;
+			order.Description = orderdto.description;
 			order.Price = orderdto.price;
-			//order.Status = orderdto.Status;
+			order.North = orderdto.north;
+			order.East = orderdto.east;
+			order.Order_Governorate = orderdto.order_Governorate;
+			order.Order_Zone = orderdto.order_Zone;
+			order.Order_time = orderdto.order_time;
+			order.Created = DateTime.Now;
 			order.User_ID = orderdto.User_ID;
+			//order.Location = orderdto.location;
+			//order.Status = orderdto.Status;
 			context.orders.Add(order);
 			int raw = context.SaveChanges();
 			return raw;
@@ -84,9 +165,14 @@ namespace Hatley.Services
 			{
 				return -1;
 			}
-			oldorder.description = orderdto.description;
-			oldorder.location = orderdto.location;
+			oldorder.Description = orderdto.description;
 			oldorder.Price = orderdto.price;
+			oldorder.North = orderdto.north;
+			oldorder.East = orderdto.east;
+			oldorder.Order_Governorate = orderdto.order_Governorate;
+			oldorder.Order_Zone = orderdto.order_Zone;
+			oldorder.Order_time = orderdto.order_time;
+			//oldorder.Location = orderdto.location;
 			//oldorder.Status = orderdto.Status;
 			//oldorder.User_ID = orderdto.User_ID;
 			int raw = context.SaveChanges();

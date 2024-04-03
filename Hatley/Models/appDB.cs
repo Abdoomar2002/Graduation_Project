@@ -28,6 +28,7 @@ namespace Hatley.Models
 		public DbSet<Governorate> governorates { get; set; }
 		public DbSet<Comment> comments { get; set; }
 		public DbSet<Zone> zones { get; set; }
+		public DbSet<Rating> ratings { get; set; }
 
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)

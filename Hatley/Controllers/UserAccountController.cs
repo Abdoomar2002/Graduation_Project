@@ -49,7 +49,7 @@ namespace Hatley.Controllers
 				{
 					//Claims Token
 					var claims = new List<Claim>();
-					claims.Add(new Claim(ClaimTypes.Email, User.Email));
+					claims.Add(new Claim("Email", User.Email));
 					claims.Add(new Claim("type", "User"));
 					claims.Add(new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()));
 

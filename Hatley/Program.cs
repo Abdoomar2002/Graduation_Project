@@ -44,6 +44,8 @@ namespace Hatley
 			builder.Services.AddScoped<Governorate>();
 			builder.Services.AddScoped<IZoneRepository, ZoneRepository>();
 			builder.Services.AddScoped<Zone>();
+			builder.Services.AddScoped<IRatingDTORepo, RatingDTORepo>();
+			builder.Services.AddScoped<Rating>();
 			builder.Services.AddScoped<IMailingRepo, MailingRepo>();
 			builder.Services.AddHttpContextAccessor();
 			//builder.Services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));

@@ -10,7 +10,7 @@ namespace Hatley.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize]
+    [Authorize]
     public class DeliveryController : ControllerBase
     {
         private readonly IDeliveryRepository deliveryRepository;

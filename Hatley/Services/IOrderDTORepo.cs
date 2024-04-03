@@ -8,6 +8,7 @@ namespace Hatley.Services
 		int Delete(int id);
 		OrderDTO? GetOrder(int id);
 		List<OrderDTO>? GetOrders();
+		List<OrderDTO>? GetOrdersForUserOrDelivery(string mail, string type);
 		int Update(int id, OrderDTO orderdto);
 	}
 }

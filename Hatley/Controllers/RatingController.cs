@@ -3,21 +3,21 @@ using Hatley.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace Hatley.Controllers
 {
 	[Route("api/[controller]")]
 	[ApiController]
 	[Authorize]
-	public class OrderController : ControllerBase
+	public class RatingController : ControllerBase
 	{
-		private readonly IOrderDTORepo repo;
-		private readonly string? email;
-		private readonly string? type; 
+		private readonly IRatingDTORepo repo;
 		private readonly IHttpContextAccessor httpContextAccessor;
-
-		public OrderController(IOrderDTORepo _Repo, IHttpContextAccessor _httpContextAccessor)
-        {
+		private readonly string? email;
+		private readonly string? type;
+		public RatingController(IRatingDTORepo _Repo, IHttpContextAccessor _httpContextAccessor)
+		{
 			repo = _Repo;
 			httpContextAccessor = _httpContextAccessor;
 			email = httpContextAccessor.HttpContext?.User.Claims.FirstOrDefault(c => c.Type == "Email")?.Value;
@@ -27,59 +27,53 @@ namespace Hatley.Controllers
 
 
 		[HttpGet]
-        public IActionResult getall()
+		public IActionResult getall()
 		{
-			List<OrderDTO>? ordersdto = repo.GetOrders();
-			if (ordersdto == null)
+			List<RatingDTO>? ratingsdto = repo.GetRatings();
+			if (ratingsdto == null)
 			{
 				return BadRequest("No Records exist");
 			}
-			return Ok(ordersdto);
+			return Ok(ratingsdto);
 		}
 
-
-		[HttpGet("Orders")]
+		[HttpGet("Ratings")]
 		public IActionResult getallforuserordelivery()
 		{
-			List<OrderDTO>? ordersdtoforuserordelivery = repo.GetOrdersForUserOrDelivery(email, type);
-			if (ordersdtoforuserordelivery == null)
+			List<RatingDTO>? ratingsdtoforuserordelivery = repo.GetRatingsForUserOrDelivery(email,type);
+			if (ratingsdtoforuserordelivery == null)
 			{
 				return BadRequest("No Records exist");
 			}
-			return Ok(ordersdtoforuserordelivery);
+			return Ok(ratingsdtoforuserordelivery);
 		}
-
 
 		[HttpGet("{id:int}")]
 		public IActionResult get(int id)
 		{
-			var order = repo.GetOrder(id);
-			if (order == null)
+			var rating = repo.GetRating(id);
+			if (rating == null)
 			{
-				return NotFound("the order is not exist");
+				return NotFound("the rating is not exist");
 			}
-			return Ok(order);
+			return Ok(rating);
 		}
 
 
 		[HttpPost]
-		public IActionResult add(OrderDTO order)
+		public IActionResult add(int value,int orderid)
 		{
-			if(ModelState.IsValid==true)
+			if (ModelState.IsValid == true)
 			{
-				int raw = repo.Create(order);
+				int raw = repo.Create(value, orderid,email,type);
 
-				if(raw == 0)
+				if (raw == 0)
 				{
 					return BadRequest("Error occur during save");
 				}
-				if(raw == -1)
+				if (raw == -1)
 				{
-					return BadRequest("must enter id for user");
-				}
-				if (raw == -2)
-				{
-					return NotFound("the user not exist");
+					return NotFound("the order id not exist");
 				}
 
 				return Ok();
@@ -90,16 +84,16 @@ namespace Hatley.Controllers
 
 
 		[HttpPut("{id:int}")]
-		public IActionResult edit(int id , OrderDTO orderdto)
+		public IActionResult edit(int id, int value)
 		{
-			if(ModelState.IsValid==true)
+			if (ModelState.IsValid == true)
 			{
-				int raw = repo.Update(id, orderdto);
-				if(raw == -1)
+				int raw = repo.Update(id, value);
+				if (raw == -1)
 				{
-					return NotFound("the order not exist");
+					return NotFound("the rating not exist");
 				}
-				if(raw == 0)
+				if (raw == 0)
 				{
 					return BadRequest("Error occur during save");
 				}
@@ -115,7 +109,7 @@ namespace Hatley.Controllers
 			int raw = repo.Delete(id);
 			if (raw == -1)
 			{
-				return NotFound("the order not exist");
+				return NotFound("the rating not exist");
 			}
 			if (raw == 0)
 			{

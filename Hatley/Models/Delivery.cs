@@ -27,7 +27,6 @@ namespace Hatley.Models
 		public string Back_National_ID_img { get; set; }
 		[Required]
 		public string Face_with_National_ID_img { get; set; }
-		public double? Rate { get; set; }
 		public int? Governorate_ID { get; set; }
 		[ForeignKey("Governorate_ID")]
 		public virtual Governorate? Governorate { get; set; }

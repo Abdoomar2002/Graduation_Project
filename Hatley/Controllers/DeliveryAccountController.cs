@@ -53,7 +53,7 @@ namespace Hatley.Controllers
                 if (deliveryman.Password == login.Password)
                 {
                     var claims = new List<Claim>();
-                    claims.Add(new Claim(ClaimTypes.Email, deliveryman.Email));
+                    claims.Add(new Claim("Email", deliveryman.Email));
                     claims.Add(new Claim("type", "Delivery"));
                     claims.Add(new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()));
 

@@ -10,9 +10,8 @@ namespace Hatley.Models
 		[MaxLength(1000)]
 		[Required]
 		public string Text { get; set; }
-
 		public DateTime CreatedAt { get; set; }
-
+		public string Comment_from { get; set; }
 
 		public int Delivery_ID { get; set; }
 		[ForeignKey("Delivery_ID")]

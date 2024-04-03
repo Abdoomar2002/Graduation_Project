@@ -28,7 +28,7 @@ namespace Hatley.Services
 				Id = x.User_ID,
 				Name = x.Name,
 				Email = x.Email,
-				phone = x.phone,
+				phone = x.Phone,
 				Password = x.Password
 			}).ToList();
 
@@ -48,7 +48,7 @@ namespace Hatley.Services
 				Id = user.User_ID,
 				Name = user.Name,
 				Email = user.Email,
-				phone = user.phone,
+				phone = user.Phone,
 				Password = user.Password
 			};
 			//double av = user.Rate.Average();
@@ -67,7 +67,7 @@ namespace Hatley.Services
 				Id = user.User_ID,
 				Name = user.Name,
 				Email = user.Email,
-				phone = user.phone,
+				phone = user.Phone,
 				Password = user.Password
 			};
 			return userdto;
@@ -81,7 +81,7 @@ namespace Hatley.Services
 			{
 				user.Name = userdto.Name;
 				user.Email = userdto.Email;
-				user.phone = userdto.phone;
+				user.Phone = userdto.phone;
 				user.Password = userdto.Password;
 				context.users.Add(user);
 				int raw = context.SaveChanges();
@@ -110,7 +110,7 @@ namespace Hatley.Services
 			{
 				olduser.Name = userdto.Name;
 				olduser.Email = userdto.Email;
-				olduser.phone = userdto.phone;
+				olduser.Phone = userdto.phone;
 				olduser.Password = userdto.Password;
 				int ra = context.SaveChanges();
 				return ra;
@@ -122,7 +122,7 @@ namespace Hatley.Services
 			}
 			olduser.Name = userdto.Name;
 			olduser.Email = userdto.Email;
-			olduser.phone = userdto.phone;
+			olduser.Phone = userdto.phone;
 			olduser.Password = userdto.Password;
 			int raw = context.SaveChanges();
 			return raw;
