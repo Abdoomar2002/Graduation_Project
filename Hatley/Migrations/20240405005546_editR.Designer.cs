@@ -4,6 +4,7 @@ using Hatley.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Hatley.Migrations
 {
     [DbContext(typeof(appDB))]
-    partial class appDBModelSnapshot : ModelSnapshot
+    [Migration("20240405005546_editR")]
+    partial class editR
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -125,9 +128,6 @@ namespace Hatley.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Photo")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ResetTokenForDelivery")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("Zone_ID")
@@ -270,9 +270,6 @@ namespace Hatley.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Photo")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ResetTokenForUser")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("User_ID");

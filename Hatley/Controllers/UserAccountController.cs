@@ -16,11 +16,13 @@ namespace Hatley.Controllers
 	{
 		private readonly IUserDTORepo repo;
 		private readonly IConfiguration config;
-
-		public UserAccountController(IUserDTORepo repo, IConfiguration config)
+        private readonly IPasswordResetService passwordResetService;
+        private static readonly HashSet<string> Blacklist = new HashSet<string>();
+        public UserAccountController(IUserDTORepo repo, IConfiguration config, IPasswordResetService passwordResetService)
         {
 			this.repo = repo;
 			this.config = config;
+			this.passwordResetService = passwordResetService;
 		}
 		[HttpPost("register")]
         public IActionResult Rigister(UserDTO userdto) 
@@ -77,7 +79,30 @@ namespace Hatley.Controllers
 				return BadRequest("Password not correct");
 			}
 			return Unauthorized();
-
 		}
-	}
+        public IActionResult logout()
+        {
+            var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+            Blacklist.Add(token);
+            return Ok(new { message = "Logout successful" });
+        }
+        [HttpGet("forget")]
+        public async Task<IActionResult> ForgotPassword(UserDTO user)
+        {
+            var result = await passwordResetService.GeneratePasswordResetTokenForUser(user.Email);
+            if (result)
+                return Ok("Password reset mail sent to your email.");
+
+            return BadRequest("User not found.");
+        }
+        [HttpPost("reset")]
+        public async Task<IActionResult> ResetPassword(LoginDTO reset)
+        {
+            var result = await passwordResetService.ResetPassword(reset.Email, reset.ResetToken, reset.Password);
+            if (result)
+                return Ok("Password reset successful.");
+
+            return BadRequest("Invalid token or email.");
+        }
+    }
 }
