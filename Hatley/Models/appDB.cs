@@ -13,7 +13,7 @@ namespace Hatley.Models
 		{
 			if (!optionsBuilder.IsConfigured)
 			{
-				optionsBuilder.UseSqlServer("Data Source=DESKTOP-46IUSU0\\MSS;Initial Catalog=Hatley;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False");
+				optionsBuilder.UseSqlServer("Data Source=DESKTOP-8CE8AR3\\SQL2022;Initial Catalog=Hatley;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False");
 			}
 		}
 
