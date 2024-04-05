@@ -47,7 +47,10 @@ namespace Hatley
 			builder.Services.AddScoped<IRatingDTORepo, RatingDTORepo>();
 			builder.Services.AddScoped<Rating>();
 			builder.Services.AddScoped<IMailingRepo, MailingRepo>();
-			builder.Services.AddHttpContextAccessor();
+            builder.Services.AddScoped<IContactMailRepository, ContactMailRepository>();
+            builder.Services.AddScoped<IPasswordResetService, PasswordResetService>();
+            builder.Services.AddScoped<IMailReset, MailReset>();
+            builder.Services.AddHttpContextAccessor();
 			//builder.Services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
 
 			builder.Services.AddAuthentication(options =>

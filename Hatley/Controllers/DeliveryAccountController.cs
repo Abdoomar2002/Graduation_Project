@@ -15,11 +15,14 @@ namespace Hatley.Controllers
     {
         private readonly IDeliveryRepository deliveryRepo;
         private readonly IConfiguration config;
+        private readonly IPasswordResetService passwordResetService;
+        private static readonly HashSet<string> Blacklist = new HashSet<string>();
 
-        public DeliveryAccountController(IDeliveryRepository deliveryRepo, IConfiguration config)
+        public DeliveryAccountController(IDeliveryRepository deliveryRepo, IConfiguration config, IPasswordResetService passwordResetService)
         {
             this.deliveryRepo = deliveryRepo;
             this.config = config;
+            this.passwordResetService = passwordResetService;
         }
         [HttpPost("register")]
         public async Task<IActionResult> Insert([FromForm]DeliveryDTO deliveryDTO,
@@ -77,6 +80,30 @@ namespace Hatley.Controllers
             }
             return Unauthorized();
         }
-        //asdf
+        [HttpGet("logout")]
+        public IActionResult logout()
+        {
+            var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+            Blacklist.Add(token);
+            return Ok(new { message = "Logout successful" });
+        }
+        [HttpGet("forget")]
+        public async Task<IActionResult> ForgotPassword(DeliveryDTO delivery)
+        {
+            var result = await passwordResetService.GeneratePasswordResetTokenForDelivery(delivery.Email);
+            if (result)
+                return Ok("Password reset link sent to your email.");
+
+            return BadRequest("User not found.");
+        }
+        [HttpPost("reset")]
+        public async Task<IActionResult> ResetPassword(LoginDTO reset)
+        {
+            var result = await passwordResetService.ResetPassword(reset.Email, reset.ResetToken, reset.Password);
+            if (result)
+                return Ok("Password reset successful.");
+
+            return BadRequest("Invalid token or email.");
+        }
     }
 }
