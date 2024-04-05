@@ -80,6 +80,7 @@ namespace Hatley.Controllers
 			}
 			return Unauthorized();
 		}
+        [HttpGet("logout")]
         public IActionResult logout()
         {
             var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
