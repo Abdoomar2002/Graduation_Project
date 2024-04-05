@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "z/glF7leMwDMsrp9/MoM+pNpmX47U7QrnBZRmcq3Rvg=",
+  "Hash": "q1C9MeloIV5jm/9c7h3DTMZF8i3risEybqbJSMo5bA0=",
   "Source": "Hatley",
   "BasePath": "_content/Hatley",
   "Mode": "Default",
@@ -10,22 +10,24 @@
     {
       "Name": "Hatley\\wwwroot",
       "Source": "Hatley",
-      "ContentRoot": "E:\\College\\Graduation project\\Code\\Hatley\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Microsoft\\Downloads\\rahma\\Graduation_Project\\Hatley\\wwwroot\\",
       "BasePath": "_content/Hatley",
       "Pattern": "**"
     }
   ],
   "Assets": [
     {
-      "Identity": "E:\\College\\Graduation project\\Code\\Hatley\\wwwroot\\Delivery_imgs\\th.jpeg",
+      "Identity": "C:\\Users\\Microsoft\\Downloads\\rahma\\Graduation_Project\\Hatley\\wwwroot\\Delivery_imgs\\th.jpeg",
       "SourceId": "Hatley",
       "SourceType": "Discovered",
-      "ContentRoot": "E:\\College\\Graduation project\\Code\\Hatley\\wwwroot\\",
+      "ContentRoot": "C:\\Users\\Microsoft\\Downloads\\rahma\\Graduation_Project\\Hatley\\wwwroot\\",
       "BasePath": "_content/Hatley",
       "RelativePath": "Delivery_imgs/th.jpeg",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
       "RelatedAsset": "",
       "AssetTraitName": "",
       "AssetTraitValue": "",
