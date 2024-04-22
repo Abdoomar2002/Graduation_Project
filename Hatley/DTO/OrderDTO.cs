@@ -7,8 +7,10 @@ namespace Hatley.DTO
 	{
 		public int Id { get; set; }
 		public string description { get; set; }
-		public string? order_Governorate { get; set; }
-		public string? order_Zone { get; set; }
+		public string order_governorate_from { get; set; }
+		public string order_zone_from { get; set; }
+		public string? order_governorate_to { get; set; }
+		public string? order_zone_to { get; set; }
 		public double? north { get; set; }
 		public double? east { get; set; }
 		public DateTime? created { get; set; }

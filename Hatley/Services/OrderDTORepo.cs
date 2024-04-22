@@ -32,8 +32,10 @@ namespace Hatley.Services
 				status = x.Status,
 				north = x.North,
 				east = x.East,
-				order_Governorate = x.Order_Governorate,
-				order_Zone = x.Order_Zone,
+				order_governorate_from = x.Order_governorate_from,
+				order_zone_from = x.Order_zone_from,
+				order_governorate_to = x.Order_governorate_to,
+				order_zone_to = x.Order_zone_to,
 				order_time = x.Order_time,
 				created = x.Created,
 				User_ID = x.User_ID,
@@ -61,16 +63,18 @@ namespace Hatley.Services
 					Id = x.Order_ID,
 					description = x.Description,
 					price = x.Price,
-					order_Governorate = x.Order_Governorate,
-					order_Zone = x.Order_Zone,
+					order_governorate_from = x.Order_governorate_from,
+					order_zone_from = x.Order_zone_from,
+					order_governorate_to = x.Order_governorate_to,
+					order_zone_to = x.Order_zone_to,
 					north = x.North,
 					east = x.East,
 					created = x.Created,
 					order_time=x.Order_time,
 					status = x.Status,
 					User_ID = x.User_ID,
-					
 					Delivery_ID = x.Delivery_ID
+
 				}).ToList();
 				return ordersdto;
 			}
@@ -89,14 +93,19 @@ namespace Hatley.Services
 			{
 				Id = x.Order_ID,
 				description = x.Description,
-				order_Governorate = x.Order_Governorate,
-				order_Zone = x.Order_Zone,
+				price = x.Price,
+				order_governorate_from = x.Order_governorate_from,
+				order_zone_from = x.Order_zone_from,
+				order_governorate_to = x.Order_governorate_to,
+				order_zone_to = x.Order_zone_to,
 				north = x.North,
 				east = x.East,
 				created = x.Created,
+				order_time = x.Order_time,
 				status = x.Status,
 				User_ID = x.User_ID,
 				Delivery_ID = x.Delivery_ID
+
 			}).ToList();
 			return ordersdtouser;
 
@@ -118,8 +127,10 @@ namespace Hatley.Services
 				status = order.Status,
 				north = order.North,
 				east = order.East,
-				order_Governorate = order.Order_Governorate,
-				order_Zone = order.Order_Zone,
+				order_governorate_from = order.Order_governorate_from,
+				order_zone_from = order.Order_zone_from,
+				order_governorate_to = order.Order_governorate_to,
+				order_zone_to = order.Order_zone_to,
 				order_time = order.Order_time,
 				created = order.Created,
 				User_ID = order.User_ID,
@@ -146,8 +157,10 @@ namespace Hatley.Services
 			order.Price = orderdto.price;
 			order.North = orderdto.north;
 			order.East = orderdto.east;
-			order.Order_Governorate = orderdto.order_Governorate;
-			order.Order_Zone = orderdto.order_Zone;
+			order.Order_governorate_from = orderdto.order_governorate_from;
+			order.Order_zone_from = orderdto.order_zone_from;
+			order.Order_governorate_to = orderdto.order_governorate_to;
+			order.Order_zone_to = orderdto.order_zone_to;
 			order.Order_time = orderdto.order_time;
 			order.Created = DateTime.Now;
 			order.User_ID = orderdto.User_ID;
@@ -169,8 +182,10 @@ namespace Hatley.Services
 			oldorder.Price = orderdto.price;
 			oldorder.North = orderdto.north;
 			oldorder.East = orderdto.east;
-			oldorder.Order_Governorate = orderdto.order_Governorate;
-			oldorder.Order_Zone = orderdto.order_Zone;
+			oldorder.Order_governorate_from=orderdto.order_governorate_from;
+			oldorder.Order_zone_from=orderdto.order_zone_from;
+			oldorder.Order_governorate_to = orderdto.order_governorate_to;
+			oldorder.Order_zone_to = orderdto.order_zone_to;
 			oldorder.Order_time = orderdto.order_time;
 			//oldorder.Location = orderdto.location;
 			//oldorder.Status = orderdto.Status;
