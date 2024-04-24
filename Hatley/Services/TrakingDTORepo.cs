@@ -3,7 +3,7 @@ using Hatley.Models;
 
 namespace Hatley.Services
 {
-	public class TrakingDTORepo
+	public class TrakingDTORepo : ITrakingDTORepo
 	{
 		private readonly appDB context;
 
@@ -12,12 +12,12 @@ namespace Hatley.Services
 			context = _context;
 		}
 
-		public List<TrakingDTO>? GetTrakingForUserOrDelivery(string email,string type)
+		public List<TrakingDTO>? GetTrakingForUserOrDelivery(string email, string type)
 		{
-			if(type== "Delivery")
+			if (type == "Delivery")
 			{
 				var delivery = context.delivers.FirstOrDefault(x => x.Email == email);
-				List<Order> trakings = context.orders.Where(x => x.Delivery_ID == delivery.Delivery_ID && x.Status>4).ToList();
+				List<Order> trakings = context.orders.Where(x => x.Delivery_ID == delivery.Delivery_ID).ToList();
 				if (trakings.Count == 0)
 				{
 					return null;
@@ -28,12 +28,12 @@ namespace Hatley.Services
 					order_time = x.Order_time,
 					status = x.Status,
 					from = x.Order_zone_from,
-					to=x.Order_zone_to
+					to = x.Order_zone_to
 					/*to=x.Order_zone_to != null ? x.Order_zone_to : context.zones
 											.Where(y => y.North == x.North && y.East == x.East)
 											.Select(y => y.Name)
 											.FirstOrDefault(),*/
-					
+
 
 
 				}).ToList();
@@ -41,7 +41,7 @@ namespace Hatley.Services
 			}
 
 			var user = context.users.FirstOrDefault(x => x.Email == email);
-			List<Order> traking = context.orders.Where(x => x.User_ID == user.User_ID && x.Status == 0).ToList();
+			List<Order> traking = context.orders.Where(x => x.User_ID == user.User_ID).ToList();
 			if (traking.Count == 0)
 			{
 				return null;
@@ -52,7 +52,7 @@ namespace Hatley.Services
 				order_time = x.Order_time,
 				status = x.Status,
 				from = x.Order_zone_from,
-				to=x.Order_zone_to
+				to = x.Order_zone_to
 				/*to = x.Order_zone_to != null ? x.Order_zone_to : context.zones
 										.Where(y => y.North == x.North && y.East == x.East)
 										.Select(y => y.Name)
@@ -64,9 +64,9 @@ namespace Hatley.Services
 			return trakingdto;
 		}
 
-		public int ChangeStatus (string type ,int order_id)
+		public int ChangeStatus(string type, int order_id)
 		{
-			if(type == "Delivery")
+			if (type == "Delivery")
 			{
 				var order = context.orders.FirstOrDefault(x => x.Order_ID == order_id);
 				if (order == null)

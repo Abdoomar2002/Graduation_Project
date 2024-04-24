@@ -1,6 +1,18 @@
 {
   "Files": [
     {
+      "Id": "E:\\College\\Graduation project\\Code\\Hatley\\wwwroot\\Delivery_imgs\\01cbae48-c381-4127-8cf3-fc6fc587c755_4.jpeg",
+      "PackagePath": "staticwebassets\\Delivery_imgs\\01cbae48-c381-4127-8cf3-fc6fc587c755_4.jpeg"
+    },
+    {
+      "Id": "E:\\College\\Graduation project\\Code\\Hatley\\wwwroot\\Delivery_imgs\\3095e9bb-9a84-48f0-a892-5f10480a9697_2.jpeg",
+      "PackagePath": "staticwebassets\\Delivery_imgs\\3095e9bb-9a84-48f0-a892-5f10480a9697_2.jpeg"
+    },
+    {
+      "Id": "E:\\College\\Graduation project\\Code\\Hatley\\wwwroot\\Delivery_imgs\\57855fef-dca9-495d-82b0-d060fc91c3a2_3.jpeg",
+      "PackagePath": "staticwebassets\\Delivery_imgs\\57855fef-dca9-495d-82b0-d060fc91c3a2_3.jpeg"
+    },
+    {
       "Id": "E:\\College\\Graduation project\\Code\\Hatley\\wwwroot\\Delivery_imgs\\th.jpeg",
       "PackagePath": "staticwebassets\\Delivery_imgs\\th.jpeg"
     },

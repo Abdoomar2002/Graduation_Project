@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Hatley.Migrations
 {
     [DbContext(typeof(appDB))]
-    [Migration("20240330005313_add-rating")]
-    partial class addrating
+    [Migration("20240422092347_first")]
+    partial class first
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -130,6 +130,9 @@ namespace Hatley.Migrations
                     b.Property<string>("Photo")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("ResetTokenForDelivery")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int?>("Zone_ID")
                         .HasColumnType("int");
 
@@ -181,21 +184,25 @@ namespace Hatley.Migrations
                     b.Property<double?>("East")
                         .HasColumnType("float");
 
-                    b.Property<string>("Location")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<double?>("North")
                         .HasColumnType("float");
 
-                    b.Property<string>("Order_Governorate")
+                    b.Property<string>("Order_governorate_from")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Order_Zone")
+                    b.Property<string>("Order_governorate_to")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("Order_time")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("Order_zone_from")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Order_zone_to")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<double>("Price")
                         .HasColumnType("float");
@@ -273,6 +280,9 @@ namespace Hatley.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Photo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ResetTokenForUser")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("User_ID");

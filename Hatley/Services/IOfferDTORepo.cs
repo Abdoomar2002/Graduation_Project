@@ -1,0 +1,10 @@
+﻿using Hatley.DTO;
+
+namespace Hatley.Services
+{
+	public interface IOfferDTORepo
+	{
+		OfferDTO? Display_Offer_Of_Order(int orderId, string email);
+		ViewOfferForUserDTO? ViewOffer(int orderid, int value, string email);
+	}
+}

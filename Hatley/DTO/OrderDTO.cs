@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 namespace Hatley.DTO
 {
 	public class OrderDTO
-	{
+	{	
 		public int Id { get; set; }
 		public string description { get; set; }
 		public string order_governorate_from { get; set; }

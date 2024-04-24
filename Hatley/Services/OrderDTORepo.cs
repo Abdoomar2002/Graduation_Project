@@ -84,7 +84,7 @@ namespace Hatley.Services
 						.Select(x => x.User_ID)
 						.FirstOrDefault();
 
-			List<Order> ordersuser = context.orders.Where(x => x.User_ID == userid).ToList();
+			List<Order> ordersuser = context.orders.Where(x => x.User_ID == userid && x.Status<4).ToList();
 			if (ordersuser.Count == 0)
 			{
 				return null;
@@ -109,6 +109,34 @@ namespace Hatley.Services
 			}).ToList();
 			return ordersdtouser;
 
+		}
+
+		public List<DeliveriesUserDTO>? Deliveries(string email)
+		{
+			var user = context.users.FirstOrDefault(x=>x.Email == email);
+			List<Order> orders = context.orders.
+				Where(x=>x.User_ID==user.User_ID && x.Status==4).ToList();
+			List<int> rate = context.ratings.Where(x=>x.User_ID == user.User_ID)
+				.Select(x=>x.Value).ToList();
+			if (orders.Count == 0)
+			{
+				return null;
+			}
+			List<DeliveriesUserDTO> ordersdto = orders.Select(x => new DeliveriesUserDTO()
+			{
+				Id = x.Order_ID,
+				description = x.Description,
+				price = x.Price,
+				status = x.Status,
+				order_zone_from = x.Order_zone_from,
+				order_zone_to = x.Order_zone_to,
+				order_time = x.Order_time,
+				created = x.Created,
+				user_name = user.Name,// may be zero here
+				user_avg_rate = rate.Average(),
+			}).ToList();
+
+			return ordersdto;
 		}
 
 		public OrderDTO? GetOrder(int id)
@@ -140,19 +168,11 @@ namespace Hatley.Services
 			return orderdto;
 		}
 
-		public int Create(OrderDTO orderdto)
+		public int Create(OrderDTO orderdto,string email)
 		{
-			if (orderdto.User_ID == null)
-			{
-				return -1;
-			}
+			var user = context.users.FirstOrDefault(x=> x.Email == email);
 
-			var checkuserid=context.users.FirstOrDefault(x=>x.User_ID==orderdto.User_ID);
-			if (checkuserid == null)
-			{
-				return -2;
-			}
-
+			//#### Hub ####
 			order.Description = orderdto.description;
 			order.Price = orderdto.price;
 			order.North = orderdto.north;
@@ -163,7 +183,7 @@ namespace Hatley.Services
 			order.Order_zone_to = orderdto.order_zone_to;
 			order.Order_time = orderdto.order_time;
 			order.Created = DateTime.Now;
-			order.User_ID = orderdto.User_ID;
+			order.User_ID = user.User_ID;
 			//order.Location = orderdto.location;
 			//order.Status = orderdto.Status;
 			context.orders.Add(order);

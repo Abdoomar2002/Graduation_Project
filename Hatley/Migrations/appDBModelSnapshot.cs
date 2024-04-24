@@ -184,15 +184,22 @@ namespace Hatley.Migrations
                     b.Property<double?>("North")
                         .HasColumnType("float");
 
-                    b.Property<string>("Order_Governorate")
+                    b.Property<string>("Order_governorate_from")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Order_Zone")
+                    b.Property<string>("Order_governorate_to")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("Order_time")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("Order_zone_from")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Order_zone_to")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<double>("Price")
                         .HasColumnType("float");

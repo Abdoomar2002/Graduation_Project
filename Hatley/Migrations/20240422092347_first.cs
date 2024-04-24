@@ -31,11 +31,11 @@ namespace Hatley.Migrations
                     UserID = table.Column<int>(name: "User_ID", type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    phone = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Phone = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    rate = table.Column<double>(type: "float", nullable: true),
-                    Photo = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Photo = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ResetTokenForUser = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -75,13 +75,13 @@ namespace Hatley.Migrations
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Photo = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Nationalid = table.Column<int>(name: "National_id", type: "int", nullable: false),
+                    Nationalid = table.Column<string>(name: "National_id", type: "nvarchar(14)", maxLength: 14, nullable: false),
                     FrontNationalIDimg = table.Column<string>(name: "Front_National_ID_img", type: "nvarchar(max)", nullable: false),
                     BackNationalIDimg = table.Column<string>(name: "Back_National_ID_img", type: "nvarchar(max)", nullable: false),
                     FacewithNationalIDimg = table.Column<string>(name: "Face_with_National_ID_img", type: "nvarchar(max)", nullable: false),
-                    Rate = table.Column<double>(type: "float", nullable: true),
                     GovernorateID = table.Column<int>(name: "Governorate_ID", type: "int", nullable: true),
-                    ZoneID = table.Column<int>(name: "Zone_ID", type: "int", nullable: true)
+                    ZoneID = table.Column<int>(name: "Zone_ID", type: "int", nullable: true),
+                    ResetTokenForDelivery = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -135,6 +135,7 @@ namespace Hatley.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Text = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Commentfrom = table.Column<string>(name: "Comment_from", type: "nvarchar(max)", nullable: false),
                     DeliveryID = table.Column<int>(name: "Delivery_ID", type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -154,10 +155,17 @@ namespace Hatley.Migrations
                 {
                     OrderID = table.Column<int>(name: "Order_ID", type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    description = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: false),
-                    location = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: false),
+                    Ordergovernoratefrom = table.Column<string>(name: "Order_governorate_from", type: "nvarchar(max)", nullable: false),
+                    Orderzonefrom = table.Column<string>(name: "Order_zone_from", type: "nvarchar(max)", nullable: false),
+                    Ordergovernorateto = table.Column<string>(name: "Order_governorate_to", type: "nvarchar(max)", nullable: true),
+                    Orderzoneto = table.Column<string>(name: "Order_zone_to", type: "nvarchar(max)", nullable: true),
+                    North = table.Column<double>(type: "float", nullable: true),
+                    East = table.Column<double>(type: "float", nullable: true),
+                    Created = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Ordertime = table.Column<DateTime>(name: "Order_time", type: "datetime2", nullable: false),
                     Price = table.Column<double>(type: "float", nullable: false),
-                    status = table.Column<int>(type: "int", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: true),
                     DeliveryID = table.Column<int>(name: "Delivery_ID", type: "int", nullable: true),
                     UserID = table.Column<int>(name: "User_ID", type: "int", nullable: true)
                 },
@@ -175,6 +183,33 @@ namespace Hatley.Migrations
                         principalTable: "users",
                         principalColumn: "User_ID",
                         onDelete: ReferentialAction.SetNull);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ratings",
+                columns: table => new
+                {
+                    RatingID = table.Column<int>(name: "Rating_ID", type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Value = table.Column<int>(type: "int", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Ratingfrom = table.Column<string>(name: "Rating_from", type: "nvarchar(max)", nullable: false),
+                    DeliveryID = table.Column<int>(name: "Delivery_ID", type: "int", nullable: true),
+                    UserID = table.Column<int>(name: "User_ID", type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ratings", x => x.RatingID);
+                    table.ForeignKey(
+                        name: "FK_ratings_delivers_Delivery_ID",
+                        column: x => x.DeliveryID,
+                        principalTable: "delivers",
+                        principalColumn: "Delivery_ID");
+                    table.ForeignKey(
+                        name: "FK_ratings_users_User_ID",
+                        column: x => x.UserID,
+                        principalTable: "users",
+                        principalColumn: "User_ID");
                 });
 
             migrationBuilder.CreateIndex(
@@ -213,6 +248,16 @@ namespace Hatley.Migrations
                 column: "User_ID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ratings_Delivery_ID",
+                table: "ratings",
+                column: "Delivery_ID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ratings_User_ID",
+                table: "ratings",
+                column: "User_ID");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_zones_Governorate_ID",
                 table: "zones",
                 column: "Governorate_ID");
@@ -229,6 +274,9 @@ namespace Hatley.Migrations
 
             migrationBuilder.DropTable(
                 name: "orders");
+
+            migrationBuilder.DropTable(
+                name: "ratings");
 
             migrationBuilder.DropTable(
                 name: "delivers");

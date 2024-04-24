@@ -49,11 +49,32 @@ namespace Hatley.Controllers
 			return Ok(ordersdtoforuserordelivery);
 		}
 
+		[HttpGet("Deliveries")]
+		public IActionResult Deliveries()
+		{
+			List<DeliveriesUserDTO>? Deliveries = repo.Deliveries(email);
+			if (Deliveries == null)
+			{
+				return BadRequest("No Records exist");
+			}
+			return Ok(Deliveries);
+		}
 
 		[HttpGet("{id:int}")]
 		public IActionResult get(int id)
 		{
 			var order = repo.GetOrder(id);
+			if (order == null)
+			{
+				return NotFound("the order is not exist");
+			}
+			return Ok(order);
+		}
+
+		[HttpGet("ReOrder/{orderId:int}")]
+		public IActionResult ReOrder(int oderid)
+		{
+			var order = repo.GetOrder(oderid);
 			if (order == null)
 			{
 				return NotFound("the order is not exist");
@@ -67,19 +88,11 @@ namespace Hatley.Controllers
 		{
 			if(ModelState.IsValid==true)
 			{
-				int raw = repo.Create(order);
+				int raw = repo.Create(order,email);
 
 				if(raw == 0)
 				{
 					return BadRequest("Error occur during save");
-				}
-				if(raw == -1)
-				{
-					return BadRequest("must enter id for user");
-				}
-				if (raw == -2)
-				{
-					return NotFound("the user not exist");
 				}
 
 				return Ok();
