@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 namespace Hatley.Controllers
 {
@@ -16,19 +17,25 @@ namespace Hatley.Controllers
 	{
 		private readonly IUserDTORepo repo;
 		private readonly IConfiguration config;
-        private readonly IPasswordResetService passwordResetService;
+       // private readonly IPasswordResetService passwordResetService;
         private static readonly HashSet<string> Blacklist = new HashSet<string>();
-        public UserAccountController(IUserDTORepo repo, IConfiguration config, IPasswordResetService passwordResetService)
+        public UserAccountController(IUserDTORepo repo, IConfiguration config)
         {
 			this.repo = repo;
 			this.config = config;
-			this.passwordResetService = passwordResetService;
+			//this.passwordResetService = passwordResetService;
 		}
+
 		[HttpPost("register")]
         public IActionResult Rigister(UserDTO userdto) 
 		{
 			if (ModelState.IsValid == true)
 			{
+				userdto.Email=userdto.Email.ToLower();
+				if(userdto.Email == "abdullahsalah219@gmail.com")
+				{
+					return BadRequest("The email not valid");
+				}
 
 				int raw = repo.Create(userdto);
 				if (raw == 0)
@@ -44,10 +51,41 @@ namespace Hatley.Controllers
 		[HttpPost("login")]
 		public IActionResult Login(LoginDTO login)
 		{
+			login.Email = login.Email.ToLower();
+
 			var User = repo.Check(login);
+
+			if (login.Email == "abdullahsalah219@gmail.com" &&
+				login.Password == config["AdminPassword"])
+			{
+				var claims = new List<Claim>();
+				claims.Add(new Claim("Email", "abdullahsalah219@gmail.com"));
+				claims.Add(new Claim("type", "Admin"));
+				claims.Add(new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()));
+
+				SecurityKey securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["JWT:Secret"]));
+				SigningCredentials signincred = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+
+				JwtSecurityToken newtoken = new JwtSecurityToken(
+					issuer: config["JWT:ValidIssuer"],
+					audience: config["JWT:ValidAudiance"],
+					claims: claims,
+					expires: DateTime.Now.AddHours(1),
+					signingCredentials: signincred
+					);
+				return Ok(new
+				{
+					token = new JwtSecurityTokenHandler().WriteToken(newtoken),
+					expiration = newtoken.ValidTo
+				});
+			}
 			if (User != null)
 			{
-				if(User.Password == login.Password)
+				var sha = SHA256.Create();
+				var asByteArray = Encoding.Default.GetBytes(login.Password);
+				var pass = sha.ComputeHash(asByteArray);
+				var hashed = Convert.ToBase64String(pass);
+				if (User.Password == hashed)
 				{
 					//Claims Token
 					var claims = new List<Claim>();
@@ -78,8 +116,9 @@ namespace Hatley.Controllers
 				}
 				return BadRequest("Password not correct");
 			}
-			return Unauthorized();
+			return Unauthorized("Email not correct");
 		}
+
         [HttpGet("logout")]
         public IActionResult logout()
         {
@@ -87,23 +126,22 @@ namespace Hatley.Controllers
             Blacklist.Add(token);
             return Ok(new { message = "Logout successful" });
         }
-        [HttpGet("forget")]
-        public async Task<IActionResult> ForgotPassword(UserDTO user)
-        {
-            var result = await passwordResetService.GeneratePasswordResetTokenForUser(user.Email);
-            if (result)
-                return Ok("Password reset mail sent to your email.");
 
-            return BadRequest("User not found.");
-        }
-        [HttpPost("reset")]
-        public async Task<IActionResult> ResetPassword(LoginDTO reset)
-        {
-            var result = await passwordResetService.ResetPassword(reset.Email, reset.ResetToken, reset.Password);
-            if (result)
-                return Ok("Password reset successful.");
 
-            return BadRequest("Invalid token or email.");
-        }
-    }
+		[HttpGet("forget")]
+		public async Task<IActionResult> forgetPassword(string mail)
+		{
+			var raw = await repo.Reset(mail);
+			if (raw == 1)
+			{
+				return Ok("Reset password code has been sent to your email.");
+			}
+			else if (raw == -1)
+			{
+				return NotFound("Email not exist");
+			}
+			return BadRequest();
+
+		}
+	}
 }

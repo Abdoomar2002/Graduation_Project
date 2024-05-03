@@ -3,41 +3,41 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using MailKit.Net.Smtp;
 using MimeKit;
 using System.Net;
-using MimeKit;
+using Hatley.Services;
 
 namespace Hatley.Services
 {
-    public class MailReset : IMailReset
-    {
-        private readonly IConfiguration confg;
-        public MailReset(IConfiguration confg)
-        {
-            this.confg = confg;
-        }
-        public async Task SendPasswordResetEmail(string name, string email, string token)
-        {
-            var mail = new MimeMessage
-            {
-                Sender = MailboxAddress.Parse(confg["MailSettings:Email"]),
-                Subject = "Reset Password"
-            };
+	public class MailReset : IMailReset
+	{
+		private readonly IConfiguration confg;
+		public MailReset(IConfiguration confg)
+		{
+			this.confg = confg;
+		}
+		public async Task SendResetEmailAsync(string name, string email, string code)
+		{
+			var mail = new MimeMessage
+			{
+				Sender = MailboxAddress.Parse(confg["MailSettings:Email"]),
+				Subject = "Reset Password"
+			};
 
-            mail.To.Add(MailboxAddress.Parse(email));
+			mail.To.Add(MailboxAddress.Parse(email));
 
-            var build = new BodyBuilder();
-            build.HtmlBody = "Dear " + name + "<br>" +
-                   "Your verification code is " + token;
+			var build = new BodyBuilder();
+			build.HtmlBody = "Dear " + name + "<br>" +
+				   "Your new password is " + code;
 
-            mail.Body = build.ToMessageBody();
-            mail.From.Add(new MailboxAddress(confg["MailSettings:DisplayName"], confg["MailSettings:Email"]));
+			mail.Body = build.ToMessageBody();
+			mail.From.Add(new MailboxAddress(confg["MailSettings:DisplayName"], confg["MailSettings:Email"]));
 
-            var smtp = new SmtpClient();
-            smtp.ServerCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true;
-            smtp.Connect(confg["MailSettings:Host"], Convert.ToInt32(confg["MailSettings:Port"]), SecureSocketOptions.StartTls);
-            smtp.Authenticate(confg["MailSettings:Email"], confg["MailSettings:Password"]);
-            await smtp.SendAsync(mail);
+			var smtp = new SmtpClient();
+			smtp.ServerCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true;
+			smtp.Connect(confg["MailSettings:Host"], Convert.ToInt32(confg["MailSettings:Port"]), SecureSocketOptions.StartTls);
+			smtp.Authenticate(confg["MailSettings:Email"], confg["Password"]);
+			await smtp.SendAsync(mail);
 
-            smtp.Disconnect(true);
-        }
-    }
+			smtp.Disconnect(true);
+		}
+	}
 }

@@ -20,8 +20,10 @@ namespace Hatley.Controllers
 		{
 			repo = _Repo;
 			httpContextAccessor = _httpContextAccessor;
-			email = httpContextAccessor.HttpContext?.User.Claims.FirstOrDefault(c => c.Type == "Email")?.Value;
-			type = httpContextAccessor.HttpContext?.User.Claims.FirstOrDefault(c => c.Type == "type")?.Value;
+			email = httpContextAccessor.HttpContext?.User.Claims
+				.FirstOrDefault(c => c.Type == "Email")?.Value;
+			type = httpContextAccessor.HttpContext?.User.Claims
+				.FirstOrDefault(c => c.Type == "type")?.Value;
 
 		}
 
@@ -29,6 +31,11 @@ namespace Hatley.Controllers
 		[HttpGet]
 		public IActionResult getall()
 		{
+			if (type != "Admin")
+			{
+				return Unauthorized();
+			}
+
 			List<RatingDTO>? ratingsdto = repo.GetRatings();
 			if (ratingsdto == null)
 			{

@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿/*using System.ComponentModel.DataAnnotations;
 
 namespace Hatley.DTO
 {
@@ -12,3 +12,4 @@ namespace Hatley.DTO
         public string token { get; set; }
     }
 }
+*/

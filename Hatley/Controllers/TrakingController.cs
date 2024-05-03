@@ -20,8 +20,10 @@ namespace Hatley.Controllers
 		{
 			repo = _Repo;
 			httpContextAccessor = _httpContextAccessor;
-			email = httpContextAccessor.HttpContext?.User.Claims.FirstOrDefault(c => c.Type == "Email")?.Value;
-			type = httpContextAccessor.HttpContext?.User.Claims.FirstOrDefault(c => c.Type == "type")?.Value;
+			email = httpContextAccessor.HttpContext?.User.Claims
+				.FirstOrDefault(c => c.Type == "Email")?.Value;
+			type = httpContextAccessor.HttpContext?.User.Claims
+				.FirstOrDefault(c => c.Type == "type")?.Value;
 
 		}
 
@@ -39,6 +41,11 @@ namespace Hatley.Controllers
 		[HttpGet("{orderid:int}")]
 		public IActionResult ChangeStatus(int orderid)
 		{
+			if (type != "Delivery")
+			{
+				return Unauthorized();
+			}
+
 			int raw = repo.ChangeStatus(type, orderid);
 			if(raw == 0)
 			{
@@ -51,6 +58,10 @@ namespace Hatley.Controllers
 			if (raw == 3)
 			{
 				return StatusCode(403);
+			}
+			if(raw == -1)
+			{
+				return BadRequest("Not allow");
 			}
 			return Ok();
 		}

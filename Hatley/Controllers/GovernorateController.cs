@@ -19,19 +19,30 @@ namespace Hatley.Controllers
         {
             this.governorateRepository = governorateRepository;
 			httpContextAccessor = _httpContextAccessor;
-			userType = httpContextAccessor.HttpContext?.User.Claims.FirstOrDefault(c => c.Type == "type")?.Value;
+			userType = httpContextAccessor.HttpContext?.User.Claims
+                .FirstOrDefault(c => c.Type == "type")?.Value;
 
 		}
 		[HttpGet]
         public IActionResult Displayall()
         {
-            List<GovernorateDTO>? governorates = governorateRepository.Displayall();
+			if (userType != "Admin")
+			{
+				return Unauthorized();
+			}
+
+			List<GovernorateDTO>? governorates = governorateRepository.Displayall();
             return Ok(governorates);
         }
         [HttpGet("{id:int}")]
         public IActionResult Display(int id)
         {
-            GovernorateDTO? governorate = governorateRepository.Display(id);
+			if (userType != "Admin")
+			{
+				return Unauthorized();
+			}
+
+			GovernorateDTO? governorate = governorateRepository.Display(id);
             if (governorate == null)
             {
                 return NotFound("Not Found");
@@ -41,7 +52,12 @@ namespace Hatley.Controllers
         [HttpPost]
         public IActionResult Insert(GovernorateDTO newGovernorate)
         {
-            if (ModelState.IsValid == true)
+			if (userType != "Admin")
+			{
+				return Unauthorized();
+			}
+
+			if (ModelState.IsValid == true)
             {
                 var raw = governorateRepository.Insert(newGovernorate);
                 if (raw == 0)
@@ -52,10 +68,16 @@ namespace Hatley.Controllers
             }
             return BadRequest(ModelState);
         }
+
         [HttpPut("{id:int}")]
         public IActionResult Edit(int id, GovernorateDTO editGovernorate)
         {
-            if (ModelState.IsValid == true)
+			if (userType != "Admin")
+			{
+				return Unauthorized();
+			}
+
+			if (ModelState.IsValid == true)
             {
                 int raw = governorateRepository.Edit(id, editGovernorate);
                 if (raw == 0)
@@ -73,7 +95,12 @@ namespace Hatley.Controllers
         [HttpDelete("{id:int}")]
         public IActionResult Delete(int id)
         {
-            int raw = governorateRepository.Delete(id);
+			if (userType != "Admin")
+			{
+				return Unauthorized();
+			}
+
+			int raw = governorateRepository.Delete(id);
             if (raw == -1)
             {
                 return NotFound("That governorate is not found");

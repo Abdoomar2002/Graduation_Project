@@ -29,12 +29,34 @@ namespace Hatley.Controllers
 		[HttpGet]
         public IActionResult getall()
 		{
+			if (type != "Admin")
+			{
+				return Unauthorized();
+			}
+
 			List<OrderDTO>? ordersdto = repo.GetOrders();
 			if (ordersdto == null)
 			{
 				return BadRequest("No Records exist");
 			}
 			return Ok(ordersdto);
+		}
+
+
+		[HttpGet("related/orders")]
+		public IActionResult DisplayRelatedOrdersForDelivery() 
+		{
+			if (type != "Delivery")
+			{
+				return Unauthorized();
+			}
+
+			List<OrderDTO> orders = repo.DisplayRelatedOrdersForDelivery(email);
+			if (orders == null)
+			{
+				return BadRequest("Not exist related orders");
+			}
+			return Ok(orders);
 		}
 
 
@@ -52,6 +74,11 @@ namespace Hatley.Controllers
 		[HttpGet("Deliveries")]
 		public IActionResult Deliveries()
 		{
+			if (type != "User")
+			{
+				return Unauthorized();
+			}
+
 			List<DeliveriesUserDTO>? Deliveries = repo.Deliveries(email);
 			if (Deliveries == null)
 			{
@@ -74,6 +101,7 @@ namespace Hatley.Controllers
 		[HttpGet("ReOrder/{orderId:int}")]
 		public IActionResult ReOrder(int oderid)
 		{
+
 			var order = repo.GetOrder(oderid);
 			if (order == null)
 			{
@@ -86,7 +114,12 @@ namespace Hatley.Controllers
 		[HttpPost]
 		public IActionResult add(OrderDTO order)
 		{
-			if(ModelState.IsValid==true)
+			if (type != "User")
+			{
+				return Unauthorized();
+			}
+
+			if (ModelState.IsValid==true)
 			{
 				int raw = repo.Create(order,email);
 
@@ -105,7 +138,12 @@ namespace Hatley.Controllers
 		[HttpPut("{id:int}")]
 		public IActionResult edit(int id , OrderDTO orderdto)
 		{
-			if(ModelState.IsValid==true)
+			if (type != "User")
+			{
+				return Unauthorized();
+			}
+
+			if (ModelState.IsValid==true)
 			{
 				int raw = repo.Update(id, orderdto);
 				if(raw == -1)
@@ -125,6 +163,11 @@ namespace Hatley.Controllers
 		[HttpDelete("{id:int}")]
 		public IActionResult delete(int id)
 		{
+			if (type != "User")
+			{
+				return Unauthorized();
+			}
+
 			int raw = repo.Delete(id);
 			if (raw == -1)
 			{

@@ -15,12 +15,17 @@ namespace Hatley.Controllers
 		private readonly ICommentRepo repo;
 		private readonly string? userType; 
 		private readonly IHttpContextAccessor httpContextAccessor;
+		private readonly string? email;
 
-		public CommentController(ICommentRepo _repo, IHttpContextAccessor _httpContextAccessor)
+		public CommentController(ICommentRepo _repo,
+			IHttpContextAccessor _httpContextAccessor)
         {
 			repo = _repo;
 			httpContextAccessor = _httpContextAccessor;
-			userType = httpContextAccessor.HttpContext?.User.Claims.FirstOrDefault(c => c.Type == "type")?.Value;
+			userType = httpContextAccessor.HttpContext?.User.Claims
+				.FirstOrDefault(c => c.Type == "type")?.Value;
+			email = httpContextAccessor.HttpContext?.User.Claims
+				.FirstOrDefault(c => c.Type == "Email")?.Value;
 
 		}
 
@@ -28,6 +33,11 @@ namespace Hatley.Controllers
 		[HttpGet]
 		public IActionResult getall()
 		{
+			if(userType != "Admin")
+			{
+				return Unauthorized();
+			}
+
 			List<CommentDTO>? commentsdto = repo.GetComments();
 			if (commentsdto == null)
 			{
@@ -37,9 +47,30 @@ namespace Hatley.Controllers
 		}
 
 
+		public IActionResult GetAllForDelivery()
+		{
+			if (userType != "Admin" && userType != "Delivery")
+			{
+				return Unauthorized();
+			}
+
+			List<CommentDTO> comments = repo.CommentsForDelivery(email);
+			if (comments == null)
+			{
+				return BadRequest("No record exist");
+			}
+			return Ok(comments);
+
+		}
+
 		[HttpGet("{id:int}")]
 		public IActionResult get(int id)
 		{
+			if (userType != "Admin" && userType != "Delivery")
+			{
+				return Unauthorized();
+			}
+
 			var comment = repo.GetComment(id);
 			if (comment == null)
 			{
@@ -52,6 +83,11 @@ namespace Hatley.Controllers
 		[HttpPost]
 		public IActionResult add(CommentDTO commentdto)
 		{
+			if (userType != "User")
+			{
+				return Unauthorized();
+			}
+
 			if (ModelState.IsValid == true)
 			{
 				int raw = repo.Create(commentdto);
@@ -79,6 +115,11 @@ namespace Hatley.Controllers
 		[HttpPut("{id:int}")]
 		public IActionResult edit(int id, CommentDTO commentdto)
 		{
+			if (userType != "User")
+			{
+				return Unauthorized();
+			}
+
 			if (ModelState.IsValid == true)
 			{
 				int raw = repo.Update(id, commentdto);
@@ -99,6 +140,11 @@ namespace Hatley.Controllers
 		[HttpDelete("{id:int}")]
 		public IActionResult delete(int id)
 		{
+			if (userType != "User")
+			{
+				return Unauthorized();
+			}
+
 			int raw = repo.Delete(id);
 			if (raw == -1)
 			{

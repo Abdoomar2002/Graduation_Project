@@ -6,6 +6,8 @@ using System.Linq;
 using System;
 using Microsoft.Extensions.Hosting.Internal;
 using Microsoft.AspNetCore.Mvc;
+using System.Text;
+using System.Security.Cryptography;
 
 namespace Hatley.Services
 {
@@ -14,13 +16,16 @@ namespace Hatley.Services
 		private readonly appDB context;
 		private readonly Delivery deliveryman;
 		private readonly IWebHostEnvironment hostingEnvironment;
+		private readonly MailReset resetmail;
 
-		public DeliveryRepository(Delivery deliveryman, appDB context, IWebHostEnvironment hostingEnvironment)
+
+		public DeliveryRepository(Delivery deliveryman, appDB context
+			, IWebHostEnvironment hostingEnvironment, MailReset resetmail)
 		{
 			this.deliveryman = deliveryman;
 			this.context = context;
 			this.hostingEnvironment = hostingEnvironment;
-
+			this.resetmail = resetmail;
 		}
 
 		//###############################################################################
@@ -49,9 +54,9 @@ namespace Hatley.Services
 		}
 
 		//##############################################################################
-		public DeliveryDTO? Display(int id)
+		public DeliveryDTO? Display(string email)
 		{
-			var delivery = context.delivers.FirstOrDefault(x => x.Delivery_ID == id);
+			var delivery = context.delivers.FirstOrDefault(x => x.Email == email);
 			if (delivery == null)
 			{
 				return null;
@@ -82,12 +87,16 @@ namespace Hatley.Services
 			{
 				try
 				{
+					var sha = SHA256.Create();
+					var asByteArray = Encoding.Default.GetBytes(deliveryDTO.Password);
+					var pass = sha.ComputeHash(asByteArray);
+					var hashed = Convert.ToBase64String(pass);
 					var delivery = new Delivery
 					{
 						Name = deliveryDTO.Name,
 						Phone = deliveryDTO.Phone,
 						Email = deliveryDTO.Email,
-						Password = deliveryDTO.Password,
+						Password = hashed,
 						National_id = deliveryDTO.national_id,
 						Governorate_ID = deliveryDTO.Governorate_ID,
 						Zone_ID = deliveryDTO.Zone_ID
@@ -147,11 +156,17 @@ namespace Hatley.Services
 			var email = context.delivers.FirstOrDefault(x => x.Email == person.Email);
 			if (oldData != null)
 			{
+				var sha = SHA256.Create();
+				var asByteArray = Encoding.Default.GetBytes(person.Password);
+				var pass = sha.ComputeHash(asByteArray);
+				var hashed = Convert.ToBase64String(pass);
+
 				if (email == null)
 				{
+
 					oldData.Name = person.Name;
 					oldData.Email = person.Email;
-					oldData.Password = person.Password;
+					oldData.Password = hashed;
 					oldData.Phone = person.Phone;
 					oldData.National_id = person.national_id;
 					oldData.Back_National_ID_img = person.back_National_ID_img;
@@ -166,7 +181,7 @@ namespace Hatley.Services
 				{
 					oldData.Name = person.Name;
 					oldData.Email = person.Email;
-					oldData.Password = person.Password;
+					oldData.Password = hashed;
 					oldData.Phone = person.Phone;
 					oldData.National_id = person.national_id;
 					oldData.Back_National_ID_img = person.back_National_ID_img;
@@ -220,5 +235,42 @@ namespace Hatley.Services
 			};
 			return delivery;
 		}
+
+
+		//######################
+		public string resetPasswordCode()
+		{
+			const string allowedChars = "abcdefghijklmnopqrstuvwxyz1234567890";
+			Random random = new Random();
+			char[] code = new char[6];
+			for (int i = 0; i < 6; i++)
+			{
+				code[i] = allowedChars[random.Next(allowedChars.Length)];
+			}
+			return new string(code);
+		}
+		public async Task<int> Reset(string mail)
+		{
+			var user = context.delivers.FirstOrDefault(z => z.Email == mail);
+			if (user != null)
+			{
+				string code = resetPasswordCode();
+				await resetmail.SendResetEmailAsync(user.Name, mail, code);
+
+				var sha = SHA256.Create();
+				var asByteArray = Encoding.Default.GetBytes(code);
+				var pass = sha.ComputeHash(asByteArray);
+				var hashed = Convert.ToBase64String(pass);
+				user.Password = hashed;
+				int raw = context.SaveChanges();
+				if (raw == 1)
+				{
+					return raw;
+				}
+				return raw;
+			}
+			return -1;
+		}
+
 	}
 }

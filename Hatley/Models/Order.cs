@@ -21,7 +21,7 @@ namespace Hatley.Models
 		public DateTime Order_time { get; set; }
 		[Required]
 		public double Price { get; set; }
-		public int? Status { get; set; } = 0;
+		public int? Status { get; set; } = -1;
 		public int? Delivery_ID { get; set; }
 		[ForeignKey("Delivery_ID")]
 		public Delivery? Delivery { get; set; }

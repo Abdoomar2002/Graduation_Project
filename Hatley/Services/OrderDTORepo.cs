@@ -2,6 +2,7 @@
 using Hatley.Models;
 using MailKit.Search;
 using Microsoft.EntityFrameworkCore.Update.Internal;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Hatley.Services
 {
@@ -44,6 +45,44 @@ namespace Hatley.Services
 			return ordersdto;
 		}
 
+		public List<OrderDTO>? DisplayRelatedOrdersForDelivery(string email)
+		{
+			var delivery = context.delivers.FirstOrDefault(x => x.Email == email);
+			List<Order> orders = context.orders.ToList();
+			if(orders == null)
+			{
+				return null;
+			}
+			var governorate = context.governorates
+				.FirstOrDefault(x => x.Governorate_ID == delivery.Governorate_ID);
+			var zone = context.zones
+				.FirstOrDefault(x => x.Zone_ID == delivery.Zone_ID);
+
+			List<OrderDTO> ordersdto = orders
+				.Where(x => x.Delivery_ID == null &&
+				x.Order_governorate_from == governorate.Name && x.Order_zone_from == zone.Name)
+				.Select(x => new OrderDTO()
+			{
+				Id = x.Order_ID,
+				description = x.Description,
+				price = x.Price,
+				status = x.Status,
+				north = x.North,
+				east = x.East,
+				order_governorate_from = x.Order_governorate_from,
+				order_zone_from = x.Order_zone_from,
+				order_governorate_to = x.Order_governorate_to,
+				order_zone_to = x.Order_zone_to,
+				order_time = x.Order_time,
+				created = x.Created,
+				User_ID = x.User_ID,
+				Delivery_ID = x.Delivery_ID
+			}).ToList();
+			
+			return ordersdto;
+
+		}
+
 		public List<OrderDTO>? GetOrdersForUserOrDelivery(string mail, string type)
 		{
 			if (type == "Delivery")
@@ -53,7 +92,9 @@ namespace Hatley.Services
 								.Select(x => x.Delivery_ID)
 								.FirstOrDefault();
 
-				List<Order> orders = context.orders.Where(x => x.Delivery_ID == deliveryrid).ToList();
+				List<Order> orders = context.orders.
+					Where(x => x.Delivery_ID == deliveryrid).ToList();
+
 				if (orders.Count == 0)
 				{
 					return null;
@@ -84,7 +125,9 @@ namespace Hatley.Services
 						.Select(x => x.User_ID)
 						.FirstOrDefault();
 
-			List<Order> ordersuser = context.orders.Where(x => x.User_ID == userid && x.Status<4).ToList();
+			List<Order> ordersuser = context.orders.
+				Where(x => x.User_ID == userid && x.Status<3).ToList();
+
 			if (ordersuser.Count == 0)
 			{
 				return null;
@@ -115,7 +158,7 @@ namespace Hatley.Services
 		{
 			var user = context.users.FirstOrDefault(x=>x.Email == email);
 			List<Order> orders = context.orders.
-				Where(x=>x.User_ID==user.User_ID && x.Status==4).ToList();
+				Where(x=>x.User_ID==user.User_ID && x.Status==3).ToList();
 			List<int> rate = context.ratings.Where(x=>x.User_ID == user.User_ID)
 				.Select(x=>x.Value).ToList();
 			if (orders.Count == 0)

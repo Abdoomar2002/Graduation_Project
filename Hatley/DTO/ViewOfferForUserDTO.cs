@@ -7,7 +7,7 @@
 		public int delivery_id { get; set; }
 		public int? userid { get; set; }
 		public int offer_value { get; set;}
-		public double delivery_avg_rate { get; set;}
+		public double? delivery_avg_rate { get; set;}
 		public int delivery_count_rate { get; set;}
 	}
 }

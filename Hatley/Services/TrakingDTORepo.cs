@@ -17,7 +17,10 @@ namespace Hatley.Services
 			if (type == "Delivery")
 			{
 				var delivery = context.delivers.FirstOrDefault(x => x.Email == email);
-				List<Order> trakings = context.orders.Where(x => x.Delivery_ID == delivery.Delivery_ID).ToList();
+
+				List<Order> trakings = context.orders.
+					Where(x => x.Delivery_ID == delivery.Delivery_ID).ToList();
+
 				if (trakings.Count == 0)
 				{
 					return null;
@@ -41,7 +44,10 @@ namespace Hatley.Services
 			}
 
 			var user = context.users.FirstOrDefault(x => x.Email == email);
-			List<Order> traking = context.orders.Where(x => x.User_ID == user.User_ID).ToList();
+
+			List<Order> traking = context.orders.
+				Where(x => x.User_ID == user.User_ID).ToList();
+
 			if (traking.Count == 0)
 			{
 				return null;
@@ -69,15 +75,20 @@ namespace Hatley.Services
 			if (type == "Delivery")
 			{
 				var order = context.orders.FirstOrDefault(x => x.Order_ID == order_id);
+				if (order.Delivery_ID == null)
+				{
+					return -1;
+				}
 				if (order == null)
 				{
 					return 0;
 				}
-				if (order.Status == 4)
+				if (order.Status == 3)
 				{
 					return 1;
 				}
 				order.Status++;
+				context.SaveChanges();
 				return 2;
 			}
 			return 3; // 403 forbidden

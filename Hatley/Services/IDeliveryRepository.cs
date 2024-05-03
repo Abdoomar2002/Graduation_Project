@@ -7,11 +7,13 @@ namespace Hatley.Services
     public interface IDeliveryRepository
     {
         List<DeliveryDTO>? Displayall();
-        DeliveryDTO? Display(int id);
+        DeliveryDTO? Display(string email);
 		Task<string> Insert([FromForm] DeliveryDTO deliveryDTO,
 			IFormFile frontImage, IFormFile backImage, IFormFile faceImage);
         int Edit(int id, DeliveryDTO person);
         int Delete(int id);
         DeliveryDTO? Check(LoginDTO login);
-    }
+		Task<int> Reset(string mail);
+
+	}
 }

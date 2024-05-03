@@ -14,22 +14,25 @@ namespace Hatley.Controllers
 	public class UserController : ControllerBase
 	{
 		private readonly IUserDTORepo repo;
-		private readonly string? userType; 
+		private readonly string? userType;
+		private readonly string? email;
 		private readonly IHttpContextAccessor httpContextAccessor;
 		public UserController(IUserDTORepo _Repo,IHttpContextAccessor _httpContextAccessor)
 		{
 			repo = _Repo;
 			httpContextAccessor= _httpContextAccessor;
-			userType = httpContextAccessor.HttpContext?.User.Claims.FirstOrDefault(c => c.Type == "type")?.Value;
-			
+			userType = httpContextAccessor.HttpContext?.User.Claims
+				.FirstOrDefault(c => c.Type == "type")?.Value;
+			email = httpContextAccessor.HttpContext?.User.Claims
+				.FirstOrDefault(c => c.Type == "Email")?.Value;
 		}
 
-		
+
 
 		[HttpGet]
 		public IActionResult getall()
 		{
-			if(userType== "Delivery")
+			if (userType != "Admin")
 			{
 				return Unauthorized();
 			}
@@ -39,15 +42,15 @@ namespace Hatley.Controllers
 		}
 
 
-		[HttpGet("{id:int}")]
-		public IActionResult get(int id)
+		[HttpGet("profile")]
+		public IActionResult get()
 		{
-			if (userType == "Delivery")
+			if (userType != "User")
 			{
 				return Unauthorized();
 			}
 
-			var userdto = repo.GetUser(id);
+			var userdto = repo.GetUser(email);
 			if (userdto == null)
 			{
 				return NotFound("the user is not exist");
@@ -59,10 +62,6 @@ namespace Hatley.Controllers
 		[HttpPost]
 		public IActionResult add(UserDTO userdto)
 		{
-			if (userType == "Delivery")
-			{
-				return Unauthorized();
-			}
 
 			if (ModelState.IsValid == true)
 			{
@@ -83,7 +82,7 @@ namespace Hatley.Controllers
 		[HttpPut("{id:int}")]
 		public IActionResult update([FromRoute]int id,UserDTO userdto)
 		{
-			if (userType == "Delivery")
+			if (userType != "User")
 			{
 				return Unauthorized();
 			}
@@ -114,7 +113,7 @@ namespace Hatley.Controllers
 		[HttpDelete("{id:int}")]
 		public IActionResult delete(int id)
 		{
-			if (userType == "Delivery")
+			if (userType != "User")
 			{
 				return Unauthorized();
 			}

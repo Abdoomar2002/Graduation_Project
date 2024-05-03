@@ -3,16 +3,22 @@ using Hatley.DTO;
 using Hatley.Models;
 using Microsoft.AspNetCore.Http.HttpResults;
 using System.Linq;
+using System.Runtime.Intrinsics.Arm;
+using System.Text;
+using System.Security.Cryptography;
+
 namespace Hatley.Services
 {
 	public class UserDTORepo : IUserDTORepo
 	{
 		private readonly User user;
 		private readonly appDB context;
-		public UserDTORepo(User _user, appDB _con)
+		private readonly MailReset resetmail;
+		public UserDTORepo(User _user, appDB _con, MailReset resetmail)
 		{
 			user = _user;
 			context = _con;
+			this.resetmail = resetmail;
 		}
 
 		public List<UserDTO>? GetUsers()
@@ -35,10 +41,10 @@ namespace Hatley.Services
 			return usersdto;
 		}
 
-		public UserDTO? GetUser(int id)
+		public UserDTO? GetUser(string email)
 		{
 
-			var user = context.users.FirstOrDefault(x => x.User_ID == id);
+			var user = context.users.FirstOrDefault(x => x.Email == email);
 			if (user == null)
 			{
 				return null;
@@ -62,6 +68,7 @@ namespace Hatley.Services
 			{
 				return null;
 			}
+
 			UserDTO userdto = new UserDTO()
 			{
 				Id = user.User_ID,
@@ -77,12 +84,16 @@ namespace Hatley.Services
 		public int Create(UserDTO userdto)
 		{
 			var email = context.users.FirstOrDefault(x => x.Email == userdto.Email);
+			var sha = SHA256.Create();
+			var asByteArray = Encoding.Default.GetBytes(userdto.Password);
+			var pass = sha.ComputeHash(asByteArray);
+			var hashed = Convert.ToBase64String(pass);
 			if (email == null)
 			{
 				user.Name = userdto.Name;
 				user.Email = userdto.Email;
 				user.Phone = userdto.phone;
-				user.Password = userdto.Password;
+				user.Password = hashed;
 				context.users.Add(user);
 				int raw = context.SaveChanges();
 				return raw;
@@ -104,14 +115,18 @@ namespace Hatley.Services
 			{
 				return -2;
 			}
-
-
+			
 			else if (email != null && email.User_ID == olduser.User_ID)
 			{
+				var sha = SHA256.Create();
+				var asByteArray = Encoding.Default.GetBytes(userdto.Password);
+				var pass = sha.ComputeHash(asByteArray);
+				var hashed = Convert.ToBase64String(pass);
+
 				olduser.Name = userdto.Name;
 				olduser.Email = userdto.Email;
 				olduser.Phone = userdto.phone;
-				olduser.Password = userdto.Password;
+				olduser.Password = hashed;
 				int ra = context.SaveChanges();
 				return ra;
 			}
@@ -141,6 +156,43 @@ namespace Hatley.Services
 			return -1;
 		}
 
+
+
+		//######################
+		public string resetPasswordCode()
+		{
+			const string allowedChars = "abcdefghijklmnopqrstuvwxyz1234567890";
+			Random random = new Random();
+			char[] code = new char[6];
+			for (int i = 0; i < 6; i++)
+			{
+				code[i] = allowedChars[random.Next(allowedChars.Length)];
+			}
+			return new string(code);
+		}
+		public async Task<int> Reset(string mail)
+		{
+			var user = context.users.FirstOrDefault(z => z.Email == mail);
+			if (user != null)
+			{
+				string code = resetPasswordCode();
+				await resetmail.SendResetEmailAsync(user.Name, mail, code);
+
+				var sha = SHA256.Create();
+				var asByteArray = Encoding.Default.GetBytes(code);
+				var pass = sha.ComputeHash(asByteArray);
+				var hashed = Convert.ToBase64String(pass);
+
+				user.Password = hashed;
+				int raw = context.SaveChanges();
+				if (raw == 1)
+				{
+					return raw;
+				}
+				return raw;
+			}
+			return -1;
+		}
 
 	}
 }

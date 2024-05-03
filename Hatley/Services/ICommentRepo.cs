@@ -8,6 +8,7 @@ namespace Hatley.Services
 		int Delete(int id);
 		CommentDTO? GetComment(int id);
 		List<CommentDTO>? GetComments();
+		List<CommentDTO>? CommentsForDelivery(string email);
 		int Update(int id, CommentDTO commentdto);
 	}
 }

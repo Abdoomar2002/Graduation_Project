@@ -1,7 +1,6 @@
 ﻿using MailKit.Net.Smtp;
 using MimeKit;
 using System.Net;
-using MimeKit;
 using MailKit.Security;
 
 namespace Hatley.Services

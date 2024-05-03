@@ -14,26 +14,39 @@ namespace Hatley.Controllers
     public class DeliveryController : ControllerBase
     {
         private readonly IDeliveryRepository deliveryRepository;
-		private readonly string? userType; 
+		private readonly string? userType;
+		private readonly string? email;
 		private readonly IHttpContextAccessor httpContextAccessor;
-		private readonly appDB context;
 		public DeliveryController(IDeliveryRepository deliveryRepository,
             IHttpContextAccessor _httpContextAccessor, appDB context)
         {
             this.deliveryRepository = deliveryRepository;
 			httpContextAccessor = _httpContextAccessor;
-			this.context = context;
+			email = httpContextAccessor.HttpContext?.User.Claims
+                .FirstOrDefault(c => c.Type == "Email")?.Value;
+			userType = httpContextAccessor.HttpContext?.User.Claims
+				.FirstOrDefault(c => c.Type == "type")?.Value;
 		}
 		[HttpGet]
         public IActionResult Displayall()
         {
-            List<DeliveryDTO>? deliveryMen = deliveryRepository.Displayall();
+			if (userType != "Admin")
+			{
+				return Unauthorized();
+			}
+
+			List<DeliveryDTO>? deliveryMen = deliveryRepository.Displayall();
             return Ok(deliveryMen);
         }
-        [HttpGet("{id:int}")]
-        public IActionResult Display(int id)
+        [HttpGet("profile")]
+        public IActionResult Display()
         {
-            DeliveryDTO? deliveryMan = deliveryRepository.Display(id);
+			if (userType != "Delivery")
+			{
+				return Unauthorized();
+			}
+
+			DeliveryDTO? deliveryMan = deliveryRepository.Display(email);
             if(deliveryMan == null)
             {
                 return NotFound("Not Found");
@@ -68,7 +81,12 @@ namespace Hatley.Controllers
         [HttpPut("{id:int}")]
         public IActionResult Edit(int id, DeliveryDTO person)
         {
-            if (ModelState.IsValid == true)
+			if (userType != "Delivery")
+			{
+				return Unauthorized();
+			}
+
+			if (ModelState.IsValid == true)
             {
                 int raw = deliveryRepository.Edit(id, person);
                 if (raw == 0)
@@ -86,7 +104,12 @@ namespace Hatley.Controllers
         [HttpDelete("{id:int}")]
         public IActionResult Delete(int id)
         {
-            int raw = deliveryRepository.Delete(id);
+			if (userType != "Delivery")
+			{
+				return Unauthorized();
+			}
+
+			int raw = deliveryRepository.Delete(id);
             if (raw == -1)
             {
                 return NotFound("There is not delivery");

@@ -1,4 +1,4 @@
-﻿namespace Hatley.Services
+﻿/*namespace Hatley.Services
 {
     public interface IPasswordResetService
     {
@@ -8,3 +8,4 @@
 
     }
 }
+*/

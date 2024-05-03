@@ -49,6 +49,28 @@ namespace Hatley.Services
 			return CommentDTO;
 		}
 
+
+		public List<CommentDTO>? CommentsForDelivery(string email)
+		{
+			var delivery = context.delivers.FirstOrDefault(x => x.Email == email);
+			List<Comment> comments = context.comments
+				.Where(x => x.Delivery_ID == delivery.Delivery_ID).ToList();
+
+			if (comments.Count == 0)
+			{
+				return null;
+			}
+			List<CommentDTO> commentsdto = comments.Select(x => new CommentDTO()
+			{
+				Id = x.Comment_ID,
+				Text = x.Text,
+				CreatedAt = x.CreatedAt,
+				Delivery_ID = x.Delivery_ID
+			}).ToList();
+			return commentsdto;
+
+		}
+
 		public int Create(CommentDTO commentdto)
 		{
 			if (commentdto.Delivery_ID == null)

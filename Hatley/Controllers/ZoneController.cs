@@ -18,19 +18,30 @@ namespace Hatley.Controllers
         {
             this.zoneRepository = zoneRepository;
 			httpContextAccessor = _httpContextAccessor;
-			userType = httpContextAccessor.HttpContext?.User.Claims.FirstOrDefault(c => c.Type == "type")?.Value;
+			userType = httpContextAccessor.HttpContext?.User.Claims
+                .FirstOrDefault(c => c.Type == "type")?.Value;
 
 		}
 		[HttpGet]
         public IActionResult Displayall()
         {
-            List<ZoneDTO>? zones = zoneRepository.Displayall();
+			if (userType != "Admin")
+			{
+				return Unauthorized();
+			}
+
+			List<ZoneDTO>? zones = zoneRepository.Displayall();
             return Ok(zones);
         }
         [HttpGet("{id:int}")]
         public IActionResult Display(int id)
         {
-            ZoneDTO? zone = zoneRepository.Display(id);
+			if (userType != "Admin")
+			{
+				return Unauthorized();
+			}
+
+			ZoneDTO? zone = zoneRepository.Display(id);
             if (zone == null)
             {
                 return NotFound("Not Found");
@@ -40,7 +51,12 @@ namespace Hatley.Controllers
         [HttpPost]
         public IActionResult Insert(ZoneDTO item)
         {
-            if (ModelState.IsValid == true)
+			if (userType != "Admin")
+			{
+				return Unauthorized();
+			}
+
+			if (ModelState.IsValid == true)
             {
                 var raw = zoneRepository.Insert(item);
                 if (raw == 0)
@@ -54,7 +70,12 @@ namespace Hatley.Controllers
         [HttpPut("{id:int}")]
         public IActionResult Edit(int id, ZoneDTO item)
         {
-            if (ModelState.IsValid == true)
+			if (userType != "Admin")
+			{
+				return Unauthorized();
+			}
+
+			if (ModelState.IsValid == true)
             {
                 int raw = zoneRepository.Edit(id, item);
                 if (raw == 0)
@@ -68,7 +89,12 @@ namespace Hatley.Controllers
         [HttpDelete("{id:int}")]
         public IActionResult Delete(int id)
         {
-            int raw = zoneRepository.Delete(id);
+			if (userType != "Admin")
+			{
+				return Unauthorized();
+			}
+
+			int raw = zoneRepository.Delete(id);
             if (raw == -1)
             {
                 return NotFound("That zone is not found");
