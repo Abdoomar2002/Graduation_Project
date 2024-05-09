@@ -22,6 +22,8 @@ namespace Hatley.Controllers
                 .FirstOrDefault(c => c.Type == "type")?.Value;
 
 		}
+
+
 		[HttpGet]
         public IActionResult Displayall()
         {
@@ -44,6 +46,8 @@ namespace Hatley.Controllers
             }
             return Ok(zone);
         }
+
+
         [HttpPost]
         public IActionResult Insert(ZoneDTO item)
         {
@@ -63,6 +67,8 @@ namespace Hatley.Controllers
             }
             return BadRequest(ModelState);
         }
+
+
         [HttpPut("{id:int}")]
         public IActionResult Edit(int id, ZoneDTO item)
         {
@@ -82,6 +88,8 @@ namespace Hatley.Controllers
             }
             return BadRequest(ModelState);
         }
+
+
         [HttpDelete("{id:int}")]
         public IActionResult Delete(int id)
         {
