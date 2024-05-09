@@ -3,6 +3,7 @@ using Hatley.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace Hatley.Controllers
 {
@@ -28,8 +29,8 @@ namespace Hatley.Controllers
 		}
 
 
-		[HttpGet("{orderid:int}")]
-		public IActionResult DisplayOffer(int orderid)
+		[HttpGet]
+		public IActionResult DisplayOffer([FromQuery][Required] int orderid)
 		{
 			if (type != "Delivery")
 			{
@@ -46,7 +47,8 @@ namespace Hatley.Controllers
 
 
 		[HttpGet("View")]
-		public IActionResult ViewOffer(int orderid, int value, string email)
+		public IActionResult ViewOffer([FromQuery][Required] int orderid
+			,[FromQuery][Required] int value,[FromQuery][Required] string email)
 		{
 			if (type != "User")
 			{
@@ -63,7 +65,7 @@ namespace Hatley.Controllers
 
 
 		[HttpGet("Delivery/Accept")]
-		public IActionResult DeliveryAcceptOffer(int orderid)
+		public IActionResult DeliveryAcceptOffer([FromQuery][Required]int orderid)
 		{
 			if (type != "Delivery")
 			{
@@ -83,7 +85,8 @@ namespace Hatley.Controllers
 		}
 
 		[HttpGet("User/Accept")]
-		public IActionResult UserAcceptOffer(int orderid,string email)
+		public IActionResult UserAcceptOffer([FromQuery][Required]int orderid
+			,[FromQuery][Required]string email)
 		{
 			if (type != "User")
 			{

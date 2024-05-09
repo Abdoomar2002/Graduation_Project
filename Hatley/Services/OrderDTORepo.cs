@@ -35,8 +35,11 @@ namespace Hatley.Services
 				east = x.East,
 				order_governorate_from = x.Order_governorate_from,
 				order_zone_from = x.Order_zone_from,
+				order_city_from = x.Order_city_from,
 				order_governorate_to = x.Order_governorate_to,
 				order_zone_to = x.Order_zone_to,
+				order_city_to = x.Order_city_to,
+				detailes_address = x.Detailes_address,
 				order_time = x.Order_time,
 				created = x.Created,
 				User_ID = x.User_ID,
@@ -45,40 +48,67 @@ namespace Hatley.Services
 			return ordersdto;
 		}
 
-		public List<OrderDTO>? DisplayRelatedOrdersForDelivery(string email)
+
+		public List<RelatedOrdersForDeliveryDTO>? DisplayRelatedOrdersForDelivery(string email)
 		{
 			var delivery = context.delivers.FirstOrDefault(x => x.Email == email);
-			List<Order> orders = context.orders.ToList();
+			List<Order> orders = context.orders.Where(x=>x.Delivery_ID == null).ToList();
 			if(orders == null)
 			{
 				return null;
 			}
+
+
+			List<int?> userIds = orders
+				.Select(x => x.User_ID)
+				.ToList();
+			List<User> users = context.users
+				.Where(x => userIds.Contains(x.User_ID))
+				.ToList();
+			/*List<int> ratings = context.ratings
+				.Where(x => userIds.Contains(x.User_ID))
+				.Select(x => x.Value)
+				.ToList();*/
+
+
 			var governorate = context.governorates
 				.FirstOrDefault(x => x.Governorate_ID == delivery.Governorate_ID);
 			var zone = context.zones
 				.FirstOrDefault(x => x.Zone_ID == delivery.Zone_ID);
 
-			List<OrderDTO> ordersdto = orders
-				.Where(x => x.Delivery_ID == null &&
-				x.Order_governorate_from == governorate.Name && x.Order_zone_from == zone.Name)
-				.Select(x => new OrderDTO()
-			{
-				Id = x.Order_ID,
-				description = x.Description,
-				price = x.Price,
-				status = x.Status,
-				north = x.North,
-				east = x.East,
-				order_governorate_from = x.Order_governorate_from,
-				order_zone_from = x.Order_zone_from,
-				order_governorate_to = x.Order_governorate_to,
-				order_zone_to = x.Order_zone_to,
-				order_time = x.Order_time,
-				created = x.Created,
-				User_ID = x.User_ID,
-				Delivery_ID = x.Delivery_ID
-			}).ToList();
-			
+			List<RelatedOrdersForDeliveryDTO> ordersdto = orders
+				.Join(users,
+					o => o.User_ID,
+					u => u.User_ID,
+					(o, u) => new { Order = o, User = u })
+				.Where(our => our.Order.Order_governorate_to == governorate?.Name
+				&& our.Order.Order_zone_to == zone?.Name)
+				.Select(our => new RelatedOrdersForDeliveryDTO()
+				{
+					Id = our.Order.Order_ID,
+					description = our.Order.Description,
+					price = our.Order.Price,
+					status = our.Order.Status,
+					order_governorate_from = our.Order.Order_governorate_from,
+					order_zone_from = our.Order.Order_zone_from,
+					order_city_from = our.Order.Order_city_from,
+					order_governorate_to = our.Order.Order_governorate_to,
+					order_zone_to = our.Order.Order_zone_to,
+					order_city_to = our.Order.Order_city_to,
+					detailes_address = our.Order.Detailes_address,
+					order_time = our.Order.Order_time,
+					created = our.Order.Created,
+					User_ID = our.Order.User_ID,
+					Delivery_ID = our.Order.Delivery_ID,
+
+					user_name = our.User.Name, 
+					user_photo = our.User.Photo,
+					//user_avg_rate = ratings.Average(),
+					//user_count_rate = ratings.Count()
+
+				}).ToList();
+
+
 			return ordersdto;
 
 		}
@@ -93,12 +123,14 @@ namespace Hatley.Services
 								.FirstOrDefault();
 
 				List<Order> orders = context.orders.
-					Where(x => x.Delivery_ID == deliveryrid).ToList();
+					Where(x => x.Delivery_ID == deliveryrid)
+					.OrderBy(x=>x.Status).ToList();
 
 				if (orders.Count == 0)
 				{
 					return null;
 				}
+
 				List<OrderDTO> ordersdto = orders.Select(x => new OrderDTO()
 				{
 					Id = x.Order_ID,
@@ -106,8 +138,11 @@ namespace Hatley.Services
 					price = x.Price,
 					order_governorate_from = x.Order_governorate_from,
 					order_zone_from = x.Order_zone_from,
+					order_city_from = x.Order_city_from,
 					order_governorate_to = x.Order_governorate_to,
 					order_zone_to = x.Order_zone_to,
+					order_city_to = x.Order_city_to,
+					detailes_address = x.Detailes_address,
 					north = x.North,
 					east = x.East,
 					created = x.Created,
@@ -120,13 +155,15 @@ namespace Hatley.Services
 				return ordersdto;
 			}
 
+			//******************** User ******************************
 			int userid = context.users
 						.Where(x => x.Email == mail)
 						.Select(x => x.User_ID)
 						.FirstOrDefault();
 
 			List<Order> ordersuser = context.orders.
-				Where(x => x.User_ID == userid && x.Status<3).ToList();
+				Where(x => x.User_ID == userid && x.Status<3 )
+				.OrderBy(x=>x.Status).ToList();
 
 			if (ordersuser.Count == 0)
 			{
@@ -139,8 +176,11 @@ namespace Hatley.Services
 				price = x.Price,
 				order_governorate_from = x.Order_governorate_from,
 				order_zone_from = x.Order_zone_from,
+				order_city_from = x.Order_city_from,
 				order_governorate_to = x.Order_governorate_to,
 				order_zone_to = x.Order_zone_to,
+				order_city_to = x.Order_city_to,
+				detailes_address = x.Detailes_address,
 				north = x.North,
 				east = x.East,
 				created = x.Created,
@@ -157,26 +197,50 @@ namespace Hatley.Services
 		public List<DeliveriesUserDTO>? Deliveries(string email)
 		{
 			var user = context.users.FirstOrDefault(x=>x.Email == email);
+
 			List<Order> orders = context.orders.
 				Where(x=>x.User_ID==user.User_ID && x.Status==3).ToList();
-			List<int> rate = context.ratings.Where(x=>x.User_ID == user.User_ID)
-				.Select(x=>x.Value).ToList();
+			/*List<int> rate = context.ratings.Where(x=>x.User_ID == user.User_ID)
+				.Select(x=>x.Value).ToList();*/
 			if (orders.Count == 0)
 			{
 				return null;
 			}
+
+
+			/*if(rate.Count == 0)
+			{
+				List<DeliveriesUserDTO> orderdto = orders.Select(x => new DeliveriesUserDTO()
+				{
+					Id = x.Order_ID,
+					description = x.Description,
+					price = x.Price,
+					status = x.Status,
+					order_city_from = x.Order_city_from,
+					order_city_to = x.Order_city_to,
+					order_time = x.Order_time,
+					detailes_address = x.Detailes_address,
+					created = x.Created,
+					user_name = user.Name,// may be zero here
+				}).ToList();
+
+				return orderdto;
+			}
+*/
+
 			List<DeliveriesUserDTO> ordersdto = orders.Select(x => new DeliveriesUserDTO()
 			{
 				Id = x.Order_ID,
 				description = x.Description,
 				price = x.Price,
 				status = x.Status,
-				order_zone_from = x.Order_zone_from,
-				order_zone_to = x.Order_zone_to,
+				order_city_from = x.Order_city_from,
+				order_city_to = x.Order_city_to,
 				order_time = x.Order_time,
+				detailes_address = x.Detailes_address,
 				created = x.Created,
 				user_name = user.Name,// may be zero here
-				user_avg_rate = rate.Average(),
+				//user_avg_rate = Math.Round(rate.Average(), 1)
 			}).ToList();
 
 			return ordersdto;
@@ -200,8 +264,11 @@ namespace Hatley.Services
 				east = order.East,
 				order_governorate_from = order.Order_governorate_from,
 				order_zone_from = order.Order_zone_from,
+				order_city_from = order.Order_city_from,
 				order_governorate_to = order.Order_governorate_to,
 				order_zone_to = order.Order_zone_to,
+				order_city_to = order.Order_city_to,
+				detailes_address = order.Detailes_address,
 				order_time = order.Order_time,
 				created = order.Created,
 				User_ID = order.User_ID,
@@ -210,6 +277,7 @@ namespace Hatley.Services
 			};
 			return orderdto;
 		}
+
 
 		public int Create(OrderDTO orderdto,string email)
 		{
@@ -222,8 +290,11 @@ namespace Hatley.Services
 			order.East = orderdto.east;
 			order.Order_governorate_from = orderdto.order_governorate_from;
 			order.Order_zone_from = orderdto.order_zone_from;
+			order.Order_city_from = orderdto.order_city_from;
 			order.Order_governorate_to = orderdto.order_governorate_to;
 			order.Order_zone_to = orderdto.order_zone_to;
+			order.Order_city_to = orderdto.order_city_to;
+			order.Detailes_address = orderdto.detailes_address;
 			order.Order_time = orderdto.order_time;
 			order.Created = DateTime.Now;
 			order.User_ID = user.User_ID;
@@ -247,8 +318,11 @@ namespace Hatley.Services
 			oldorder.East = orderdto.east;
 			oldorder.Order_governorate_from=orderdto.order_governorate_from;
 			oldorder.Order_zone_from=orderdto.order_zone_from;
+			oldorder.Order_city_from=orderdto.order_city_from;
 			oldorder.Order_governorate_to = orderdto.order_governorate_to;
 			oldorder.Order_zone_to = orderdto.order_zone_to;
+			oldorder.Order_city_to = orderdto.order_city_to;
+			oldorder.Detailes_address = orderdto.detailes_address;
 			oldorder.Order_time = orderdto.order_time;
 			//oldorder.Location = orderdto.location;
 			//oldorder.Status = orderdto.Status;

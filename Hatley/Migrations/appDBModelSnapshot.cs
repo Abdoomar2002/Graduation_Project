@@ -127,9 +127,6 @@ namespace Hatley.Migrations
                     b.Property<string>("Photo")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ResetTokenForDelivery")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int?>("Zone_ID")
                         .HasColumnType("int");
 
@@ -178,11 +175,20 @@ namespace Hatley.Migrations
                         .HasMaxLength(2000)
                         .HasColumnType("nvarchar(2000)");
 
+                    b.Property<string>("Detailes_address")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<double?>("East")
                         .HasColumnType("float");
 
                     b.Property<double?>("North")
                         .HasColumnType("float");
+
+                    b.Property<string>("Order_city_from")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Order_city_to")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Order_governorate_from")
                         .IsRequired()
@@ -277,9 +283,6 @@ namespace Hatley.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Photo")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ResetTokenForUser")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("User_ID");
@@ -381,7 +384,7 @@ namespace Hatley.Migrations
             modelBuilder.Entity("Hatley.Models.Rating", b =>
                 {
                     b.HasOne("Hatley.Models.Delivery", "Delivery")
-                        .WithMany()
+                        .WithMany("ratings")
                         .HasForeignKey("Delivery_ID");
 
                     b.HasOne("Hatley.Models.User", "User")
@@ -406,6 +409,8 @@ namespace Hatley.Migrations
             modelBuilder.Entity("Hatley.Models.Delivery", b =>
                 {
                     b.Navigation("Comments");
+
+                    b.Navigation("ratings");
                 });
 
             modelBuilder.Entity("Hatley.Models.Governorate", b =>

@@ -87,6 +87,34 @@ namespace Hatley.Services
 
 		}
 
+
+		public List<Last5RatingForDeliveryDTO>? Last5(string email)
+		{
+			var delivery = context.delivers.FirstOrDefault(x => x.Email == email);
+			if (delivery == null)
+			{
+				return null;
+			}
+
+			List<Rating> last5Ratings = context.ratings
+				.Where(x => x.Delivery_ID == delivery.Delivery_ID)
+				.OrderByDescending(x => x.CreatedAt)
+				.Take(5)
+				.ToList();
+			if (last5Ratings.Count == 0)
+			{
+				return null;
+			}
+
+			List<Last5RatingForDeliveryDTO> last = last5Ratings.Select(x => new Last5RatingForDeliveryDTO()
+			{
+				name = x.Rating_from,
+				value = x.Value
+			}).ToList();
+			return last;
+
+		}
+
 		public RatingDTO? GetRating(int id)
 		{
 			var rating = context.ratings.FirstOrDefault(x => x.Rating_ID == id);
@@ -118,7 +146,8 @@ namespace Hatley.Services
 					.Select(x => x.Name)
 					.FirstOrDefault();
 				
-				int? createdto = context.orders.Where(x => x.Order_ID == order_id)
+				int? createdto = context.orders
+					.Where(x => x.Order_ID == order_id && x.Delivery_ID != null)
 					.Select(x => x.User_ID)
 					.FirstOrDefault();
 				if(createdto == null)
@@ -134,11 +163,14 @@ namespace Hatley.Services
 				return r;
 			}
 
+			//********************** User ***********************
+
 			string? creatfrom = context.users
 					.Where(x => x.Email == mail)
 					.Select(x => x.Name)
 					.FirstOrDefault();
-			int? creatto = context.orders.Where(x => x.Order_ID == order_id)
+			int? creatto = context.orders
+				.Where(x => x.Order_ID == order_id && x.Delivery_ID != null)
 				.Select(x => x.Delivery_ID)
 				.FirstOrDefault();
 			if (creatto == null)

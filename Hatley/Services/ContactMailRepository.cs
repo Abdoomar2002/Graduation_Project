@@ -33,7 +33,7 @@ namespace Hatley.Services
             var smtp = new SmtpClient();
             smtp.ServerCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true;
             smtp.Connect(confg["MailSettings:Host"], Convert.ToInt32(confg["MailSettings:Port"]), SecureSocketOptions.StartTls);
-            smtp.Authenticate(confg["MailSettings:Email"], confg["MailSettings:Password"]);
+            smtp.Authenticate(confg["MailSettings:Email"], confg["Password"]);
             await smtp.SendAsync(mail);
 
             smtp.Disconnect(true);

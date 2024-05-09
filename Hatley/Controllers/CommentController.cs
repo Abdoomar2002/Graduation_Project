@@ -46,7 +46,7 @@ namespace Hatley.Controllers
 			return Ok(commentsdto);
 		}
 
-
+		[HttpGet("Delivery")]
 		public IActionResult GetAllForDelivery()
 		{
 			if (userType != "Admin" && userType != "Delivery")
@@ -74,14 +74,14 @@ namespace Hatley.Controllers
 			var comment = repo.GetComment(id);
 			if (comment == null)
 			{
-				return NotFound("the order is not exist");
+				return NotFound("the Comment is not exist");
 			}
 			return Ok(comment);
 		}
 
 
 		[HttpPost]
-		public IActionResult add(CommentDTO commentdto)
+		public IActionResult add([FromBody]CommentDTO commentdto)
 		{
 			if (userType != "User")
 			{
@@ -113,7 +113,7 @@ namespace Hatley.Controllers
 
 
 		[HttpPut("{id:int}")]
-		public IActionResult edit(int id, CommentDTO commentdto)
+		public IActionResult edit(int id,[FromBody]CommentDTO commentdto)
 		{
 			if (userType != "User")
 			{

@@ -25,10 +25,6 @@ namespace Hatley.Controllers
 		[HttpGet]
         public IActionResult Displayall()
         {
-			if (userType != "Admin")
-			{
-				return Unauthorized();
-			}
 
 			List<ZoneDTO>? zones = zoneRepository.Displayall();
             return Ok(zones);

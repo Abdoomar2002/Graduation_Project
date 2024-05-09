@@ -51,7 +51,7 @@ namespace Hatley.Controllers
 				return Unauthorized();
 			}
 
-			List<OrderDTO> orders = repo.DisplayRelatedOrdersForDelivery(email);
+			List<RelatedOrdersForDeliveryDTO>? orders = repo.DisplayRelatedOrdersForDelivery(email);
 			if (orders == null)
 			{
 				return BadRequest("Not exist related orders");
@@ -98,11 +98,11 @@ namespace Hatley.Controllers
 			return Ok(order);
 		}
 
-		[HttpGet("ReOrder/{orderId:int}")]
-		public IActionResult ReOrder(int oderid)
+		[HttpGet("ReOrder/{orderid:int}")]
+		public IActionResult ReOrder(int orderid)
 		{
 
-			var order = repo.GetOrder(oderid);
+			var order = repo.GetOrder(orderid);
 			if (order == null)
 			{
 				return NotFound("the order is not exist");
@@ -112,7 +112,7 @@ namespace Hatley.Controllers
 
 
 		[HttpPost]
-		public IActionResult add(OrderDTO order)
+		public IActionResult add([FromBody]OrderDTO order)
 		{
 			if (type != "User")
 			{
@@ -136,7 +136,7 @@ namespace Hatley.Controllers
 
 
 		[HttpPut("{id:int}")]
-		public IActionResult edit(int id , OrderDTO orderdto)
+		public IActionResult edit(int id ,[FromBody] OrderDTO orderdto)
 		{
 			if (type != "User")
 			{

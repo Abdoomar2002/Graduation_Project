@@ -2,10 +2,10 @@
 {
     public class ZoneDTO
     {
-        public int Zone_ID { get; set; }
-        public string Name { get; set; }
-        public double North { get; set; }
-        public double East { get; set; }
-        public int? Governorate_ID { get; set; }
+        public int zone_id { get; set; }
+        public string name { get; set; }
+        public double north { get; set; }
+        public double east { get; set; }
+        public int? governorate_id { get; set; }
     }
 }

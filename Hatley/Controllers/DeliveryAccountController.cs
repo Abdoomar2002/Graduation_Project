@@ -3,6 +3,7 @@ using Hatley.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using System.ComponentModel.DataAnnotations;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
@@ -25,6 +26,7 @@ namespace Hatley.Controllers
             this.config = config;
            // this.passwordResetService = passwordResetService;
         }
+
         [HttpPost("register")]
         public async Task<IActionResult> Insert([FromForm]DeliveryDTO deliveryDTO,
 			IFormFile frontImage, IFormFile backImage, IFormFile faceImage)
@@ -54,8 +56,10 @@ namespace Hatley.Controllers
             }
             return BadRequest(ModelState);
         }
+
+
         [HttpPost("login")]
-        public IActionResult Login(LoginDTO login)
+        public IActionResult Login([FromBody]LoginDTO login)
         {
             login.Email = login.Email.ToLower();
 
@@ -69,14 +73,14 @@ namespace Hatley.Controllers
 				claims.Add(new Claim("type", "Admin"));
 				claims.Add(new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()));
 
-				SecurityKey securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["JWT:Secret"]));
+				SecurityKey securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Secret"]));
 				SigningCredentials signincred = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
 				JwtSecurityToken newtoken = new JwtSecurityToken(
 					issuer: config["JWT:ValidIssuer"],
 					audience: config["JWT:ValidAudiance"],
 					claims: claims,
-					expires: DateTime.Now.AddHours(1),
+					expires: DateTime.Now.AddHours(24),
 					signingCredentials: signincred
 					);
 				return Ok(new
@@ -99,14 +103,14 @@ namespace Hatley.Controllers
                     claims.Add(new Claim("type", "Delivery"));
                     claims.Add(new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()));
 
-                    SecurityKey securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["JWT:Secret"]));
+                    SecurityKey securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Secret"]));
                     SigningCredentials signincred = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
                     JwtSecurityToken newtoken = new JwtSecurityToken(
                         issuer: config["JWT:ValidIssuer"],
                         audience: config["JWT:ValidAudiance"],
                         claims: claims,
-                        expires: DateTime.Now.AddHours(1),
+                        expires: DateTime.Now.AddHours(24),
                         signingCredentials: signincred
                         );
                     return Ok(new
@@ -117,7 +121,7 @@ namespace Hatley.Controllers
                 }
                 return BadRequest("Password is not correct");
             }
-            return Unauthorized("Email not correct");
+            return NotFound("Email not correct");
         }
 
         [HttpGet("logout")]
@@ -130,7 +134,7 @@ namespace Hatley.Controllers
 
 
 		[HttpGet("forget")]
-		public async Task<IActionResult> forgetPassword(string mail)
+		public async Task<IActionResult> forgetPassword([FromQuery][Required] string mail)
 		{
 			var raw = await deliveryRepo.Reset(mail);
 			if (raw == 1)

@@ -34,6 +34,7 @@ namespace Hatley.Models
 		[ForeignKey("Zone_ID")]
 		public virtual Zone? Zone { get; set; }
 		public ICollection<Comment> Comments { get; set; } = new List<Comment>();
-        public string? ResetTokenForDelivery { get; set; }
+		public ICollection<Rating> ratings { get; set; } = new List<Rating>();
+        //public string? ResetTokenForDelivery { get; set; }
     }
 }

@@ -60,7 +60,7 @@ namespace Hatley.Controllers
 
 
 		[HttpPost]
-		public IActionResult add(UserDTO userdto)
+		public IActionResult add([FromBody] UserDTO userdto)
 		{
 
 			if (ModelState.IsValid == true)
@@ -80,7 +80,7 @@ namespace Hatley.Controllers
 
 
 		[HttpPut("{id:int}")]
-		public IActionResult update([FromRoute]int id,UserDTO userdto)
+		public IActionResult update(int id,[FromBody]UserDTO userdto)
 		{
 			if (userType != "User")
 			{

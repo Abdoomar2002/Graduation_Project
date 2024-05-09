@@ -23,14 +23,16 @@ namespace Hatley.Services
             }
             List<ZoneDTO> zonesDTO = zones.Select(x => new ZoneDTO()
             {
-                Zone_ID = x.Zone_ID,
-                Name = x.Name,
-                North = x.North,
-                East = x.East,
-                Governorate_ID = x.Governorate_ID
+                zone_id = x.Zone_ID,
+                name = x.Name,
+                north = x.North,
+                east = x.East,
+                governorate_id = x.Governorate_ID
             }).ToList();
             return zonesDTO;
         }
+
+
         public ZoneDTO? Display(int id)
         {
             var zone = context.zones.FirstOrDefault(x => x.Zone_ID == id);
@@ -40,34 +42,34 @@ namespace Hatley.Services
             }
             ZoneDTO zoneDTO = new ZoneDTO()
             {
-                Zone_ID = zone.Zone_ID,
-                Name = zone.Name,
-                North = zone.North,
-                East = zone.East,
-                Governorate_ID= zone.Governorate_ID
+                zone_id = zone.Zone_ID,
+                name = zone.Name,
+                north = zone.North,
+                east = zone.East,
+                governorate_id= zone.Governorate_ID
             };
             return zoneDTO;
         }
         public int Insert(ZoneDTO item)
         {
-            var north = context.zones.FirstOrDefault(x => x.North == item.North);
+            var north = context.zones.FirstOrDefault(x => x.North == item.north);
             //var east = context.zones.FirstOrDefault(x => x.East == item.East);
             if (north == null)// && east == null)
             {
-                zone.Name = item.Name;
-                zone.Governorate_ID = item.Governorate_ID;
-                zone.East = item.East;
-                zone.North = item.North;
+                zone.Name = item.name;
+                zone.Governorate_ID = item.governorate_id;
+                zone.East = item.east;
+                zone.North = item.north;
                 context.zones.Add(zone);
                 context.SaveChanges();
                 return 1;
             }
-            else if(north != null && north.East != item.East)
+            else if(north != null && north.East != item.east)
             {
-                zone.Name = item.Name;
-                zone.Governorate_ID = item.Governorate_ID;
-                zone.East = item.East;
-                zone.North = item.North;
+                zone.Name = item.name;
+                zone.Governorate_ID = item.governorate_id;
+                zone.East = item.east;
+                zone.North = item.north;
                 context.zones.Add(zone);
                 context.SaveChanges();
                 return 1;
@@ -77,22 +79,22 @@ namespace Hatley.Services
         public int Edit(int id, ZoneDTO item)
         {
             var oldzone = context.zones.FirstOrDefault(x => x.Zone_ID == id);
-            var north = context.zones.FirstOrDefault(x => x.North == item.North);
+            var north = context.zones.FirstOrDefault(x => x.North == item.north);
             if (north == null)
             {
-                oldzone.Name = item.Name;
-                oldzone.Governorate_ID = item.Governorate_ID;
-                oldzone.East = item.East;
-                oldzone.North = item.North;
+                oldzone.Name = item.name;
+                oldzone.Governorate_ID = item.governorate_id;
+                oldzone.East = item.east;
+                oldzone.North = item.north;
                 int raw =context.SaveChanges();
                 return raw;
             }
-            else if (north != null && oldzone.East == item.East && oldzone.Zone_ID == item.Zone_ID)
+            else if (north != null && oldzone.East == item.east && oldzone.Zone_ID == item.zone_id)
             {
-                oldzone.Name = item.Name;
-                oldzone.Governorate_ID = item.Governorate_ID;
-                oldzone.East = item.East;
-                oldzone.North = item.North;
+                oldzone.Name = item.name;
+                oldzone.Governorate_ID = item.governorate_id;
+                oldzone.East = item.east;
+                oldzone.North = item.north;
                 int raw = context.SaveChanges();
                 return raw;
             }

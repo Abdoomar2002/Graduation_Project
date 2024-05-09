@@ -8,7 +8,6 @@ namespace Hatley.Controllers
 {
 	[Route("api/[controller]")]
 	[ApiController]
-	[Authorize]
 	public class MailingController : ControllerBase
 	{
 		private readonly IMailingRepo mailingrepo;
@@ -21,8 +20,13 @@ namespace Hatley.Controllers
 		[HttpPost("send")]
 		public async Task<IActionResult> SendMail([FromForm] MailRequestDTO dto)
 		{
-			await mailingrepo.SendEmailAsync(dto.name, dto.toEmail, dto.phone, dto.order_ID, dto.body);
-			return Ok();
+            if (ModelState.IsValid)
+            {
+				await mailingrepo.SendEmailAsync(dto.name, dto.toEmail, dto.phone, dto.order_ID, dto.body);
+				return Ok();
+			}
+			return BadRequest(ModelState);
+
 		}
 	}
 }

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using System.ComponentModel.DataAnnotations;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
@@ -27,7 +28,7 @@ namespace Hatley.Controllers
 		}
 
 		[HttpPost("register")]
-        public IActionResult Rigister(UserDTO userdto) 
+        public IActionResult Rigister([FromBody]UserDTO userdto) 
 		{
 			if (ModelState.IsValid == true)
 			{
@@ -49,7 +50,7 @@ namespace Hatley.Controllers
 		}
 
 		[HttpPost("login")]
-		public IActionResult Login(LoginDTO login)
+		public IActionResult Login([FromBody]LoginDTO login)
 		{
 			login.Email = login.Email.ToLower();
 
@@ -63,14 +64,14 @@ namespace Hatley.Controllers
 				claims.Add(new Claim("type", "Admin"));
 				claims.Add(new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()));
 
-				SecurityKey securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["JWT:Secret"]));
+				SecurityKey securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Secret"]));
 				SigningCredentials signincred = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
 				JwtSecurityToken newtoken = new JwtSecurityToken(
 					issuer: config["JWT:ValidIssuer"],
 					audience: config["JWT:ValidAudiance"],
 					claims: claims,
-					expires: DateTime.Now.AddHours(1),
+					expires: DateTime.Now.AddHours(24),
 					signingCredentials: signincred
 					);
 				return Ok(new
@@ -96,7 +97,7 @@ namespace Hatley.Controllers
 					//get role
 					
 					SecurityKey securityKey =
-						new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["JWT:Secret"]));
+						new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Secret"]));
 
 					SigningCredentials signincred =
 						new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
@@ -105,7 +106,7 @@ namespace Hatley.Controllers
 						issuer: config["JWT:ValidIssuer"],//url web api
 						audience: config["JWT:ValidAudiance"],//url consumer angular
 						claims: claims,
-						expires: DateTime.Now.AddHours(1),
+						expires: DateTime.Now.AddHours(24),
 						signingCredentials: signincred
 						);
 					return Ok(new
@@ -116,8 +117,9 @@ namespace Hatley.Controllers
 				}
 				return BadRequest("Password not correct");
 			}
-			return Unauthorized("Email not correct");
+			return NotFound("Email not correct");
 		}
+
 
         [HttpGet("logout")]
         public IActionResult logout()
@@ -129,7 +131,7 @@ namespace Hatley.Controllers
 
 
 		[HttpGet("forget")]
-		public async Task<IActionResult> forgetPassword(string mail)
+		public async Task<IActionResult> forgetPassword([FromQuery][Required]string mail)
 		{
 			var raw = await repo.Reset(mail);
 			if (raw == 1)

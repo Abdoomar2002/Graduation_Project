@@ -22,7 +22,7 @@ namespace Hatley.Services
 				return null;
 			}
 
-			List<int> rate = context.ratings.Where(x => x.User_ID == order.User_ID)
+			/*List<int> rate = context.ratings.Where(x => x.User_ID == order.User_ID)
 				.Select(x => x.Value).ToList();
 			if (rate.Count == 0)
 			{
@@ -39,7 +39,7 @@ namespace Hatley.Services
 					
 				};
 				return offerdt;
-			}
+			}*/
 
 			OfferDTO offerdto = new OfferDTO()
 			{
@@ -51,8 +51,8 @@ namespace Hatley.Services
 				to = order.Order_zone_to,
 				price = order.Price,
 				delivery_email = email,
-				user_avg_rate = rate.Average(),
-				user_count_rate = rate.Count()
+				//user_avg_rate = Math.Round(rate.Average(), 1),
+				//user_count_rate = rate.Count()
 			};
 			return offerdto;
 
@@ -90,7 +90,7 @@ namespace Hatley.Services
 				delivery_id = delivery.Delivery_ID,
 				userid = userid,
 				offer_value = value,
-				delivery_avg_rate = rate.Average(),
+				delivery_avg_rate = Math.Round(rate.Average(), 1),
 				delivery_count_rate = rate.Count() 
 			};
 			return view;

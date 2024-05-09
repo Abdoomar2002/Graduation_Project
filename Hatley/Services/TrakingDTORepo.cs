@@ -19,7 +19,8 @@ namespace Hatley.Services
 				var delivery = context.delivers.FirstOrDefault(x => x.Email == email);
 
 				List<Order> trakings = context.orders.
-					Where(x => x.Delivery_ID == delivery.Delivery_ID).ToList();
+					Where(x => x.Delivery_ID == delivery.Delivery_ID)
+					.OrderBy(x => x.Status).ToList();
 
 				if (trakings.Count == 0)
 				{
@@ -46,7 +47,8 @@ namespace Hatley.Services
 			var user = context.users.FirstOrDefault(x => x.Email == email);
 
 			List<Order> traking = context.orders.
-				Where(x => x.User_ID == user.User_ID).ToList();
+				Where(x => x.User_ID == user.User_ID && x.Delivery_ID!=null)
+				.OrderBy(x => x.Status).ToList();
 
 			if (traking.Count == 0)
 			{
@@ -58,7 +60,8 @@ namespace Hatley.Services
 				order_time = x.Order_time,
 				status = x.Status,
 				from = x.Order_zone_from,
-				to = x.Order_zone_to
+				to = x.Order_zone_to,
+				delivery_id = x.Delivery_ID
 				/*to = x.Order_zone_to != null ? x.Order_zone_to : context.zones
 										.Where(y => y.North == x.North && y.East == x.East)
 										.Select(y => y.Name)

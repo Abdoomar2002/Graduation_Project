@@ -9,6 +9,7 @@ namespace SendEmailsWithDotNet5.Dtos
 		[Required]
 		public string name { get; set; }
 		[Required]
+		[EmailAddress]
 		public string toEmail { get; set; }
         [Required]
         public string phone { get; set; }

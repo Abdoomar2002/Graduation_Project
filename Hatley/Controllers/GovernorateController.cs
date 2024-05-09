@@ -23,17 +23,17 @@ namespace Hatley.Controllers
                 .FirstOrDefault(c => c.Type == "type")?.Value;
 
 		}
+
+
 		[HttpGet]
         public IActionResult Displayall()
         {
-			if (userType != "Admin")
-			{
-				return Unauthorized();
-			}
 
 			List<GovernorateDTO>? governorates = governorateRepository.Displayall();
             return Ok(governorates);
         }
+
+
         [HttpGet("{id:int}")]
         public IActionResult Display(int id)
         {
@@ -49,8 +49,10 @@ namespace Hatley.Controllers
             }
             return Ok(governorate);
         }
+
+
         [HttpPost]
-        public IActionResult Insert(GovernorateDTO newGovernorate)
+        public IActionResult Insert([FromBody]GovernorateDTO newGovernorate)
         {
 			if (userType != "Admin")
 			{
@@ -70,7 +72,7 @@ namespace Hatley.Controllers
         }
 
         [HttpPut("{id:int}")]
-        public IActionResult Edit(int id, GovernorateDTO editGovernorate)
+        public IActionResult Edit(int id, [FromBody] GovernorateDTO editGovernorate)
         {
 			if (userType != "Admin")
 			{
@@ -92,6 +94,8 @@ namespace Hatley.Controllers
             }
             return BadRequest(ModelState);
         }
+
+
         [HttpDelete("{id:int}")]
         public IActionResult Delete(int id)
         {

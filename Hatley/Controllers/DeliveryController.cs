@@ -27,6 +27,8 @@ namespace Hatley.Controllers
 			userType = httpContextAccessor.HttpContext?.User.Claims
 				.FirstOrDefault(c => c.Type == "type")?.Value;
 		}
+
+
 		[HttpGet]
         public IActionResult Displayall()
         {
@@ -38,6 +40,8 @@ namespace Hatley.Controllers
 			List<DeliveryDTO>? deliveryMen = deliveryRepository.Displayall();
             return Ok(deliveryMen);
         }
+
+
         [HttpGet("profile")]
         public IActionResult Display()
         {
@@ -53,13 +57,21 @@ namespace Hatley.Controllers
             }
             return Ok(deliveryMan);
         }
+
+
         [HttpPost]
         public async Task<IActionResult> Insert([FromForm]DeliveryDTO deliveryDTO,
 			IFormFile frontImage, IFormFile backImage, IFormFile faceImage)
         {
             if(ModelState.IsValid == true)
             {
-                var raw = await deliveryRepository.Insert(deliveryDTO, frontImage, backImage, faceImage);
+				deliveryDTO.Email = deliveryDTO.Email.ToLower();
+				if (deliveryDTO.Email == "abdullahsalah219@gmail.com")
+				{
+					return BadRequest("The email not valid");
+				}
+
+				var raw = await deliveryRepository.Insert(deliveryDTO, frontImage, backImage, faceImage);
 				if(raw == "0")
 
 				{
@@ -79,7 +91,9 @@ namespace Hatley.Controllers
             return BadRequest(ModelState);
         }
         [HttpPut("{id:int}")]
-        public IActionResult Edit(int id, DeliveryDTO person)
+
+
+        public IActionResult Edit(int id,[FromBody] DeliveryDTO person)
         {
 			if (userType != "Delivery")
 			{

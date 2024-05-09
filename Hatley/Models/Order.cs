@@ -13,8 +13,11 @@ namespace Hatley.Models
 		[Required]
 		public string Order_governorate_from { get; set; }
 		public string Order_zone_from { get; set; }
+		public string? Order_city_from { get; set; }
 		public string? Order_governorate_to { get; set; }
 		public string? Order_zone_to { get; set; }
+		public string? Order_city_to { get; set; }
+		public string? Detailes_address { get; set; }
 		public double? North { get; set; }
 		public double? East { get; set; }
 		public DateTime Created { get; set; }

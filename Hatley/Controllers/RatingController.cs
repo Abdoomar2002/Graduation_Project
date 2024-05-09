@@ -3,6 +3,7 @@ using Hatley.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
 
 namespace Hatley.Controllers
@@ -44,9 +45,15 @@ namespace Hatley.Controllers
 			return Ok(ratingsdto);
 		}
 
+
 		[HttpGet("Ratings")]
 		public IActionResult getallforuserordelivery()
 		{
+			if (type != "Delivery")
+			{
+				return Unauthorized();
+			}
+
 			List<RatingDTO>? ratingsdtoforuserordelivery = repo.GetRatingsForUserOrDelivery(email,type);
 			if (ratingsdtoforuserordelivery == null)
 			{
@@ -54,6 +61,24 @@ namespace Hatley.Controllers
 			}
 			return Ok(ratingsdtoforuserordelivery);
 		}
+
+
+		[HttpGet("last5Ratings")]
+		public IActionResult last5()
+		{
+			if (type != "Delivery")
+			{
+				return Unauthorized();
+			}
+
+			List<Last5RatingForDeliveryDTO> last5 = repo.Last5(email);
+			if (last5 == null)
+			{
+				return BadRequest("error occur or no rating exist");
+			}
+			return Ok(last5);
+		}
+
 
 		[HttpGet("{id:int}")]
 		public IActionResult get(int id)
@@ -68,7 +93,8 @@ namespace Hatley.Controllers
 
 
 		[HttpPost]
-		public IActionResult add(int value,int orderid)
+		public IActionResult add([FromQuery][Required]int value
+			,[FromQuery][Required]int orderid)
 		{
 			if (ModelState.IsValid == true)
 			{
@@ -80,7 +106,7 @@ namespace Hatley.Controllers
 				}
 				if (raw == -1)
 				{
-					return NotFound("the order id not exist");
+					return NotFound("the order id not exist or the order has not been delivered yet");
 				}
 
 				return Ok();
@@ -90,8 +116,8 @@ namespace Hatley.Controllers
 		}
 
 
-		[HttpPut("{id:int}")]
-		public IActionResult edit(int id, int value)
+		[HttpPut("{id:int}/{value:int}")]
+		public IActionResult edit(int id,int value)
 		{
 			if (ModelState.IsValid == true)
 			{

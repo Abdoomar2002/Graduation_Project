@@ -9,6 +9,7 @@ namespace Hatley.Services
 		RatingDTO? GetRating(int id);
 		List<RatingDTO>? GetRatings();
 		List<RatingDTO>? GetRatingsForUserOrDelivery(string mail, string type);
+		List<Last5RatingForDeliveryDTO>? Last5(string email);
 		int Update(int id, int value);
 	}
 }

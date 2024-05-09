@@ -9,8 +9,11 @@ namespace Hatley.DTO
 		public string description { get; set; }
 		public string order_governorate_from { get; set; }
 		public string order_zone_from { get; set; }
+		public string? order_city_from { get; set; }
 		public string? order_governorate_to { get; set; }
 		public string? order_zone_to { get; set; }
+		public string? order_city_to { get; set; }
+		public string? detailes_address { get; set; }
 		public double? north { get; set; }
 		public double? east { get; set; }
 		public DateTime? created { get; set; }

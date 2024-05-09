@@ -71,7 +71,7 @@ namespace Hatley
 					ValidateAudience = true,
 					ValidAudience = builder.Configuration["JWT:ValidAudiance"],
 					IssuerSigningKey =
-					new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Secret"]))
+					new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Secret"]))
 				};
 			});
 			//-----------------------------------

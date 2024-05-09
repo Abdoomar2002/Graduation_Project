@@ -17,8 +17,12 @@ namespace Hatley.Controllers
         [HttpPost("contact")]
         public async Task<IActionResult> contact([FromForm] ContactMailDTO contactDTO)
         {
-            await contactMail.SendEmailAsync(contactDTO.name, contactDTO.email, contactDTO.phone, contactDTO.message);
-            return Ok();
+            if(ModelState.IsValid)
+            {
+				await contactMail.SendEmailAsync(contactDTO.name, contactDTO.email, contactDTO.phone, contactDTO.message);
+				return Ok();
+			}
+            return BadRequest(ModelState);
         }
     }
 }
