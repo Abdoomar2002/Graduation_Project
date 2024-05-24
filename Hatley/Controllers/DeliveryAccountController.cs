@@ -73,7 +73,7 @@ namespace Hatley.Controllers
 				claims.Add(new Claim("type", "Admin"));
 				claims.Add(new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()));
 
-				SecurityKey securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Secret"]));
+				SecurityKey securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["JWT:Secret"]));
 				SigningCredentials signincred = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
 				JwtSecurityToken newtoken = new JwtSecurityToken(
@@ -103,7 +103,7 @@ namespace Hatley.Controllers
                     claims.Add(new Claim("type", "Delivery"));
                     claims.Add(new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()));
 
-                    SecurityKey securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Secret"]));
+                    SecurityKey securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["JWT:Secret"]));
                     SigningCredentials signincred = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
                     JwtSecurityToken newtoken = new JwtSecurityToken(

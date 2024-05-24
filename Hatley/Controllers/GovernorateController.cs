@@ -8,7 +8,6 @@ namespace Hatley.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
     public class GovernorateController : ControllerBase
     {
         private readonly IGovernorateRepository governorateRepository;
@@ -33,14 +32,13 @@ namespace Hatley.Controllers
             return Ok(governorates);
         }
 
-
-        [HttpGet("{id:int}")]
+		[HttpGet("{id:int}")]
         public IActionResult Display(int id)
         {
-			if (userType != "Admin")
+			/*if (userType != "Admin")
 			{
 				return Unauthorized();
-			}
+			}*/
 
 			GovernorateDTO? governorate = governorateRepository.Display(id);
             if (governorate == null)
@@ -51,7 +49,8 @@ namespace Hatley.Controllers
         }
 
 
-        [HttpPost]
+		[Authorize]
+		[HttpPost]
         public IActionResult Insert([FromBody]GovernorateDTO newGovernorate)
         {
 			if (userType != "Admin")
@@ -71,7 +70,9 @@ namespace Hatley.Controllers
             return BadRequest(ModelState);
         }
 
-        [HttpPut("{id:int}")]
+
+		[Authorize]
+		[HttpPut("{id:int}")]
         public IActionResult Edit(int id, [FromBody] GovernorateDTO editGovernorate)
         {
 			if (userType != "Admin")
@@ -96,7 +97,8 @@ namespace Hatley.Controllers
         }
 
 
-        [HttpDelete("{id:int}")]
+		[Authorize]
+		[HttpDelete("{id:int}")]
         public IActionResult Delete(int id)
         {
 			if (userType != "Admin")

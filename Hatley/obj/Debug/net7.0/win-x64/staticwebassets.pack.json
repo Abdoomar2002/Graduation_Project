@@ -1,0 +1,73 @@
+{
+  "Files": [
+    {
+      "Id": "E:\\College\\Graduation project\\Code\\Hatley\\wwwroot\\Delivery_imgs\\01cbae48-c381-4127-8cf3-fc6fc587c755_4.jpeg",
+      "PackagePath": "staticwebassets\\Delivery_imgs\\01cbae48-c381-4127-8cf3-fc6fc587c755_4.jpeg"
+    },
+    {
+      "Id": "E:\\College\\Graduation project\\Code\\Hatley\\wwwroot\\Delivery_imgs\\1a4a0f95-047e-47d3-b911-3e24729f5491_4.jpeg",
+      "PackagePath": "staticwebassets\\Delivery_imgs\\1a4a0f95-047e-47d3-b911-3e24729f5491_4.jpeg"
+    },
+    {
+      "Id": "E:\\College\\Graduation project\\Code\\Hatley\\wwwroot\\Delivery_imgs\\2c2c0450-b612-4fb9-a609-ca27802659ae_3.jpeg",
+      "PackagePath": "staticwebassets\\Delivery_imgs\\2c2c0450-b612-4fb9-a609-ca27802659ae_3.jpeg"
+    },
+    {
+      "Id": "E:\\College\\Graduation project\\Code\\Hatley\\wwwroot\\Delivery_imgs\\3095e9bb-9a84-48f0-a892-5f10480a9697_2.jpeg",
+      "PackagePath": "staticwebassets\\Delivery_imgs\\3095e9bb-9a84-48f0-a892-5f10480a9697_2.jpeg"
+    },
+    {
+      "Id": "E:\\College\\Graduation project\\Code\\Hatley\\wwwroot\\Delivery_imgs\\357db57a-395b-4eae-8a3c-02422438367f_3.jpeg",
+      "PackagePath": "staticwebassets\\Delivery_imgs\\357db57a-395b-4eae-8a3c-02422438367f_3.jpeg"
+    },
+    {
+      "Id": "E:\\College\\Graduation project\\Code\\Hatley\\wwwroot\\Delivery_imgs\\57855fef-dca9-495d-82b0-d060fc91c3a2_3.jpeg",
+      "PackagePath": "staticwebassets\\Delivery_imgs\\57855fef-dca9-495d-82b0-d060fc91c3a2_3.jpeg"
+    },
+    {
+      "Id": "E:\\College\\Graduation project\\Code\\Hatley\\wwwroot\\Delivery_imgs\\607862d5-c3db-42d3-ab7f-d0be05d8f3f8_2.jpeg",
+      "PackagePath": "staticwebassets\\Delivery_imgs\\607862d5-c3db-42d3-ab7f-d0be05d8f3f8_2.jpeg"
+    },
+    {
+      "Id": "E:\\College\\Graduation project\\Code\\Hatley\\wwwroot\\Delivery_imgs\\62831a99-6957-4788-af68-98fe4ce9991d_2.jpeg",
+      "PackagePath": "staticwebassets\\Delivery_imgs\\62831a99-6957-4788-af68-98fe4ce9991d_2.jpeg"
+    },
+    {
+      "Id": "E:\\College\\Graduation project\\Code\\Hatley\\wwwroot\\Delivery_imgs\\b2de81ac-9568-48dd-9ec1-851cb19e8084_2.jpeg",
+      "PackagePath": "staticwebassets\\Delivery_imgs\\b2de81ac-9568-48dd-9ec1-851cb19e8084_2.jpeg"
+    },
+    {
+      "Id": "E:\\College\\Graduation project\\Code\\Hatley\\wwwroot\\Delivery_imgs\\b7c92920-a4f1-4f13-b201-59785f28a471_4.jpeg",
+      "PackagePath": "staticwebassets\\Delivery_imgs\\b7c92920-a4f1-4f13-b201-59785f28a471_4.jpeg"
+    },
+    {
+      "Id": "E:\\College\\Graduation project\\Code\\Hatley\\wwwroot\\Delivery_imgs\\ce870a6c-e0a2-413a-9717-aacc620162ca_3.jpeg",
+      "PackagePath": "staticwebassets\\Delivery_imgs\\ce870a6c-e0a2-413a-9717-aacc620162ca_3.jpeg"
+    },
+    {
+      "Id": "E:\\College\\Graduation project\\Code\\Hatley\\wwwroot\\Delivery_imgs\\f79cddae-1d5b-49a4-bbc6-06961be44b50_4.jpeg",
+      "PackagePath": "staticwebassets\\Delivery_imgs\\f79cddae-1d5b-49a4-bbc6-06961be44b50_4.jpeg"
+    },
+    {
+      "Id": "E:\\College\\Graduation project\\Code\\Hatley\\wwwroot\\Delivery_imgs\\th.jpeg",
+      "PackagePath": "staticwebassets\\Delivery_imgs\\th.jpeg"
+    },
+    {
+      "Id": "obj\\Debug\\net7.0\\win-x64\\staticwebassets\\msbuild.Hatley.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net7.0\\win-x64\\staticwebassets\\msbuild.build.Hatley.props",
+      "PackagePath": "build\\Hatley.props"
+    },
+    {
+      "Id": "obj\\Debug\\net7.0\\win-x64\\staticwebassets\\msbuild.buildMultiTargeting.Hatley.props",
+      "PackagePath": "buildMultiTargeting\\Hatley.props"
+    },
+    {
+      "Id": "obj\\Debug\\net7.0\\win-x64\\staticwebassets\\msbuild.buildTransitive.Hatley.props",
+      "PackagePath": "buildTransitive\\Hatley.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

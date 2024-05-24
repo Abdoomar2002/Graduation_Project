@@ -22,7 +22,7 @@ namespace Hatley
 			builder.Services.AddDbContext<appDB>(
 			options =>
 			{
-				options.UseSqlServer(builder.Configuration.GetConnectionString("connet"));
+				options.UseSqlServer(builder.Configuration.GetConnectionString("connect"));
 			}
 			);
 
@@ -71,7 +71,7 @@ namespace Hatley
 					ValidateAudience = true,
 					ValidAudience = builder.Configuration["JWT:ValidAudiance"],
 					IssuerSigningKey =
-					new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Secret"]))
+					new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Secret"]))
 				};
 			});
 			//-----------------------------------
@@ -116,7 +116,7 @@ namespace Hatley
 			});
 
 
-			builder.Services.AddCors(
+			/*builder.Services.AddCors(
 				options =>
 				{
 					options.AddDefaultPolicy(cong =>
@@ -125,18 +125,26 @@ namespace Hatley
 						SetIsOriginAllowed((host) => true)
 						.AllowAnyHeader().AllowCredentials();
 					});
+				});*/
+
+			
+			builder.Services.AddCors(corsOptions => {
+				corsOptions.AddPolicy("MyPolicy", corsPolicyBuilder =>
+				{
+					corsPolicyBuilder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
 				});
+			});
 
 			var app = builder.Build();
 
 			// Configure the HTTP request pipeline.
-			if (app.Environment.IsDevelopment())
-			{
+			//if (app.Environment.IsDevelopment())
+			//{
 				app.UseSwagger();
 				app.UseSwaggerUI();
-			}
+			//}
 			app.UseRouting();
-			app.UseCors();
+			app.UseCors("MyPolicy");
 			app.UseAuthentication();//Check JWT token
 			app.UseAuthorization();
 

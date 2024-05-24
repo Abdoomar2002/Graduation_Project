@@ -8,7 +8,6 @@ namespace Hatley.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
     public class ZoneController : ControllerBase
     {
         private readonly IZoneRepository zoneRepository;
@@ -31,13 +30,14 @@ namespace Hatley.Controllers
 			List<ZoneDTO>? zones = zoneRepository.Displayall();
             return Ok(zones);
         }
+
         [HttpGet("{id:int}")]
         public IActionResult Display(int id)
         {
-			if (userType != "Admin")
+			/*if (userType != "Admin")
 			{
 				return Unauthorized();
-			}
+			}*/
 
 			ZoneDTO? zone = zoneRepository.Display(id);
             if (zone == null)
@@ -48,7 +48,8 @@ namespace Hatley.Controllers
         }
 
 
-        [HttpPost]
+		[Authorize]
+		[HttpPost]
         public IActionResult Insert(ZoneDTO item)
         {
 			if (userType != "Admin")
@@ -69,7 +70,8 @@ namespace Hatley.Controllers
         }
 
 
-        [HttpPut("{id:int}")]
+		[Authorize]
+		[HttpPut("{id:int}")]
         public IActionResult Edit(int id, ZoneDTO item)
         {
 			if (userType != "Admin")
@@ -90,7 +92,8 @@ namespace Hatley.Controllers
         }
 
 
-        [HttpDelete("{id:int}")]
+		[Authorize]
+		[HttpDelete("{id:int}")]
         public IActionResult Delete(int id)
         {
 			if (userType != "Admin")
