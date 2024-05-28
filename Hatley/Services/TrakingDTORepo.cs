@@ -90,8 +90,13 @@ namespace Hatley.Services
 				{
 					return 1;
 				}
+
 				order.Status++;
 				context.SaveChanges();
+				//private readonly IHubContext<ProductHub> proHub;
+				//proHub.Clients.All.SendAsync("newproductadd", pro);
+
+
 				return 2;
 			}
 			return 3; // 403 forbidden
