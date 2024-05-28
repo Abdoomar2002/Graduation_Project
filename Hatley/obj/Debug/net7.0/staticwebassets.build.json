@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "09ct+YqOlB6NWvr+Pf7vGOwrCDSuri3jicLA308q2Y0=",
+  "Hash": "A8s129jBD4MwjjL/U7Ag7r1P1HpwQnV3Xfaasir+xBQ=",
   "Source": "Hatley",
   "BasePath": "_content/Hatley",
   "Mode": "Default",
@@ -83,6 +83,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\Delivery_imgs\\0ab4bace-b6ae-48b6-a22f-0db02ab4f994_3.jpeg"
+    },
+    {
+      "Identity": "E:\\College\\Graduation project\\Code\\Hatley\\wwwroot\\Delivery_imgs\\0d5e1cf1-8c0c-4b97-925e-ee1ed3bb86ad_th.jpeg",
+      "SourceId": "Hatley",
+      "SourceType": "Discovered",
+      "ContentRoot": "E:\\College\\Graduation project\\Code\\Hatley\\wwwroot\\",
+      "BasePath": "_content/Hatley",
+      "RelativePath": "Delivery_imgs/0d5e1cf1-8c0c-4b97-925e-ee1ed3bb86ad_th.jpeg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\Delivery_imgs\\0d5e1cf1-8c0c-4b97-925e-ee1ed3bb86ad_th.jpeg"
     },
     {
       "Identity": "E:\\College\\Graduation project\\Code\\Hatley\\wwwroot\\Delivery_imgs\\10605428-ab8e-477c-a34f-a3fc415a28d7_4.jpeg",
@@ -544,6 +561,40 @@
       "OriginalItemSpec": "wwwroot\\Delivery_imgs\\e0a53b7b-b7ee-4306-8f60-62fe1d584c6a_2.jpeg"
     },
     {
+      "Identity": "E:\\College\\Graduation project\\Code\\Hatley\\wwwroot\\Delivery_imgs\\ec131800-65ea-4bbc-82b4-c3ce292bbbcd_th.jpeg",
+      "SourceId": "Hatley",
+      "SourceType": "Discovered",
+      "ContentRoot": "E:\\College\\Graduation project\\Code\\Hatley\\wwwroot\\",
+      "BasePath": "_content/Hatley",
+      "RelativePath": "Delivery_imgs/ec131800-65ea-4bbc-82b4-c3ce292bbbcd_th.jpeg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\Delivery_imgs\\ec131800-65ea-4bbc-82b4-c3ce292bbbcd_th.jpeg"
+    },
+    {
+      "Identity": "E:\\College\\Graduation project\\Code\\Hatley\\wwwroot\\Delivery_imgs\\ef1c4975-5e92-4505-bd01-0b3d7b9bfce5_th.jpeg",
+      "SourceId": "Hatley",
+      "SourceType": "Discovered",
+      "ContentRoot": "E:\\College\\Graduation project\\Code\\Hatley\\wwwroot\\",
+      "BasePath": "_content/Hatley",
+      "RelativePath": "Delivery_imgs/ef1c4975-5e92-4505-bd01-0b3d7b9bfce5_th.jpeg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\Delivery_imgs\\ef1c4975-5e92-4505-bd01-0b3d7b9bfce5_th.jpeg"
+    },
+    {
       "Identity": "E:\\College\\Graduation project\\Code\\Hatley\\wwwroot\\Delivery_imgs\\f79cddae-1d5b-49a4-bbc6-06961be44b50_4.jpeg",
       "SourceId": "Hatley",
       "SourceType": "Discovered",
@@ -593,6 +644,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\Delivery_imgs\\th.jpeg"
+    },
+    {
+      "Identity": "E:\\College\\Graduation project\\Code\\Hatley\\wwwroot\\User_imgs\\cc93708b-9650-4a2d-880d-bcf32c498bc0_pizza-1.jpg",
+      "SourceId": "Hatley",
+      "SourceType": "Discovered",
+      "ContentRoot": "E:\\College\\Graduation project\\Code\\Hatley\\wwwroot\\",
+      "BasePath": "_content/Hatley",
+      "RelativePath": "User_imgs/cc93708b-9650-4a2d-880d-bcf32c498bc0_pizza-1.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\User_imgs\\cc93708b-9650-4a2d-880d-bcf32c498bc0_pizza-1.jpg"
     }
   ]
 }

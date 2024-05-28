@@ -17,6 +17,10 @@
       "PackagePath": "staticwebassets\\Delivery_imgs\\0ab4bace-b6ae-48b6-a22f-0db02ab4f994_3.jpeg"
     },
     {
+      "Id": "E:\\College\\Graduation project\\Code\\Hatley\\wwwroot\\Delivery_imgs\\0d5e1cf1-8c0c-4b97-925e-ee1ed3bb86ad_th.jpeg",
+      "PackagePath": "staticwebassets\\Delivery_imgs\\0d5e1cf1-8c0c-4b97-925e-ee1ed3bb86ad_th.jpeg"
+    },
+    {
       "Id": "E:\\College\\Graduation project\\Code\\Hatley\\wwwroot\\Delivery_imgs\\10605428-ab8e-477c-a34f-a3fc415a28d7_4.jpeg",
       "PackagePath": "staticwebassets\\Delivery_imgs\\10605428-ab8e-477c-a34f-a3fc415a28d7_4.jpeg"
     },
@@ -125,6 +129,14 @@
       "PackagePath": "staticwebassets\\Delivery_imgs\\e0a53b7b-b7ee-4306-8f60-62fe1d584c6a_2.jpeg"
     },
     {
+      "Id": "E:\\College\\Graduation project\\Code\\Hatley\\wwwroot\\Delivery_imgs\\ec131800-65ea-4bbc-82b4-c3ce292bbbcd_th.jpeg",
+      "PackagePath": "staticwebassets\\Delivery_imgs\\ec131800-65ea-4bbc-82b4-c3ce292bbbcd_th.jpeg"
+    },
+    {
+      "Id": "E:\\College\\Graduation project\\Code\\Hatley\\wwwroot\\Delivery_imgs\\ef1c4975-5e92-4505-bd01-0b3d7b9bfce5_th.jpeg",
+      "PackagePath": "staticwebassets\\Delivery_imgs\\ef1c4975-5e92-4505-bd01-0b3d7b9bfce5_th.jpeg"
+    },
+    {
       "Id": "E:\\College\\Graduation project\\Code\\Hatley\\wwwroot\\Delivery_imgs\\f79cddae-1d5b-49a4-bbc6-06961be44b50_4.jpeg",
       "PackagePath": "staticwebassets\\Delivery_imgs\\f79cddae-1d5b-49a4-bbc6-06961be44b50_4.jpeg"
     },
@@ -135,6 +147,10 @@
     {
       "Id": "E:\\College\\Graduation project\\Code\\Hatley\\wwwroot\\Delivery_imgs\\th.jpeg",
       "PackagePath": "staticwebassets\\Delivery_imgs\\th.jpeg"
+    },
+    {
+      "Id": "E:\\College\\Graduation project\\Code\\Hatley\\wwwroot\\User_imgs\\cc93708b-9650-4a2d-880d-bcf32c498bc0_pizza-1.jpg",
+      "PackagePath": "staticwebassets\\User_imgs\\cc93708b-9650-4a2d-880d-bcf32c498bc0_pizza-1.jpg"
     },
     {
       "Id": "obj\\Release\\net7.0\\staticwebassets\\msbuild.Hatley.Microsoft.AspNetCore.StaticWebAssets.props",

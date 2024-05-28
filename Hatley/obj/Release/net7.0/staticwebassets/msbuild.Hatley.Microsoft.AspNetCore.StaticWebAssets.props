@@ -64,6 +64,22 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\Delivery_imgs\0ab4bace-b6ae-48b6-a22f-0db02ab4f994_3.jpeg))</OriginalItemSpec>
     </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\Delivery_imgs\0d5e1cf1-8c0c-4b97-925e-ee1ed3bb86ad_th.jpeg))">
+      <SourceType>Package</SourceType>
+      <SourceId>Hatley</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/Hatley</BasePath>
+      <RelativePath>Delivery_imgs/0d5e1cf1-8c0c-4b97-925e-ee1ed3bb86ad_th.jpeg</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\Delivery_imgs\0d5e1cf1-8c0c-4b97-925e-ee1ed3bb86ad_th.jpeg))</OriginalItemSpec>
+    </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\Delivery_imgs\10605428-ab8e-477c-a34f-a3fc415a28d7_4.jpeg))">
       <SourceType>Package</SourceType>
       <SourceId>Hatley</SourceId>
@@ -496,6 +512,38 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\Delivery_imgs\e0a53b7b-b7ee-4306-8f60-62fe1d584c6a_2.jpeg))</OriginalItemSpec>
     </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\Delivery_imgs\ec131800-65ea-4bbc-82b4-c3ce292bbbcd_th.jpeg))">
+      <SourceType>Package</SourceType>
+      <SourceId>Hatley</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/Hatley</BasePath>
+      <RelativePath>Delivery_imgs/ec131800-65ea-4bbc-82b4-c3ce292bbbcd_th.jpeg</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\Delivery_imgs\ec131800-65ea-4bbc-82b4-c3ce292bbbcd_th.jpeg))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\Delivery_imgs\ef1c4975-5e92-4505-bd01-0b3d7b9bfce5_th.jpeg))">
+      <SourceType>Package</SourceType>
+      <SourceId>Hatley</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/Hatley</BasePath>
+      <RelativePath>Delivery_imgs/ef1c4975-5e92-4505-bd01-0b3d7b9bfce5_th.jpeg</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\Delivery_imgs\ef1c4975-5e92-4505-bd01-0b3d7b9bfce5_th.jpeg))</OriginalItemSpec>
+    </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\Delivery_imgs\f79cddae-1d5b-49a4-bbc6-06961be44b50_4.jpeg))">
       <SourceType>Package</SourceType>
       <SourceId>Hatley</SourceId>
@@ -543,6 +591,22 @@
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\Delivery_imgs\th.jpeg))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\User_imgs\cc93708b-9650-4a2d-880d-bcf32c498bc0_pizza-1.jpg))">
+      <SourceType>Package</SourceType>
+      <SourceId>Hatley</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>_content/Hatley</BasePath>
+      <RelativePath>User_imgs/cc93708b-9650-4a2d-880d-bcf32c498bc0_pizza-1.jpg</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath($(MSBuildThisFileDirectory)..\staticwebassets\User_imgs\cc93708b-9650-4a2d-880d-bcf32c498bc0_pizza-1.jpg))</OriginalItemSpec>
     </StaticWebAsset>
   </ItemGroup>
 </Project>

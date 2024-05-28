@@ -5,7 +5,7 @@ namespace Hatley.Services
 	public interface IUserDTORepo
 	{
 		UserDTO? Check(LoginDTO login);
-		int Create(UserDTO userdto);
+		 Task<int> Create(UserDTO userdto, IFormFile? profile_img);
 		int Delete(int id);
 		UserDTO? GetUser(string email);      
 		List<UserDTO>? GetUsers();

@@ -14,16 +14,17 @@ namespace Hatley.Models
 		public string Order_governorate_from { get; set; }
 		public string Order_zone_from { get; set; }
 		public string? Order_city_from { get; set; }
+		public string? Detailes_address_from { get; set; }
 		public string? Order_governorate_to { get; set; }
 		public string? Order_zone_to { get; set; }
 		public string? Order_city_to { get; set; }
-		public string? Detailes_address { get; set; }
+		public string? Detailes_address_to { get; set; }
 		public double? North { get; set; }
 		public double? East { get; set; }
 		public DateTime Created { get; set; }
 		public DateTime Order_time { get; set; }
-		[Required]
-		public double Price { get; set; }
+		
+		public double? Price { get; set; }
 		public int? Status { get; set; } = -1;
 		public int? Delivery_ID { get; set; }
 		[ForeignKey("Delivery_ID")]

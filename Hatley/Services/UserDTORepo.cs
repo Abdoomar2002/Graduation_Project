@@ -6,6 +6,7 @@ using System.Linq;
 using System.Runtime.Intrinsics.Arm;
 using System.Text;
 using System.Security.Cryptography;
+using Microsoft.Extensions.Hosting.Internal;
 
 namespace Hatley.Services
 {
@@ -14,10 +15,12 @@ namespace Hatley.Services
 		private readonly User user;
 		private readonly appDB context;
 		private readonly MailReset resetmail;
-		public UserDTORepo(User _user, appDB _con, MailReset resetmail)
+		private readonly IWebHostEnvironment hostingEnvironment;
+		public UserDTORepo(User _user, appDB _con, IWebHostEnvironment hostingEnvironment, MailReset resetmail)
 		{
 			user = _user;
 			context = _con;
+			this.hostingEnvironment = hostingEnvironment;
 			this.resetmail = resetmail;
 		}
 
@@ -81,31 +84,62 @@ namespace Hatley.Services
 		}
 
 
-		public int Create(UserDTO userdto)
+		public async Task<int> Create(UserDTO userdto , IFormFile? profile_img)
 		{
 			var email = context.users.FirstOrDefault(x => x.Email == userdto.Email);
 			var sha = SHA256.Create();
 			var asByteArray = Encoding.Default.GetBytes(userdto.Password);
 			var pass = sha.ComputeHash(asByteArray);
 			var hashed = Convert.ToBase64String(pass);
+
+			
+
 			if (email == null)
 			{
-				user.Name = userdto.Name;
-				user.Email = userdto.Email;
-				user.Phone = userdto.phone;
-				user.Password = hashed;
-				context.users.Add(user);
-				int raw = context.SaveChanges();
-				return raw;
+				
+					user.Name = userdto.Name;
+					user.Email = userdto.Email;
+					user.Phone = userdto.phone;
+					user.Password = hashed;
+					user.Photo = await SaveImage(profile_img); ;
+					context.users.Add(user);
+					int raw = await context.SaveChangesAsync();
+					return raw;
+				
+				
 			}
-			return 0;
+			return -1;
+
 			//context.users.Add(user);
 			//int raw = context.SaveChanges();
 			//return raw;
 		}
 
+		private async Task<string?> SaveImage(IFormFile image)
+		{
+			if (image == null || image.Length == 0)
+			{
+				return null;
+			}
 
+			var uploadsFolder = Path.Combine(hostingEnvironment.WebRootPath, "User_imgs");
+			if (!Directory.Exists(uploadsFolder))
+			{
+				Directory.CreateDirectory(uploadsFolder);
+			}
 
+			var uniqueFileName = $"{Guid.NewGuid().ToString()}_{image.FileName}";
+			var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+			using (var fileStream = new FileStream(filePath, FileMode.Create))
+			{
+				await image.CopyToAsync(fileStream);
+			}
+
+			return filePath;
+		}
+
+		//################################################################
 		public int Update(int id, UserDTO userdto)
 		{
 			var olduser = context.users.FirstOrDefault(y => y.User_ID == id);

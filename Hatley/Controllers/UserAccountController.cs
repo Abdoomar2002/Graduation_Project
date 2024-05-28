@@ -28,7 +28,7 @@ namespace Hatley.Controllers
 		}
 
 		[HttpPost("register")]
-        public IActionResult Rigister([FromBody]UserDTO userdto) 
+		public async Task<IActionResult> Register([FromForm]UserDTO userdto,IFormFile? profile_img) 
 		{
 			if (ModelState.IsValid == true)
 			{
@@ -38,16 +38,23 @@ namespace Hatley.Controllers
 					return BadRequest("The email not valid");
 				}
 
-				int raw = repo.Create(userdto);
-				if (raw == 0)
+				int raw = await repo.Create(userdto,profile_img);
+
+				if (raw == -1)
 				{
 					return BadRequest("The email already exists");
 				}
-				return Ok();
+				if (raw == 0)
+				{
+					return BadRequest("error in save");
+				}
+				return Ok("User created successfully.");
 			}
 
 			return BadRequest(ModelState);
 		}
+
+
 
 		[HttpPost("login")]
 		public IActionResult Login([FromBody]LoginDTO login)

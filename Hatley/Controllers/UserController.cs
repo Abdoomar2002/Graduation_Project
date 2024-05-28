@@ -59,7 +59,7 @@ namespace Hatley.Controllers
 		}
 
 
-		[HttpPost]
+		/*[HttpPost]
 		public IActionResult add([FromBody] UserDTO userdto)
 		{
 
@@ -76,7 +76,7 @@ namespace Hatley.Controllers
 
 			return BadRequest(ModelState);
 
-		}
+		}*/
 
 
 		[HttpPut("{id:int}")]

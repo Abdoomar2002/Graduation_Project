@@ -175,7 +175,10 @@ namespace Hatley.Migrations
                         .HasMaxLength(2000)
                         .HasColumnType("nvarchar(2000)");
 
-                    b.Property<string>("Detailes_address")
+                    b.Property<string>("Detailes_address_from")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Detailes_address_to")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<double?>("East")
@@ -207,7 +210,7 @@ namespace Hatley.Migrations
                     b.Property<string>("Order_zone_to")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<double>("Price")
+                    b.Property<double?>("Price")
                         .HasColumnType("float");
 
                     b.Property<int?>("Status")
