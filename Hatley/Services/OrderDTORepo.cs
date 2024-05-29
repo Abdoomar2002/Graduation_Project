@@ -1,6 +1,8 @@
 ﻿using Hatley.DTO;
+using Hatley.Hubs;
 using Hatley.Models;
 using MailKit.Search;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore.Update.Internal;
 using System.Diagnostics.CodeAnalysis;
 
@@ -8,13 +10,16 @@ namespace Hatley.Services
 {
 	public class OrderDTORepo : IOrderDTORepo
 	{
+		private readonly IHubContext<NotifyOrderForDeliveryHup> OrderHub;
 		private readonly Order order;
 		private readonly appDB context;
 
-		public OrderDTORepo(Order _order, appDB _context)
+		public OrderDTORepo(Order _order, appDB _context
+			, IHubContext<NotifyOrderForDeliveryHup> _OrderHub)
 		{
 			order = _order;
 			context = _context;
+			OrderHub = _OrderHub;
 		}
 
 		public List<OrderDTO>? GetOrders()
@@ -70,7 +75,7 @@ namespace Hatley.Services
 				.Where(x => userIds.Contains(x.User_ID))
 				.Select(x => x.Value)
 				.ToList();*/
-
+			
 
 			var governorate = context.governorates
 				.FirstOrDefault(x => x.Governorate_ID == delivery.Governorate_ID);
@@ -102,7 +107,7 @@ namespace Hatley.Services
 					created = our.Order.Created,
 					User_ID = our.Order.User_ID,
 					Delivery_ID = our.Order.Delivery_ID,
-
+					
 					user_name = our.User.Name, 
 					user_photo = our.User.Photo,
 					//user_avg_rate = ratings.Average(),
@@ -198,6 +203,7 @@ namespace Hatley.Services
 
 		}
 
+
 		public List<DeliveriesUserDTO>? Deliveries(string email)
 		{
 			var user = context.users.FirstOrDefault(x=>x.Email == email);
@@ -250,6 +256,7 @@ namespace Hatley.Services
 
 			return ordersdto;
 		}
+
 
 		public OrderDTO? GetOrder(int id)
 		{
@@ -309,6 +316,22 @@ namespace Hatley.Services
 			//order.Status = orderdto.Status;
 			context.orders.Add(order);
 			int raw = context.SaveChanges();
+			if(raw == 1)
+			{
+				var gonernorate_name = context.governorates
+					.FirstOrDefault(x => x.Name == order.Order_governorate_to);
+				var zone_name = context.zones
+					.FirstOrDefault(x => x.Name == order.Order_zone_to);
+
+				List<string> delivers_emails = context.delivers
+					.Where(x => x.Governorate_ID == gonernorate_name.Governorate_ID && x.Zone_ID == zone_name.Zone_ID)
+					.Select(x=>x.Email).ToList();
+
+				OrderHub.Clients.All.SendAsync
+					("NotifyOrderForDeliveryHup", order
+					, user.Name, user.Orders.Count, delivers_emails, "Delivery");
+
+			}
 			return raw;
 		}
 

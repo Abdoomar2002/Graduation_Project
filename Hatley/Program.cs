@@ -1,4 +1,5 @@
 
+using Hatley.Hubs;
 using Hatley.Models;
 using Hatley.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -32,6 +33,8 @@ namespace Hatley
 			// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 			builder.Services.AddEndpointsApiExplorer();
 			builder.Services.AddSwaggerGen();
+
+
 			builder.Services.AddScoped<IUserDTORepo, UserDTORepo>();
 			builder.Services.AddScoped<User>();
 			builder.Services.AddScoped<IOrderDTORepo, OrderDTORepo>();
@@ -56,6 +59,12 @@ namespace Hatley
             builder.Services.AddHttpContextAccessor();
 			//builder.Services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
 
+
+
+			builder.Services.AddSignalR();
+
+
+
 			builder.Services.AddAuthentication(options =>
 			{
 				options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -74,6 +83,7 @@ namespace Hatley
 					new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Secret"]))
 				};
 			});
+
 			//-----------------------------------
 			builder.Services.AddSwaggerGen(c =>
 			{
@@ -147,6 +157,8 @@ namespace Hatley
 			app.UseCors("MyPolicy");
 			app.UseAuthentication();//Check JWT token
 			app.UseAuthorization();
+
+			app.MapHub<NotifyOrderForDeliveryHup>("/NotifyOrderForDelivery");
 
 
 			app.MapControllers();
