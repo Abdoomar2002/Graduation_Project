@@ -1,15 +1,20 @@
 ﻿using Hatley.DTO;
+using Hatley.Hubs;
 using Hatley.Models;
+using Microsoft.AspNetCore.SignalR;
+using System.Linq;
 
 namespace Hatley.Services
 {
 	public class OfferDTORepo : IOfferDTORepo
 	{
 		private readonly appDB context;
+        private readonly IHubContext<NotifyOfAcceptionForDeliveryHub> acceptionHub;
 
-		public OfferDTORepo(appDB _context)
+        public OfferDTORepo(appDB _context, IHubContext<NotifyOfAcceptionForDeliveryHub> acceptionHub)
 		{
 			context = _context;
+			this.acceptionHub = acceptionHub;
 		}
 		public OfferDTO? Display_Offer_Of_Order(int orderId, string email)//for delivery
 		{
@@ -122,6 +127,16 @@ namespace Hatley.Services
 			}
 			order.Delivery_ID = delivery.Delivery_ID;
 			int raw = context.SaveChanges();
+            if(raw ==1)
+            {
+				var price = context.orders
+					.Where(x => x.Order_ID == orederid)
+					.Select(x => x.Price);
+                var user = context.users.FirstOrDefault(x => x.User_ID == order.User_ID);
+
+                acceptionHub.Clients.All.SendAsync("NotifyOfAcceptionForDelivery", email, 
+					price, orederid, user.Name, "Delivery");
+            }
 			return raw;//####Hub####
 
 		}

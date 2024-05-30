@@ -15,7 +15,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Hatley")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a01ef75ecb4257888c81c3937098a03c0f36f0bd")]
 [assembly: System.Reflection.AssemblyProductAttribute("Hatley")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Hatley")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

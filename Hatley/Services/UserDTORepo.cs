@@ -101,7 +101,7 @@ namespace Hatley.Services
 					user.Email = userdto.Email;
 					user.Phone = userdto.phone;
 					user.Password = hashed;
-					user.Photo = await SaveImage(profile_img); ;
+					user.Photo = await SaveImage(profile_img); 
 					context.users.Add(user);
 					int raw = await context.SaveChangesAsync();
 					return raw;
@@ -114,8 +114,16 @@ namespace Hatley.Services
 			//int raw = context.SaveChanges();
 			//return raw;
 		}
+        public async Task<int> uploadImage(string email, IFormFile? profile_img)
+		{
+			var user = context.users.FirstOrDefault(x => x.Email == email);
+            user.Photo = await SaveImage(profile_img);
+            context.users.Add(user);
+            int raw = await context.SaveChangesAsync();
+            return raw;
+        }
 
-		private async Task<string?> SaveImage(IFormFile image)
+        private async Task<string?> SaveImage(IFormFile image)
 		{
 			if (image == null || image.Length == 0)
 			{

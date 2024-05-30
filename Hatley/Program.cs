@@ -159,9 +159,11 @@ namespace Hatley
 			app.UseAuthorization();
 
 			app.MapHub<NotifyOrderForDeliveryHup>("/NotifyOrderForDelivery");
+            app.MapHub<NotifyUserOfStatus>("/NotifyUserOfStatus");
+            app.MapHub<NotifyOfAcceptionForDeliveryHub>("/NotifyOfAcceptionForDelivery");
 
 
-			app.MapControllers();
+            app.MapControllers();
 
 			app.Run();
 		}

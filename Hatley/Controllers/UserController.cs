@@ -59,7 +59,7 @@ namespace Hatley.Controllers
 		}
 
 
-		/*[HttpPost]
+        /*[HttpPost]
 		public IActionResult add([FromBody] UserDTO userdto)
 		{
 
@@ -77,9 +77,19 @@ namespace Hatley.Controllers
 			return BadRequest(ModelState);
 
 		}*/
+        [HttpPost("uploadImage")]
+		public async Task<IActionResult> uploadAsync(IFormFile? profile_img)
+		{
+            var raw = await repo.uploadImage(email, profile_img);
 
+			if(raw == 0)
+			{
+				return BadRequest("Photo was not saved");
+			}
+			return Ok("Uploaded successfully");
+        }
 
-		[HttpPut("{id:int}")]
+        [HttpPut("{id:int}")]
 		public IActionResult update(int id,[FromBody]UserDTO userdto)
 		{
 			if (userType != "User")

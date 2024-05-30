@@ -1,15 +1,19 @@
 ﻿using Hatley.DTO;
+using Hatley.Hubs;
 using Hatley.Models;
+using Microsoft.AspNetCore.SignalR;
 
 namespace Hatley.Services
 {
 	public class TrakingDTORepo : ITrakingDTORepo
 	{
 		private readonly appDB context;
+        private readonly IHubContext<NotifyUserOfStatus> statusHub;
 
-		public TrakingDTORepo(appDB _context)
+        public TrakingDTORepo(appDB _context, IHubContext<NotifyUserOfStatus> statusHub)
 		{
 			context = _context;
+			this.statusHub = statusHub;
 		}
 
 		public List<TrakingDTO>? GetTrakingForUserOrDelivery(string email, string type)
@@ -92,12 +96,20 @@ namespace Hatley.Services
 				}
 
 				order.Status++;
-				context.SaveChanges();
-				//private readonly IHubContext<ProductHub> proHub;
-				//proHub.Clients.All.SendAsync("newproductadd", pro);
+				int raw = context.SaveChanges();
+                //private readonly IHubContext<ProductHub> proHub;
+                //proHub.Clients.All.SendAsync("newproductadd", pro);
+                if (raw == 1)
+                {
+					int? userid = order.User_ID;
+					var email = context.users
+                        .Where(x => x.User_ID == userid)
+                        .Select(x => x.Email);
+                    statusHub.Clients.All.SendAsync("NotifyUserOfStatus", email,
+                        order.Status, order_id, "User");
+                }
 
-
-				return 2;
+                return 2;
 			}
 			return 3; // 403 forbidden
 		}
