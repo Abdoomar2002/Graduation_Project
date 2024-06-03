@@ -6,7 +6,9 @@ namespace Hatley.Services
 	{
 		UserDTO? Check(LoginDTO login);
 		 Task<int> Create(UserDTO userdto, IFormFile? profile_img);
-		int Delete(int id);
+		Task<int> uploadImage(string email, IFormFile? profile_img);
+
+        int Delete(int id);
 		UserDTO? GetUser(string email);      
 		List<UserDTO>? GetUsers();
 		int Update(int id, UserDTO userdto);
