@@ -1,11 +1,10 @@
 import * as helpers from "./helpers";
-import UploadFilesEndPoints from "./uploadFiles.api";
+
+import appApi from "./appApi";
 
 const Api = {
   ...helpers,
-  lookUps: LookupsApiEndpoints,
-  uploadFiles: UploadFilesEndPoints,
-  reports: ReportsApiEndpoints,
+  app: appApi,
 };
 
 export default Api;

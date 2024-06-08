@@ -1,19 +1,37 @@
 {
   "expo": {
-    "name": "HatleyMobile",
-    "slug": "HatleyMobile",
+    "name": "HatleyMobileDelivery",
+    "slug": "HatleyMobileDelivery",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/images/Logo.png",
     "userInterfaceStyle": "light",
-    "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+    "extra": {
+      "API_URL": "https://api.example.com",
+      "API_KEY": "your_api_key_here"
     },
-    "assetBundlePatterns": [
-      "**/*"
+    "plugins": [
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Allow $(HatleyMobileUser) to use your location."
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "The app accesses your photos to let you share them with your friends."
+        }
+      ],
+      [
+        "expo-notifications",
+        {
+          "icon": "assets/images/Logo.png",
+          "sounds": ["local/path/to/mySoundFile.wav"]
+        }
+      ]
     ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
     },
