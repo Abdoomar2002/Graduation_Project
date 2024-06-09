@@ -50,10 +50,7 @@ class HttpHelpers {
       (response) => response,
       (error) => {
         if (error.response && error.response.status === 401) {
-          StorageService.remove("Token", null);
-          StorageService.remove("UserId", null);
-          StorageService.remove("auth", false);
-          window.location.href = "/login"; // Navigate to the login page using window.location
+          // window.location.href = "/login"; // Navigate to the login page using window.location
         }
         return Promise.reject(error);
       }

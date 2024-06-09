@@ -14,7 +14,7 @@ const actions = {
   },
   signUp: (data) => {
     return (dispatch) => {
-      console.log(data);
+      //console.log(data);
       return Api.app.Delivery.SignUp(data).then((response) => {
         dispatch({
           type: "SIGNUP",

@@ -1,5 +1,5 @@
 import { MaterialIcons } from "@expo/vector-icons";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Alert,
   ScrollView,
@@ -12,34 +12,66 @@ import {
   Pressable,
 } from "react-native";
 import { Asset } from "expo-asset";
+import RNPickerSelect from "react-native-picker-select";
 import ImageInput from "../../components/ImagePicker";
-const userData = {
-  name: "Abdelrahamn Omar",
-  email: "abdo20omar20@gmail.com",
-  phone: "01025784881",
-  city: "Assiut",
-  address: "18 elgendy street",
-  imageUrl: Asset.fromModule(require("../../assets/images/profile.jpg"))
-    .downloadAsync()
-    .then((asset) => asset.uri),
-};
-const Settings = ({
-  name,
-  email,
-  phone,
-  city,
-  address,
-  imageUrl,
-  handelPress,
-  navigation,
-}) => {
-  name = userData.name;
-  email = userData.email;
-  phone = userData.phone;
-  city = userData.city;
-  address = userData.address;
-  imageUrl = userData.imageUrl._j.replace("profile.jpg", "user.png");
+import storageService from "../../utils/storageService";
+import { useDispatch, useSelector } from "react-redux";
+import { actions as AuthActions } from "../../redux/Auth";
+import { actions as ZoneActions } from "../../redux/Zone";
+import { actions as GovernateAction } from "../../redux/Governate";
+import Loader from "../../components/Loader";
+const defaultImage = Asset.fromModule(
+  require("../../assets/images/profile.jpg")
+)
+  .downloadAsync()
+  .then((asset) => asset.uri);
+const Settings = ({ handelPress, navigation }) => {
+  const auth = useSelector((state) => state?.auth?.data);
+  const Zone = useSelector((state) => state?.zone?.data);
+  const Governate = useSelector((state) => state?.governate.data);
+
+  const imageUrl = defaultImage._j.replace("profile.jpg", "user.png");
+  //const image = auth.face_with_National_ID_img;
+  const dispatch = useDispatch();
   const [editable, setEditable] = useState(false);
+  const [governate, setGovernate] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
+  const [zone, setZone] = useState("");
+
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const data = await dispatch(AuthActions.displayProfile());
+        const governate = await dispatch(
+          GovernateAction.displayGovernorate(data.governorate_ID)
+        );
+        const zone = await dispatch(ZoneActions.getZoneByZoneId(data.zone_ID));
+        //console.log(zone);
+        //console.log(governate);
+        //console.log(data);
+        setGovernate(governate.name);
+        setZone(zone.name);
+      } catch (error) {
+        console.trace(error.message, "me");
+        console.error(error.message, "me2");
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    getData();
+  }, []);
+  useEffect(() => {
+    const getLocationData = async () => {
+      try {
+        await dispatch(ZoneActions.getAll());
+        await dispatch(GovernateAction.displayAllGovernorates());
+      } catch (error) {
+        console.log(error.message);
+      }
+    };
+    getLocationData();
+    // console.log(Zone);
+  }, []);
   function handelRemove(text) {
     if (text == "YES I AM SURE") {
       Alert.alert("Account Deleted", "have a nice day", [
@@ -70,91 +102,125 @@ const Settings = ({
       ]
     );
   }
+
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.top}>
-        <Pressable onPress={handelPress}>
-          <MaterialIcons name="arrow-back" size={24} color={"black"} />
-        </Pressable>
-        <Text style={styles.topText}>Settings </Text>
-      </View>
-      <View style={styles.header}>
-        {imageUrl && <Image src={imageUrl} style={styles.profileImage} />}
-        {editable && <ImageInput text={"Select Profile Photo"} />}
-      </View>
-      <View style={styles.userDetails}>
-        <View style={styles.row}>
-          <Text style={styles.label}>Name:</Text>
-          <TextInput
-            style={!editable ? styles.disabledInput : styles.enabledInput}
-            value={name}
-            editable={editable}
-          />
-        </View>
-        <View style={styles.row}>
-          <Text style={styles.label}>Email:</Text>
-          <TextInput
-            style={!editable ? styles.disabledInput : styles.enabledInput}
-            value={email}
-            editable={editable}
-          />
-        </View>
-        <View style={styles.row}>
-          <Text style={styles.label}>Phone:</Text>
-          <TextInput
-            style={!editable ? styles.disabledInput : styles.enabledInput}
-            value={phone}
-            editable={editable}
-          />
-        </View>
-      </View>
+    <>
+      {!isLoading && auth ? (
+        <ScrollView style={styles.container}>
+          <View style={styles.top}>
+            <Pressable onPress={handelPress}>
+              <MaterialIcons name="arrow-back" size={24} color={"black"} />
+            </Pressable>
+            <Text style={styles.topText}>Settings </Text>
+          </View>
+          <View style={styles.header}>
+            {imageUrl && <Image src={imageUrl} style={styles.profileImage} />}
+            {editable && <ImageInput text={"Select Profile Photo"} />}
+          </View>
+          <View style={styles.userDetails}>
+            <View style={styles.row}>
+              <Text style={styles.label}>Name:</Text>
+              <TextInput
+                style={!editable ? styles.disabledInput : styles.enabledInput}
+                value={auth.name}
+                editable={editable}
+              />
+            </View>
+            <View style={styles.row}>
+              <Text style={styles.label}>Email:</Text>
+              <TextInput
+                style={!editable ? styles.disabledInput : styles.enabledInput}
+                value={auth.email}
+                editable={editable}
+              />
+            </View>
+            <View style={styles.row}>
+              <Text style={styles.label}>Phone:</Text>
+              <TextInput
+                style={!editable ? styles.disabledInput : styles.enabledInput}
+                value={auth.phone}
+                editable={editable}
+              />
+            </View>
+            <View style={styles.row}>
+              <Text style={styles.label}>National Id:</Text>
+              <TextInput
+                style={!editable ? styles.disabledInput : styles.enabledInput}
+                value={auth.national_id}
+                editable={editable}
+              />
+            </View>
+          </View>
 
-      <View style={styles.userInfo}>
-        <View style={styles.row}>
-          <Text style={styles.label}>City:</Text>
-          <TextInput
-            style={!editable ? styles.disabledInput : styles.enabledInput}
-            value={city}
-            editable={editable}
-          />
-        </View>
-        <View style={styles.row}>
-          <Text style={styles.label}>Address:</Text>
-          <TextInput
-            style={!editable ? styles.disabledInput : styles.enabledInput}
-            value={address}
-            editable={editable}
-          />
-        </View>
-      </View>
+          <View style={styles.userInfo}>
+            <View style={styles.row}>
+              <Text style={styles.label}>Governate:</Text>
 
-      <View
-        style={[styles.editButton, { display: editable ? "none" : "flex" }]}
-      >
-        <Button
-          color={"#fe0000"}
-          title="Remove Account"
-          onPress={handelDelete}
-        />
-        <Button
-          color={"#00fe00"}
-          title="Edit information"
-          onPress={() => setEditable(true)}
-        />
-      </View>
-      <View
-        style={[
-          styles.editButton,
-          { display: !editable ? "none" : "flex", justifyContent: "flex-end" },
-        ]}
-      >
-        <Button
-          color={"#0000fe"}
-          title="Done"
-          onPress={() => setEditable(false)}
-        />
-      </View>
-    </ScrollView>
+              {Governate && (
+                <RNPickerSelect
+                  items={Governate.map((e) => ({
+                    label: e.name,
+                    value: e.governorate_ID,
+                  }))}
+                  itemKey={governate}
+                />
+              )}
+              <TextInput
+                style={!editable ? styles.disabledInput : styles.enabledInput}
+                value={governate}
+                editable={editable}
+              />
+            </View>
+            <View style={styles.row}>
+              <Text style={styles.label}>Zone:</Text>
+              {Zone && Zone.length > 3 && (
+                <RNPickerSelect
+                  items={Zone.map((e) => ({ label: e.name, value: e.zone_id }))}
+                />
+              )}
+
+              <TextInput
+                style={!editable ? styles.disabledInput : styles.enabledInput}
+                value={zone}
+                editable={editable}
+              />
+            </View>
+          </View>
+
+          <View
+            style={[styles.editButton, { display: editable ? "none" : "flex" }]}
+          >
+            <Button
+              color={"#fe0000"}
+              title="Remove Account"
+              onPress={handelDelete}
+            />
+            <Button
+              color={"#00fe00"}
+              title="Edit information"
+              onPress={() => setEditable(true)}
+            />
+          </View>
+          <View
+            style={[
+              styles.editButton,
+              {
+                display: !editable ? "none" : "flex",
+                justifyContent: "flex-end",
+              },
+            ]}
+          >
+            <Button
+              color={"#0000fe"}
+              title="Done"
+              onPress={() => setEditable(false)}
+            />
+          </View>
+        </ScrollView>
+      ) : (
+        <Loader />
+      )}
+    </>
   );
 };
 

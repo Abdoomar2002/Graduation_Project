@@ -15,14 +15,6 @@ export default function RecentOrders() {
   const Orders = useSelector((state) => state?.order?.data);
   const dispatch = useDispatch();
   useEffect(() => {
-    const checkAuthStatus = async () => {
-      const storageServiceValue = await storageService.get("Token");
-    };
-
-    checkAuthStatus();
-    // Assuming the data is fetched from an API
-  }, []);
-  useEffect(() => {
     const fetchData = async () => {
       const response = await dispatch(actions.displayRelatedOrders()).then(
         (res) => res

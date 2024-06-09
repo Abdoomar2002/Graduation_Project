@@ -11,7 +11,7 @@ const actions = {
       return response;
     };
   },
-  getZoneByGovernateId: (data) => {
+  getZoneByZoneId: (data) => {
     return async (dispatch) => {
       const response = await Api.app.Zone.display(data);
       dispatch({
