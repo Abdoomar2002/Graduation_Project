@@ -11,9 +11,12 @@ class StorageService {
   set(key, value) {
     return this.provider.set(key, value);
   }
+<<<<<<< HEAD
   remove(key, value) {
     return this.provider.remove(key, value);
   }
+=======
+>>>>>>> fdb828f2cdb078504b2778ba662b959b03b01081
 }
 
 export default new StorageService();

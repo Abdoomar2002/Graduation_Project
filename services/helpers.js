@@ -7,7 +7,11 @@ class HttpHelpers {
     this.subscribers = [];
   }
   setBaseUrl(apiBaseUrl) {
+<<<<<<< HEAD
     this.apiBaseUrl = "https://hatley.runasp.net/api/";
+=======
+    this.apiBaseUrl = apiBaseUrl;
+>>>>>>> fdb828f2cdb078504b2778ba662b959b03b01081
     this.authenticatedAxios = axios.create({ baseURL: this.apiBaseUrl });
     this.unAuthenticatedAxios = axios.create({ baseURL: this.apiBaseUrl });
     this.addAuthenticationInterceptor();
@@ -26,6 +30,11 @@ class HttpHelpers {
   addAuthenticationInterceptor() {
     this.authenticatedAxios.interceptors.request.use(
       async (config) => {
+<<<<<<< HEAD
+=======
+        const locale = await this.getLocale();
+        config.headers["Accept-Language"] = locale;
+>>>>>>> fdb828f2cdb078504b2778ba662b959b03b01081
         const accessToken = await this.getToken();
         if (accessToken) {
           config.headers.Authorization = `Bearer ${accessToken}`;
@@ -39,6 +48,11 @@ class HttpHelpers {
   addUnauthenticationInterceptor() {
     this.unAuthenticatedAxios.interceptors.request.use(
       async (config) => {
+<<<<<<< HEAD
+=======
+        const locale = await this.getLocale();
+        config.headers["Accept-Language"] = locale;
+>>>>>>> fdb828f2cdb078504b2778ba662b959b03b01081
         return config;
       },
       (error) => Promise.reject(error)
@@ -50,7 +64,14 @@ class HttpHelpers {
       (response) => response,
       (error) => {
         if (error.response && error.response.status === 401) {
+<<<<<<< HEAD
           // window.location.href = "/login"; // Navigate to the login page using window.location
+=======
+          StorageService.set("Token", null);
+          StorageService.set("UserId", null);
+          StorageService.set("auth", false);
+          window.location.href = "/login"; // Navigate to the login page using window.location
+>>>>>>> fdb828f2cdb078504b2778ba662b959b03b01081
         }
         return Promise.reject(error);
       }
