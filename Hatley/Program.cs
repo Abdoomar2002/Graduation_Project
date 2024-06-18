@@ -158,10 +158,10 @@ namespace Hatley
 			app.UseAuthentication();//Check JWT token
 			app.UseAuthorization();
 
-			app.MapHub<NotifyOrderForDeliveryHup>("/NotifyOrderForDelivery");
-            app.MapHub<NotifyUserOfStatus>("/NotifyUserOfStatus");
-            app.MapHub<NotifyOfAcceptionForDeliveryHub>("/NotifyOfAcceptionForDelivery");
-
+			app.MapHub<NotifyNewOrderForDeliveryHup>("/NotifyNewOrderForDelivery");
+            app.MapHub<NotifyChangeStatusForUserHub>("/NotifyChangeStatusForUser");
+            app.MapHub<NotifyOfAcceptionForDeliveryHub>("/NotifyOfAcceptOrDeclineForDeliveryOffer");
+			app.MapHub<NotifyNewOfferForUserHub>("/NotifyNewOfferForUser");
 
             app.MapControllers();
 

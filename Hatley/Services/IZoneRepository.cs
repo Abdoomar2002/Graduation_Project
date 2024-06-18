@@ -6,7 +6,8 @@ namespace Hatley.Services
     public interface IZoneRepository
     {
         List<ZoneDTO>? Displayall();
-        ZoneDTO? Display(int id);
+        List<ZoneDTO>? DisplayAllZonesToGovernorate(string governorate_name);
+		ZoneDTO? Display(int id);
         int Insert(ZoneDTO item);
         int Edit(int id, ZoneDTO item);
         int Delete(int id);

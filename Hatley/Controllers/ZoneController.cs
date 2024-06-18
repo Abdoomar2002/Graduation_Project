@@ -3,6 +3,7 @@ using Hatley.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace Hatley.Controllers
 {
@@ -31,7 +32,20 @@ namespace Hatley.Controllers
             return Ok(zones);
         }
 
-        [HttpGet("{id:int}")]
+        [HttpGet("ZonesForGovernorate/{governorate_name}")]
+		public IActionResult DisplayALlZonesForGovernorate([Required]string governorate_name)
+		{
+			List<ZoneDTO>? zones = zoneRepository.DisplayAllZonesToGovernorate(governorate_name);
+            if(zones == null)
+            {
+                return BadRequest("No Record Exist");
+            }
+            return Ok(zones);
+
+		}
+
+
+		[HttpGet("{id:int}")]
         public IActionResult Display(int id)
         {
 			/*if (userType != "Admin")
@@ -47,6 +61,7 @@ namespace Hatley.Controllers
             return Ok(zone);
         }
 
+        
 
 		[Authorize]
 		[HttpPost]

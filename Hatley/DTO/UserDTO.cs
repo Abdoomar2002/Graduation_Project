@@ -10,6 +10,7 @@ namespace Hatley.DTO
 		[EmailAddress]
 		public string Email { get; set; }
 		public string Password { get; set; }
+		public string? photo { get; set; }
 
 	}
 }

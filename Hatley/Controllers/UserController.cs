@@ -32,10 +32,10 @@ namespace Hatley.Controllers
 		[HttpGet]
 		public IActionResult getall()
 		{
-			if (userType != "Admin")
+			/*if (userType != "Admin")
 			{
 				return Unauthorized();
-			}
+			}*/
 
 			List<UserDTO>? usersdto = repo.GetUsers();
 			return Ok(usersdto);

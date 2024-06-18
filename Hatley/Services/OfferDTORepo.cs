@@ -2,6 +2,7 @@
 using Hatley.Hubs;
 using Hatley.Models;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.Linq;
 
 namespace Hatley.Services
@@ -9,13 +10,18 @@ namespace Hatley.Services
 	public class OfferDTORepo : IOfferDTORepo
 	{
 		private readonly appDB context;
-        private readonly IHubContext<NotifyOfAcceptionForDeliveryHub> acceptionHub;
+		private readonly IHubContext<NotifyOfAcceptionForDeliveryHub> acceptionHub;
+		private readonly IHubContext<NotifyNewOfferForUserHub> NewOfferForUser;
 
-        public OfferDTORepo(appDB _context, IHubContext<NotifyOfAcceptionForDeliveryHub> acceptionHub)
+		public OfferDTORepo(appDB _context
+			, IHubContext<NotifyOfAcceptionForDeliveryHub> acceptionHub
+			, IHubContext<NotifyNewOfferForUserHub> NewOfferForUser)
 		{
 			context = _context;
 			this.acceptionHub = acceptionHub;
+			this.NewOfferForUser = NewOfferForUser;
 		}
+
 		public OfferDTO? Display_Offer_Of_Order(int orderId, string email)//for delivery
 		{
 			var order = context.orders.FirstOrDefault(x => x.Order_ID == orderId);
@@ -74,31 +80,61 @@ namespace Hatley.Services
 			{
 				return null;
 			}
+
+			var user_email = context.users.Where(x => x.User_ID ==userid)
+				.Select(x=>x.Email) .FirstOrDefault();
+
+
 			List<int> rate = context.ratings.Where(x => x.Delivery_ID == delivery.Delivery_ID)
 				.Select(x => x.Value).ToList();
+
 			if (rate.Count() == 0)
 			{
-				ViewOfferForUserDTO vie = new ViewOfferForUserDTO() // #### Hub ####
+				ViewOfferForUserDTO view = new ViewOfferForUserDTO() // #### Hub ####
 				{
 					order_id = orderid,
+					delivery_email = email,
 					delivery_name = delivery.Name,
-					delivery_id = delivery.Delivery_ID,
-					userid = userid,
+					delivery_photo = delivery.Photo,
+					delivery_avg_rate = 0,
+					delivery_count_rate = 0,
+					//delivery_id = delivery.Delivery_ID,
+					//userid = userid,
 					offer_value = value,
 				};
-				return vie;
+				CheckNotificationDTO check = new CheckNotificationDTO()
+				{
+					email = user_email,
+					type = "User"
+				};
+				NewOfferForUser.Clients.All.SendAsync("NotifyNewOfferForUser", view,check);
+				return view;
 			}
-			ViewOfferForUserDTO view = new ViewOfferForUserDTO() // #### Hub ####
+
+			else
 			{
-				order_id = orderid,
-				delivery_name = delivery.Name,
-				delivery_id = delivery.Delivery_ID,
-				userid = userid,
-				offer_value = value,
-				delivery_avg_rate = Math.Round(rate.Average(), 1),
-				delivery_count_rate = rate.Count() 
-			};
-			return view;
+			
+				ViewOfferForUserDTO view = new ViewOfferForUserDTO() // #### Hub ####
+				{
+					order_id = orderid,
+					delivery_email = email,
+					delivery_name = delivery.Name,
+					delivery_photo = delivery.Photo,
+					//delivery_id = delivery.Delivery_ID,
+					//userid = userid,
+					offer_value = value,
+					delivery_avg_rate = Math.Round(rate.Average(), 1),
+					delivery_count_rate = rate.Count() 
+				};
+
+				CheckNotificationDTO check = new CheckNotificationDTO()
+				{
+					email = user_email,
+					type = "User"
+				};
+				NewOfferForUser.Clients.All.SendAsync("NotifyNewOfferForUser", view, check);
+				return view;
+			}
 		}
 
 		public int DeliveryAcceptOffer(int orederid,string email)
@@ -117,27 +153,58 @@ namespace Hatley.Services
 
 		}
 
-		public int UserAcceptOffer(int orederid,string email)
+		public int UserAcceptOffer(int orederid,double price_of_offer
+			,string email,string state)
 		{
-			var delivery = context.delivers.FirstOrDefault(x=>x.Email==email);
-			var order = context.orders.FirstOrDefault(x => x.Order_ID == orederid);
-			if (order == null)
+			if(state == "Accept")
 			{
-				return -1;//error during processing please try again
+				var delivery = context.delivers.FirstOrDefault(x => x.Email == email);
+				var order = context.orders.FirstOrDefault(x => x.Order_ID == orederid);
+				if (order == null)
+				{
+					return -1;//error during processing please try again
+				}
+				order.Delivery_ID = delivery.Delivery_ID;
+				order.Price = price_of_offer;
+				int raw = context.SaveChanges();
+				if (raw == 1)
+				{
+					var user = context.users.FirstOrDefault(x => x.User_ID == order.User_ID);
+					CheckNotificationDTO check = new CheckNotificationDTO()
+					{
+						email = email,
+						type = "Delivery"
+					};
+					acceptionHub.Clients.All.SendAsync("NotifyOfAcceptOrDeclineForDeliveryOffer",
+						state, price_of_offer, orederid, user.Name,user.Phone
+						,user.Orders.Count, check);
+				}
+				return raw;//####Hub####
 			}
-			order.Delivery_ID = delivery.Delivery_ID;
-			int raw = context.SaveChanges();
-            if(raw ==1)
-            {
-				var price = context.orders
-					.Where(x => x.Order_ID == orederid)
-					.Select(x => x.Price);
-                var user = context.users.FirstOrDefault(x => x.User_ID == order.User_ID);
 
-                acceptionHub.Clients.All.SendAsync("NotifyOfAcceptionForDelivery", email, 
-					price, orederid, user.Name, "Delivery");
-            }
-			return raw;//####Hub####
+			else
+			{
+				var delivery = context.delivers.FirstOrDefault(x => x.Email == email);
+				var order = context.orders.FirstOrDefault(x => x.Order_ID == orederid);
+				if (order == null)
+				{
+					return -1;//error during processing please try again
+				}
+				           //order.Delivery_ID = delivery.Delivery_ID;
+				
+					var user = context.users.FirstOrDefault(x => x.User_ID == order.User_ID);
+					CheckNotificationDTO check = new CheckNotificationDTO()
+					{
+						email = email,
+						type = "Delivery"
+					};
+					acceptionHub.Clients.All.SendAsync("NotifyOfAcceptOrDeclineForDeliveryOffer",
+						state, price_of_offer, orederid, user.Name, user.Photo
+						, user.Orders.Count, check);
+				
+				return -2;//####Hub####
+			}
+				
 
 		}
 

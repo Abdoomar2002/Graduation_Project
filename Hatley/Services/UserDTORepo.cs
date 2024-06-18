@@ -38,7 +38,8 @@ namespace Hatley.Services
 				Name = x.Name,
 				Email = x.Email,
 				phone = x.Phone,
-				Password = x.Password
+				Password = x.Password,
+				photo = x.Photo
 			}).ToList();
 
 			return usersdto;
@@ -58,7 +59,8 @@ namespace Hatley.Services
 				Name = user.Name,
 				Email = user.Email,
 				phone = user.Phone,
-				Password = user.Password
+				Password = user.Password,
+				photo = user.Photo
 			};
 			//double av = user.Rate.Average();
 			return userdto;
@@ -78,7 +80,8 @@ namespace Hatley.Services
 				Name = user.Name,
 				Email = user.Email,
 				phone = user.Phone,
-				Password = user.Password
+				Password = user.Password,
+				photo = user.Photo
 			};
 			return userdto;
 		}
@@ -118,7 +121,7 @@ namespace Hatley.Services
 		{
 			var user = context.users.FirstOrDefault(x => x.Email == email);
             user.Photo = await SaveImage(profile_img);
-            context.users.Add(user);
+            //context.users.Add(user);
             int raw = await context.SaveChangesAsync();
             return raw;
         }

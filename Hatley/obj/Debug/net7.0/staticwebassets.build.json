@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "tHuXvioeSjHFhoy+kBl7WTd9pXzzy3N/oiCEnTNZTM8=",
+  "Hash": "n5jpMRs4NMYLcQpxeUOpiH1rhcxTjExMRF//Ldj8QWU=",
   "Source": "Hatley",
   "BasePath": "_content/Hatley",
   "Mode": "Default",
@@ -714,6 +714,23 @@
       "OriginalItemSpec": "wwwroot\\User_imgs\\72783dc2-5ba9-4980-9225-869bb8e35021_IMG_20221207_211019-4.jpg"
     },
     {
+      "Identity": "E:\\College\\Graduation project\\Code\\Hatley\\wwwroot\\User_imgs\\b9132453-c302-4540-a303-08b815b26352_4.jpg",
+      "SourceId": "Hatley",
+      "SourceType": "Discovered",
+      "ContentRoot": "E:\\College\\Graduation project\\Code\\Hatley\\wwwroot\\",
+      "BasePath": "_content/Hatley",
+      "RelativePath": "User_imgs/b9132453-c302-4540-a303-08b815b26352_4.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\User_imgs\\b9132453-c302-4540-a303-08b815b26352_4.jpg"
+    },
+    {
       "Identity": "E:\\College\\Graduation project\\Code\\Hatley\\wwwroot\\User_imgs\\cc93708b-9650-4a2d-880d-bcf32c498bc0_pizza-1.jpg",
       "SourceId": "Hatley",
       "SourceType": "Discovered",
@@ -729,6 +746,40 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\User_imgs\\cc93708b-9650-4a2d-880d-bcf32c498bc0_pizza-1.jpg"
+    },
+    {
+      "Identity": "E:\\College\\Graduation project\\Code\\Hatley\\wwwroot\\User_imgs\\dcff0133-bd93-4d9a-8a65-567e5ce88609_6.jpg",
+      "SourceId": "Hatley",
+      "SourceType": "Discovered",
+      "ContentRoot": "E:\\College\\Graduation project\\Code\\Hatley\\wwwroot\\",
+      "BasePath": "_content/Hatley",
+      "RelativePath": "User_imgs/dcff0133-bd93-4d9a-8a65-567e5ce88609_6.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\User_imgs\\dcff0133-bd93-4d9a-8a65-567e5ce88609_6.jpg"
+    },
+    {
+      "Identity": "E:\\College\\Graduation project\\Code\\Hatley\\wwwroot\\User_imgs\\e68efdd3-5b60-4c1d-8c08-1be6cbfc386f_4.jpg",
+      "SourceId": "Hatley",
+      "SourceType": "Discovered",
+      "ContentRoot": "E:\\College\\Graduation project\\Code\\Hatley\\wwwroot\\",
+      "BasePath": "_content/Hatley",
+      "RelativePath": "User_imgs/e68efdd3-5b60-4c1d-8c08-1be6cbfc386f_4.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\User_imgs\\e68efdd3-5b60-4c1d-8c08-1be6cbfc386f_4.jpg"
     }
   ]
 }

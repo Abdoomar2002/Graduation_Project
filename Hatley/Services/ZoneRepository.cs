@@ -33,7 +33,30 @@ namespace Hatley.Services
         }
 
 
-        public ZoneDTO? Display(int id)
+        public List <ZoneDTO>? DisplayAllZonesToGovernorate (string governorate_name)
+        {
+            int governorate_id = context.governorates.Where(x => x.Name == governorate_name)
+                .Select(x => x.Governorate_ID).FirstOrDefault();
+            
+			List<Zone> zones = context.zones.Where(x => x.Governorate_ID == governorate_id)
+                .ToList();
+            if(zones.Count == 0)
+            {
+                return null;
+            }
+
+			List<ZoneDTO> zonesDTO = zones.Select(x => new ZoneDTO()
+			{
+				zone_id = x.Zone_ID,
+				name = x.Name,
+				north = x.North,
+				east = x.East,
+				governorate_id = x.Governorate_ID
+			}).ToList();
+			return zonesDTO;
+		}
+
+		public ZoneDTO? Display(int id)
         {
             var zone = context.zones.FirstOrDefault(x => x.Zone_ID == id);
             if (zone == null)

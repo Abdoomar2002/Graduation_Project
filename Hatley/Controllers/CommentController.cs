@@ -33,10 +33,10 @@ namespace Hatley.Controllers
 		[HttpGet]
 		public IActionResult getall()
 		{
-			if(userType != "Admin")
+			/*if(userType != "Admin")
 			{
 				return Unauthorized();
-			}
+			}*/
 
 			List<CommentDTO>? commentsdto = repo.GetComments();
 			if (commentsdto == null)
@@ -45,6 +45,7 @@ namespace Hatley.Controllers
 			}
 			return Ok(commentsdto);
 		}
+
 
 		[HttpGet("Delivery")]
 		public IActionResult GetAllForDelivery()

@@ -50,7 +50,7 @@ namespace Hatley.Controllers
 		public IActionResult ViewOffer([FromQuery][Required] int orderid
 			,[FromQuery][Required] int value,[FromQuery][Required] string email)
 		{
-			if (type != "User")
+			if (type != "User" || type != "Delivery")
 			{
 				return Unauthorized();
 			}
@@ -86,13 +86,15 @@ namespace Hatley.Controllers
 
 		[HttpGet("User/Accept")]
 		public IActionResult UserAcceptOffer([FromQuery][Required]int orderid
-			,[FromQuery][Required]string email)
+			, [FromQuery][Required] double price_of_offer
+			, [FromQuery][Required]string delivery_email
+			, [FromQuery][Required] string state)
 		{
 			if (type != "User")
 			{
 				return Unauthorized();
 			}
-			int raw = repo.UserAcceptOffer(orderid, email);
+			int raw = repo.UserAcceptOffer(orderid, price_of_offer, delivery_email, state);
 			if (raw == 0)
 			{
 				return BadRequest("error while accept offer please try again");
@@ -101,7 +103,11 @@ namespace Hatley.Controllers
 			{
 				return BadRequest("error during processing please try again");
 			}
-			return Ok();
+			else if (raw == -2)
+			{
+				Ok("Decline offer successfully");
+			}
+			return Ok("Accept offer successfully");
 		}
 	}
 }

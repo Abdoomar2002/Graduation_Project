@@ -29,10 +29,10 @@ namespace Hatley.Controllers
 		[HttpGet]
         public IActionResult getall()
 		{
-			if (type != "Admin")
+			/*if (type != "Admin")
 			{
 				return Unauthorized();
-			}
+			}*/
 
 			List<OrderDTO>? ordersdto = repo.GetOrders();
 			if (ordersdto == null)

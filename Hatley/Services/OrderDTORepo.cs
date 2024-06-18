@@ -10,12 +10,12 @@ namespace Hatley.Services
 {
 	public class OrderDTORepo : IOrderDTORepo
 	{
-		private readonly IHubContext<NotifyOrderForDeliveryHup> OrderHub;
+		private readonly IHubContext<NotifyNewOrderForDeliveryHup> OrderHub;
 		private readonly Order order;
 		private readonly appDB context;
 
 		public OrderDTORepo(Order _order, appDB _context
-			, IHubContext<NotifyOrderForDeliveryHup> _OrderHub)
+			, IHubContext<NotifyNewOrderForDeliveryHup> _OrderHub)
 		{
 			order = _order;
 			context = _context;
@@ -314,9 +314,24 @@ namespace Hatley.Services
 			order.User_ID = user.User_ID;
 			//order.Location = orderdto.location;
 			//order.Status = orderdto.Status;
+
 			context.orders.Add(order);
-			int raw = context.SaveChanges();
-			if(raw == 1)
+			//int raw = context.SaveChanges();
+
+			int raw = 0;
+			try
+			{
+				raw = context.SaveChanges();
+			}
+			catch (Exception ex)
+			{
+				return raw;
+				// Handle exceptions appropriately
+				// You can log the exception, rethrow it, or return an error code
+				//throw new InvalidOperationException("Could not save order to the database.", ex);
+			}
+
+			if (raw == 1)
 			{
 				var gonernorate_name = context.governorates
 					.FirstOrDefault(x => x.Name == order.Order_governorate_to);

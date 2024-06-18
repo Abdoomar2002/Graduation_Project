@@ -32,10 +32,10 @@ namespace Hatley.Controllers
 		[HttpGet]
         public IActionResult Displayall()
         {
-			if (userType != "Admin")
+			/*if (userType != "Admin")
 			{
 				return Unauthorized();
-			}
+			}*/
 
 			List<DeliveryDTO>? deliveryMen = deliveryRepository.Displayall();
             return Ok(deliveryMen);
@@ -90,9 +90,9 @@ namespace Hatley.Controllers
 			}
             return BadRequest(ModelState);
         }
+
+
         [HttpPut("{id:int}")]
-
-
         public IActionResult Edit(int id,[FromBody] DeliveryDTO person)
         {
 			if (userType != "Delivery")
@@ -115,6 +115,7 @@ namespace Hatley.Controllers
             }
             return BadRequest(ModelState);
         }
+
         [HttpDelete("{id:int}")]
         public IActionResult Delete(int id)
         {

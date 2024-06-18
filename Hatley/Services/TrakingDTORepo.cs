@@ -8,9 +8,9 @@ namespace Hatley.Services
 	public class TrakingDTORepo : ITrakingDTORepo
 	{
 		private readonly appDB context;
-        private readonly IHubContext<NotifyUserOfStatus> statusHub;
+        private readonly IHubContext<NotifyChangeStatusForUserHub> statusHub;
 
-        public TrakingDTORepo(appDB _context, IHubContext<NotifyUserOfStatus> statusHub)
+        public TrakingDTORepo(appDB _context, IHubContext<NotifyChangeStatusForUserHub> statusHub)
 		{
 			context = _context;
 			this.statusHub = statusHub;
@@ -96,20 +96,37 @@ namespace Hatley.Services
 				}
 
 				order.Status++;
-				int raw = context.SaveChanges();
-                //private readonly IHubContext<ProductHub> proHub;
-                //proHub.Clients.All.SendAsync("newproductadd", pro);
-                if (raw == 1)
+				//int raw = context.SaveChanges();
+				int raw = 0;
+				try
+				{
+					raw = context.SaveChanges();
+				}
+				catch (Exception ex)
+				{
+					return raw;
+					// Handle exceptions appropriately
+					// You can log the exception, rethrow it, or return an error code
+					//throw new InvalidOperationException("Could not save order to the database.", ex);
+				}
+
+				if (raw == 1)
                 {
 					int? userid = order.User_ID;
 					var email = context.users
                         .Where(x => x.User_ID == userid)
-                        .Select(x => x.Email);
-                    statusHub.Clients.All.SendAsync("NotifyUserOfStatus", email,
-                        order.Status, order_id, "User");
+                        .Select(x => x.Email).FirstOrDefault();
+
+					CheckNotificationDTO check = new CheckNotificationDTO()
+					{
+						email = email,
+						type = "User"
+					};
+                    statusHub.Clients.All.SendAsync("NotifyChangeStatusForUser",
+                        order.Status, order_id, check);
                 }
 
-                return 2;
+                return raw;
 			}
 			return 3; // 403 forbidden
 		}

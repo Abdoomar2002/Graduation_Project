@@ -165,8 +165,20 @@
       "PackagePath": "staticwebassets\\User_imgs\\72783dc2-5ba9-4980-9225-869bb8e35021_IMG_20221207_211019-4.jpg"
     },
     {
+      "Id": "E:\\College\\Graduation project\\Code\\Hatley\\wwwroot\\User_imgs\\b9132453-c302-4540-a303-08b815b26352_4.jpg",
+      "PackagePath": "staticwebassets\\User_imgs\\b9132453-c302-4540-a303-08b815b26352_4.jpg"
+    },
+    {
       "Id": "E:\\College\\Graduation project\\Code\\Hatley\\wwwroot\\User_imgs\\cc93708b-9650-4a2d-880d-bcf32c498bc0_pizza-1.jpg",
       "PackagePath": "staticwebassets\\User_imgs\\cc93708b-9650-4a2d-880d-bcf32c498bc0_pizza-1.jpg"
+    },
+    {
+      "Id": "E:\\College\\Graduation project\\Code\\Hatley\\wwwroot\\User_imgs\\dcff0133-bd93-4d9a-8a65-567e5ce88609_6.jpg",
+      "PackagePath": "staticwebassets\\User_imgs\\dcff0133-bd93-4d9a-8a65-567e5ce88609_6.jpg"
+    },
+    {
+      "Id": "E:\\College\\Graduation project\\Code\\Hatley\\wwwroot\\User_imgs\\e68efdd3-5b60-4c1d-8c08-1be6cbfc386f_4.jpg",
+      "PackagePath": "staticwebassets\\User_imgs\\e68efdd3-5b60-4c1d-8c08-1be6cbfc386f_4.jpg"
     },
     {
       "Id": "obj\\Debug\\net7.0\\staticwebassets\\msbuild.Hatley.Microsoft.AspNetCore.StaticWebAssets.props",
