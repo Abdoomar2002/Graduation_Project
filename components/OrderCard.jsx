@@ -1,30 +1,36 @@
 import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
+import { Asset } from "expo-asset";
+import { MaterialIcons } from "@expo/vector-icons";
+import { string } from "yup";
 
+const photo = Asset.fromModule(
+  require("../assets/images/profile.jpg")
+).downloadAsync((uri) => uri);
 const OrderCard = ({ order }) => {
+  let date = new Date(order.created);
+  date.setHours(date.getHours() + 3);
+  let created = date.toLocaleString();
+  console.log(order, "anything");
   return (
     <View style={styles.card}>
       <View style={styles.header}>
-        <Image
-          source={require("../assets/images/profile.jpg")}
-          style={styles.image}
-        />
         <View style={styles.headerText}>
-          <Text style={styles.name}>{order.name}</Text>
-          <View style={styles.stars}>
-            {[...Array(order.rating)].map((_, i) => (
-              <Text key={i} style={styles.star}>
-                ⭐
-              </Text>
-            ))}
-          </View>
+          <Text style={styles.name}>{order.order_zone_from} </Text>
+          <MaterialIcons name="arrow-right-alt" size={30} />
+          <Text style={styles.name}>{order.order_zone_to}</Text>
         </View>
       </View>
       <Text style={styles.orderId}>
         Order ID: <Text style={styles.link}>{order.id}</Text>
       </Text>
-      <Text style={styles.date}>Date: {order.date}</Text>
+      <Text style={styles.orderId}>
+        Order Status: <Text style={styles.link}>{order.status}</Text>
+      </Text>
+      <Text style={styles.date}>Date: {created}</Text>
       <Text style={styles.price}>Price: {order.price}</Text>
-      <Text style={styles.details}>Details: {order.details}</Text>
+      <Text style={styles.details}>
+        Details: {order.description.substr(0, 25)}
+      </Text>
       <View style={styles.footer}>
         <TouchableOpacity style={styles.buttonReport}>
           <Text style={styles.buttonText}>Report</Text>
@@ -62,6 +68,9 @@ const styles = StyleSheet.create({
   },
   headerText: {
     flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    gap: "10",
   },
   name: {
     fontSize: 16,

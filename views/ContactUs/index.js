@@ -1,22 +1,81 @@
-import React from "react";
+import React, { useState } from "react";
+import Toast from "react-native-toast-message";
 import {
   View,
   Text,
-  Image,
+  ActivityIndicator,
   TextInput,
   Button,
   StyleSheet,
   ImageBackground,
   Pressable,
 } from "react-native";
+import { actions } from "../../redux/ContactMail";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons"; // Import for icons
 import { Asset } from "expo-asset";
+import { useDispatch } from "react-redux";
+import validate from "../../utils/validate";
+import Loader from "../../components/Loader";
 const imageUrl = Asset.fromModule(require("../../assets/images/email.png"))
   .downloadAsync()
   .then((asseturi) => asseturi.uri);
+const loader = require("../../assets/loader.json");
 function ContactUs({ handelPress }) {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [message, setMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
+  const dispatch = useDispatch();
+  function handleSubmit() {
+    if (!validateForm()) {
+      return;
+    }
+    setIsLoading(true);
+    const reqBody = { email, phone, message, name };
+    const sendMessage = async () => {
+      try {
+        const response = await dispatch(actions.sendEmail(reqBody));
+        setIsLoading(false);
+        Toast.show({
+          type: "success",
+          text1: "Success",
+          text2: response.message || "Message sent successfully",
+        });
+      } catch (error) {
+        setIsLoading(false);
+
+        Toast.show({
+          type: "error",
+          text1: "Error",
+          text2: error.message || "Failed to send message",
+        });
+      }
+    };
+    sendMessage();
+  }
+  function validateForm() {
+    let validateError = validate.validateName(name);
+    validateError += validate.validateEmail(email);
+    validateError += validate.validatePhone(phone);
+    validateError += validate.validateMessage(message);
+    if (validateError.length > 1) {
+      Toast.show({
+        type: "error",
+        text1: "Error",
+        text2: validateError,
+        text2Style: {
+          height: "auto",
+        },
+      });
+      return false;
+    }
+    return true;
+  }
   return (
     <View style={styles.container}>
+      {isLoading && <Loader />}
       <ImageBackground
         src={imageUrl._j}
         style={{
@@ -51,18 +110,45 @@ function ContactUs({ handelPress }) {
         </View>
         <View style={styles.messageForm}>
           <Text style={styles.fieldLabel}>Your Name:</Text>
-          <TextInput style={styles.textInput} placeholder="Enter your name" />
+          <TextInput
+            style={styles.textInput}
+            value={name}
+            onChangeText={setName}
+            placeholder="Enter your name"
+          />
+          <Text style={styles.fieldLabel}>Your Phone:</Text>
+          <TextInput
+            style={styles.textInput}
+            value={phone}
+            onChangeText={setPhone}
+            keyboardType="number-pad"
+            textContentType="telephoneNumber"
+            placeholder="Enter your Phone Number"
+          />
           <Text style={styles.fieldLabel}>Email:</Text>
-          <TextInput style={styles.textInput} placeholder="Enter your email" />
+          <TextInput
+            style={styles.textInput}
+            value={email}
+            onChangeText={setEmail}
+            textContentType="emailAddress"
+            placeholder="Enter your email"
+          />
           <Text style={styles.fieldLabel}>Message:</Text>
           <TextInput
             style={styles.messageInput}
             placeholder="Write your message here"
             multiline={true}
+            value={message}
+            onChangeText={setMessage}
             numberOfLines={4}
           />
-          <Button title="Send Message" style={styles.submitButton} />
+          <Button
+            title="Send Message"
+            onPress={handleSubmit}
+            style={styles.submitButton}
+          />
         </View>
+        <Toast />
       </ImageBackground>
     </View>
   );
@@ -121,6 +207,17 @@ const styles = StyleSheet.create({
   },
   submitButton: {
     backgroundColor: "#0f0", // Green color for submit button
+  },
+  overlay: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    zIndex: 99,
+    justifyContent: "center",
+    alignItems: "center",
+    // backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
 });
 

@@ -121,17 +121,11 @@ const appApi = {
     },
   },
   Order: {
-    displayRelatedOrders: async () => {
-      const response = await HttpHelpers.authenticatedAxios.get(
-        "Order/related/orders"
-      );
-      return response?.data;
-    },
     postOrder: async (data) => {
       const response = await HttpHelpers.authenticatedAxios.post("Order", data);
       return response?.data;
     },
-    getAllForDelivery: async () => {
+    getAll: async () => {
       const response = await HttpHelpers.authenticatedAxios.get("Order/Orders");
       return response?.data;
     },

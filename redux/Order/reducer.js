@@ -5,13 +5,7 @@ const INITIAL_STATE = {
 
 const orderReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case "DISPLAY_RELATED_ORDERS":
-      if (action.error) return state;
-      return {
-        ...state,
-        orders: action.data,
-      };
-    case "GET_ALL_FOR_USER_OR_DELIVERY":
+    case "GET_ALL":
       if (action.error) return state;
       return {
         ...state,

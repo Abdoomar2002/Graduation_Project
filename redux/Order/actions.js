@@ -1,37 +1,19 @@
 import Api from "../../services";
 
 const actions = {
-  displayRelatedOrders: () => {
+  getAll: () => {
     return (dispatch) => {
-      return Api.app.Order.displayRelatedOrders()
+      return Api.app.Order.getAll()
         .then((response) => {
           dispatch({
-            type: "DISPLAY_RELATED_ORDERS",
+            type: "GET_ALL",
             data: response,
           });
           return response;
         })
         .catch((error) => {
           dispatch({
-            type: "DISPLAY_RELATED_ORDERS",
-            error: true,
-          });
-        });
-    };
-  },
-  getAllForUserOrDelivery: () => {
-    return (dispatch) => {
-      return Api.app.Order.getAllForUserOrDelivery()
-        .then((response) => {
-          dispatch({
-            type: "GET_ALL_FOR_USER_OR_DELIVERY",
-            data: response,
-          });
-          return response;
-        })
-        .catch((error) => {
-          dispatch({
-            type: "GET_ALL_FOR_USER_OR_DELIVERY",
+            type: "GET_ALL",
             error: true,
           });
         });
