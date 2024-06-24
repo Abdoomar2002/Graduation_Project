@@ -99,11 +99,11 @@ namespace Hatley.Controllers
 				}
 				if (raw == -1)
 				{
-					return BadRequest("must enter id for delivery");
+					return BadRequest("More than one comment is not allowed for the same order");
 				}
 				if (raw == -2)
 				{
-					return NotFound("the delivery not exist");
+					return NotFound("the order id not exist");
 				}
 
 				return Ok();

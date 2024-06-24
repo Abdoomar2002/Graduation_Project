@@ -50,7 +50,7 @@ namespace Hatley.Controllers
 		public IActionResult ViewOffer([FromQuery][Required] int orderid
 			,[FromQuery][Required] int value,[FromQuery][Required] string email)
 		{
-			if (type != "User" || type != "Delivery")
+			if (type != "User" && type != "Delivery")
 			{
 				return Unauthorized();
 			}

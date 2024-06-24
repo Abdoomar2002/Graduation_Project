@@ -26,7 +26,8 @@ namespace Hatley.Services
 				Id = x.Comment_ID,
 				Text = x.Text,
 				CreatedAt=x.CreatedAt,
-				Delivery_ID = x.Delivery_ID
+				order_id = x.Order_id,
+				delivery_id = x.Delivery_ID
 			}).ToList();
 			return commentsdto;
 		}
@@ -43,7 +44,8 @@ namespace Hatley.Services
 				Id = comment.Comment_ID,
 				Text = comment.Text,
 				CreatedAt=comment.CreatedAt,
-				Delivery_ID = comment.Delivery_ID
+				order_id=comment.Order_id,
+				delivery_id = comment.Delivery_ID
 
 			};
 			return CommentDTO;
@@ -65,27 +67,32 @@ namespace Hatley.Services
 				Id = x.Comment_ID,
 				Text = x.Text,
 				CreatedAt = x.CreatedAt,
-				Delivery_ID = x.Delivery_ID
+				order_id = x.Order_id,
+				delivery_id = x.Delivery_ID
 			}).ToList();
 			return commentsdto;
 
 		}
 
+
+
 		public int Create(CommentDTO commentdto)
 		{
-			if (commentdto.Delivery_ID == null)
+			var checkexistorderid = context.comments.FirstOrDefault(x=>x.Order_id== commentdto.order_id);
+			if (checkexistorderid != null)
 			{
 				return -1;
 			}
 
-			var checkdeliveryid = context.delivers.FirstOrDefault(x => x.Delivery_ID == commentdto.Delivery_ID);
-			if (checkdeliveryid == null)
+			var checkdorderid = context.orders.FirstOrDefault(x => x.Order_ID == commentdto.order_id);
+			if (checkdorderid == null)
 			{
 				return -2;
 			}
 
 			comment.Text = commentdto.Text;
-			comment.Delivery_ID = commentdto.Delivery_ID;
+			comment.Delivery_ID = checkdorderid.Delivery_ID;
+			comment.Order_id = commentdto.order_id;
 			comment.CreatedAt=DateTime.Now;
 			context.comments.Add(comment);
 			int raw = context.SaveChanges();

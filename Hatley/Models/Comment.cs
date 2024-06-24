@@ -11,9 +11,8 @@ namespace Hatley.Models
 		[Required]
 		public string Text { get; set; }
 		public DateTime CreatedAt { get; set; }
-		public string Comment_from { get; set; }
-
-		public int Delivery_ID { get; set; }
+		public int Order_id { get; set; }
+		public int? Delivery_ID { get; set; }
 		[ForeignKey("Delivery_ID")]
 
 		public Delivery Delivery { get; set; }

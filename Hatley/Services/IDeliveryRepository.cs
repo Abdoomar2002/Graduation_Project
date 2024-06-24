@@ -10,7 +10,8 @@ namespace Hatley.Services
         DeliveryDTO? Display(string email);
 		Task<string> Insert([FromForm] DeliveryDTO deliveryDTO,
 			IFormFile frontImage, IFormFile backImage, IFormFile faceImage);
-        int Edit(int id, DeliveryDTO person);
+		Task<int> uploadImage(string email, IFormFile? profile_img);
+		int Edit(int id, DeliveryDTO person);
         int Delete(int id);
         DeliveryDTO? Check(LoginDTO login);
 		Task<int> Reset(string mail);

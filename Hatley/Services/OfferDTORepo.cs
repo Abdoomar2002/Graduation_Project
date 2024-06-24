@@ -69,7 +69,7 @@ namespace Hatley.Services
 
 		}
 
-		public ViewOfferForUserDTO? ViewOffer(int orderid, int value, string email)//for user
+		public ViewOfferForUserDTO? ViewOffer(int orderid, int value, string email)//for delivery
 		{
 			int? userid = context.orders.Where(x => x.Order_ID == orderid)
 				.Select(x => x.User_ID)
@@ -98,9 +98,10 @@ namespace Hatley.Services
 					delivery_photo = delivery.Photo,
 					delivery_avg_rate = 0,
 					delivery_count_rate = 0,
+					
+					offer_value = value,
 					//delivery_id = delivery.Delivery_ID,
 					//userid = userid,
-					offer_value = value,
 				};
 				CheckNotificationDTO check = new CheckNotificationDTO()
 				{
@@ -176,7 +177,7 @@ namespace Hatley.Services
 						type = "Delivery"
 					};
 					acceptionHub.Clients.All.SendAsync("NotifyOfAcceptOrDeclineForDeliveryOffer",
-						state, price_of_offer, orederid, user.Name,user.Phone
+						state, price_of_offer, orederid, user.Name,user.Photo
 						,user.Orders.Count, check);
 				}
 				return raw;//####Hub####

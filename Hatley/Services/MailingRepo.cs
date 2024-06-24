@@ -41,17 +41,24 @@ namespace SendEmailsWithDotNet5.Services
 
 			email.Body = builder.ToMessageBody();
 			email.From.Add(new MailboxAddress(confg["MailSettings:DisplayName"], confg["MailSettings:Email"]));
-
+			var a = confg["MailSettings:Email"];
+			var b = confg["Password"];
 			using var smtp = new SmtpClient();
 			smtp.ServerCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true; // Ignore SSL certificate validation
 			smtp.Connect(confg["MailSettings:Host"], Convert.ToInt32(confg["MailSettings:Port"]), SecureSocketOptions.StartTls);
-			smtp.Authenticate(confg["MailSettings:Email"], confg["Password"]);
+			smtp.Authenticate(a, b);
 			await smtp.SendAsync(email);
 
 			smtp.Disconnect(true);
 		}
 	}
 }
+
+
+
+
+
+
 
 
 

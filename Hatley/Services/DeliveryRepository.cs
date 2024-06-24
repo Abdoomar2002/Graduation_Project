@@ -44,6 +44,7 @@ namespace Hatley.Services
 				Password = x.Password,
 				Phone = x.Phone,
 				national_id = x.National_id,
+				photo = x.Photo,
 				front_National_ID_img = x.Front_National_ID_img,
 				back_National_ID_img = x.Back_National_ID_img,
 				face_with_National_ID_img = x.Face_with_National_ID_img,
@@ -69,6 +70,7 @@ namespace Hatley.Services
 				Password = delivery.Password,
 				Phone = delivery.Phone,
 				national_id = delivery.National_id,
+				photo = delivery.Photo,
 				front_National_ID_img = delivery.Front_National_ID_img,
 				back_National_ID_img = delivery.Back_National_ID_img,
 				face_with_National_ID_img = delivery.Face_with_National_ID_img,
@@ -145,9 +147,43 @@ namespace Hatley.Services
 				await image.CopyToAsync(fileStream);
 			}
 
-			return filePath;
+			return Path.Combine("https://hatley.runasp.net/", "Delivery_imgs", uniqueFileName).Replace("\\", "/");
 		}
 
+
+
+		//#################################################################
+		public async Task<int> uploadImage(string email, IFormFile? profile_img)
+		{
+			var delivery = context.delivers.FirstOrDefault(x => x.Email == email);
+			delivery.Photo = await SaveImageProfile(profile_img);
+			int raw = await context.SaveChangesAsync();
+			return raw;
+		}
+
+		private async Task<string?> SaveImageProfile(IFormFile image)
+		{
+			if (image == null || image.Length == 0)
+			{
+				return null;
+			}
+
+			var uploadsFolder = Path.Combine(hostingEnvironment.WebRootPath, "Delivery_imgs");
+			if (!Directory.Exists(uploadsFolder))
+			{
+				Directory.CreateDirectory(uploadsFolder);
+			}
+
+			var uniqueFileName = $"{Guid.NewGuid().ToString()}_{image.FileName}";
+			var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+			using (var fileStream = new FileStream(filePath, FileMode.Create))
+			{
+				await image.CopyToAsync(fileStream);
+			}
+
+			return Path.Combine("https://hatley.runasp.net/", "Delivery_imgs", uniqueFileName).Replace("\\", "/");
+		}
 
 		//##################################################################
 		public int Edit(int id, DeliveryDTO person)

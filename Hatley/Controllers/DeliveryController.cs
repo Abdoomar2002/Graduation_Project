@@ -92,7 +92,22 @@ namespace Hatley.Controllers
         }
 
 
-        [HttpPut("{id:int}")]
+
+		[HttpPost("uploadImage")]
+		public async Task<IActionResult> uploadAsync(IFormFile? profile_img)
+		{
+			var raw = await deliveryRepository.uploadImage(email, profile_img);
+
+			if (raw == 0)
+			{
+				return BadRequest("Photo was not saved");
+			}
+			return Ok("Uploaded successfully");
+		}
+
+
+
+		[HttpPut("{id:int}")]
         public IActionResult Edit(int id,[FromBody] DeliveryDTO person)
         {
 			if (userType != "Delivery")

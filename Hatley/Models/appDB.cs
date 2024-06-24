@@ -15,7 +15,7 @@ namespace Hatley.Models
 			{
 				optionsBuilder.UseSqlServer("Server=db5078.public.databaseasp.net; Database=db5078; User Id=db5078; Password=xZ%9!k8MF?g2; Encrypt=False; MultipleActiveResultSets=True");
 				//optionsBuilder.UseSqlServer("Server=SQL8010.site4now.net;Database=db_aa8903_hatleydata;User Id=db_aa8903_hatleydata_admin;Password=Smarter29.11");
-				//optionsBuilder.UseSqlServer("Data Source=DESKTOP-8CE8AR3\\SQL2022;Initial Catalog=Hatley;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False");
+				//optionsBuilder.UseSqlServer("Data Source=DESKTOP-46IUSU0;Initial Catalog=Hatley;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False");
 				//optionsBuilder.UseSqlServer("Server=db5073.public.databaseasp.net; Database=db5073; User Id=db5073; Password=5b#H%9MsE_d6; Encrypt=False; MultipleActiveResultSets=True;");
 
 			}

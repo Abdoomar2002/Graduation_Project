@@ -10,8 +10,9 @@ namespace Hatley.DTO
 		[Required]
 		public string Text { get; set; }
 		public DateTime CreatedAt { get; set; }
+		public int order_id { get; set; }
 
-		public int Delivery_ID { get; set; }
+		public int? delivery_id { get; set; }
 
 	}
 }

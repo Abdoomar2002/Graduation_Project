@@ -117,6 +117,8 @@ namespace Hatley.Services
 			//int raw = context.SaveChanges();
 			//return raw;
 		}
+
+
         public async Task<int> uploadImage(string email, IFormFile? profile_img)
 		{
 			var user = context.users.FirstOrDefault(x => x.Email == email);
@@ -147,7 +149,7 @@ namespace Hatley.Services
 				await image.CopyToAsync(fileStream);
 			}
 
-			return filePath;
+			return Path.Combine("https:/hatley.runasp.net/", "User_imgs", uniqueFileName).Replace("\\", "/");
 		}
 
 		//################################################################

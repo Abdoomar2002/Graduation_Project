@@ -88,7 +88,8 @@ namespace Hatley.Services
 					u => u.User_ID,
 					(o, u) => new { Order = o, User = u })
 				.Where(our => our.Order.Order_governorate_to == governorate?.Name
-				&& our.Order.Order_zone_to == zone?.Name)
+				&& (our.Order.Order_zone_to == zone?.Name
+				|| our.Order.Order_zone_from == zone?.Name))
 				.Select(our => new RelatedOrdersForDeliveryDTO()
 				{
 					Id = our.Order.Order_ID,

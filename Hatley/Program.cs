@@ -5,6 +5,7 @@ using Hatley.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using SendEmailsWithDotNet5.Services;
@@ -141,7 +142,9 @@ namespace Hatley
 			builder.Services.AddCors(corsOptions => {
 				corsOptions.AddPolicy("MyPolicy", corsPolicyBuilder =>
 				{
-					corsPolicyBuilder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+					corsPolicyBuilder.AllowAnyMethod()
+					.SetIsOriginAllowed((host) => true)
+					.AllowAnyHeader().AllowCredentials();
 				});
 			});
 
@@ -153,6 +156,29 @@ namespace Hatley
 				app.UseSwagger();
 				app.UseSwaggerUI();
 			//}
+
+			app.UseStaticFiles(); // For the default wwwroot folder
+
+			// Configure the application to serve static files from the "Delivery_imgs" directory
+			var deliveryImgsPath = Path.Combine(builder.Environment.WebRootPath, "Delivery_imgs");
+			var deliveryImgsOptions = new StaticFileOptions
+			{
+				FileProvider = new PhysicalFileProvider(deliveryImgsPath),
+				RequestPath = "/Delivery_imgs"
+			};
+			app.UseStaticFiles(deliveryImgsOptions);
+
+			// Configure the application to serve static files from the "User_imgs" directory
+			var userImgsPath = Path.Combine(builder.Environment.WebRootPath, "User_imgs");
+			var userImgsOptions = new StaticFileOptions
+			{
+				FileProvider = new PhysicalFileProvider(userImgsPath),
+				RequestPath = "/User_imgs"
+			};
+			app.UseStaticFiles(userImgsOptions);
+
+
+
 			app.UseRouting();
 			app.UseCors("MyPolicy");
 			app.UseAuthentication();//Check JWT token

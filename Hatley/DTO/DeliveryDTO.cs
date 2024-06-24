@@ -15,7 +15,8 @@ namespace Hatley.DTO
         [MaxLength(14)]
         [MinLength(14)]
         public string national_id { get; set; }
-        public string? front_National_ID_img { get; set; }
+		public string? photo { get; set; }
+		public string? front_National_ID_img { get; set; }
         public string? back_National_ID_img { get; set; }
         public string? face_with_National_ID_img { get; set; }
         public int? Governorate_ID { get; set; }

@@ -58,14 +58,13 @@ namespace Hatley.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Comment_ID"));
 
-                    b.Property<string>("Comment_from")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("Delivery_ID")
+                    b.Property<int?>("Delivery_ID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Order_id")
                         .HasColumnType("int");
 
                     b.Property<string>("Text")
@@ -344,9 +343,7 @@ namespace Hatley.Migrations
                 {
                     b.HasOne("Hatley.Models.Delivery", "Delivery")
                         .WithMany("Comments")
-                        .HasForeignKey("Delivery_ID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("Delivery_ID");
 
                     b.Navigation("Delivery");
                 });
