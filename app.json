@@ -1,19 +1,33 @@
 {
   "expo": {
-    "name": "HatleyMobile",
-    "slug": "HatleyMobile",
+    "name": "HatleyMobileUser",
+    "slug": "HatleyMobileUser",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/images/Logo.png",
     "userInterfaceStyle": "light",
-    "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
-    "assetBundlePatterns": [
-      "**/*"
+    "plugins": [
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Allow $(HatleyMobileUser) to use your location."
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "The app accesses your photos to let you share them with your friends."
+        }
+      ],
+      [
+        "expo-notifications",
+        {
+          "icon": "assets/images/Logo.png",
+          "sounds": ["local/path/to/mySoundFile.wav"]
+        }
+      ]
     ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
     },
