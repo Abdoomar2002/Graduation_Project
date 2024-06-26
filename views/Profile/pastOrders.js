@@ -11,7 +11,8 @@ import SectionTitle from "../../components/SectionTitle";
 function PastOrders({ handelPress, navigation }) {
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
-  const OrderData = useSelector((state) => state?.order?.orders);
+
+  let OrderData = useSelector((state2) => state2?.order);
   useEffect(() => {
     const getData = async () => {
       try {
@@ -27,9 +28,10 @@ function PastOrders({ handelPress, navigation }) {
         setIsLoading(false);
       }
     };
+
     setIsLoading(true);
     getData();
-  }, []);
+  }, [dispatch]);
   return (
     <View style={styles.container}>
       {isLoading && <Loader />}
@@ -45,7 +47,7 @@ function PastOrders({ handelPress, navigation }) {
         <DisplayOrder
           navigation={navigation}
           active={true}
-          orders={OrderData}
+          orders={OrderData.orders}
         />
       )}
       <Toast />

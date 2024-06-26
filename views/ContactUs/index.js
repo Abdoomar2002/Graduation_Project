@@ -19,7 +19,7 @@ import Loader from "../../components/Loader";
 const imageUrl = Asset.fromModule(require("../../assets/images/email.png"))
   .downloadAsync()
   .then((asseturi) => asseturi.uri);
-const loader = require("../../assets/loader.json");
+
 function ContactUs({ handelPress }) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");

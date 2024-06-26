@@ -1,16 +1,20 @@
 import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import { Asset } from "expo-asset";
 import { MaterialIcons } from "@expo/vector-icons";
-import { string } from "yup";
+import { useEffect, useState } from "react";
+import Reorder from "../views/MakeOrder/Re-order";
+import Report from "../views/Report";
 
 const photo = Asset.fromModule(
   require("../assets/images/profile.jpg")
 ).downloadAsync((uri) => uri);
 const OrderCard = ({ order }) => {
+  const [modalVisible, setModalVisible] = useState(false);
+  const [reportModalVisible, setReportModalVisible] = useState(false);
   let date = new Date(order.created);
   date.setHours(date.getHours() + 3);
   let created = date.toLocaleString();
-  console.log(order, "anything");
+
   return (
     <View style={styles.card}>
       <View style={styles.header}>
@@ -29,15 +33,27 @@ const OrderCard = ({ order }) => {
       <Text style={styles.date}>Date: {created}</Text>
       <Text style={styles.price}>Price: {order.price}</Text>
       <Text style={styles.details}>
-        Details: {order.description.substr(0, 25)}
+        Details: {order?.description?.substr(0, 25)}
       </Text>
       <View style={styles.footer}>
-        <TouchableOpacity style={styles.buttonReport}>
+        <TouchableOpacity
+          style={styles.buttonReport}
+          onPress={() => {
+            setReportModalVisible(true);
+          }}
+        >
           <Text style={styles.buttonText}>Report</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.buttonReorder}>
+        <TouchableOpacity
+          style={styles.buttonReorder}
+          onPress={() => setModalVisible(true)}
+        >
           <Text style={styles.buttonText}>Re-order</Text>
         </TouchableOpacity>
+        {modalVisible && <Reorder order={order} setVis={setModalVisible} />}
+        {reportModalVisible && (
+          <Report id={order.id} setModel={setReportModalVisible} />
+        )}
       </View>
     </View>
   );
@@ -70,7 +86,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     alignItems: "center",
-    gap: "10",
+    gap: 10,
   },
   name: {
     fontSize: 16,

@@ -12,8 +12,6 @@ Notifications.setNotificationHandler({
   }),
 });
 export default function NotificationMessage() {
-  const [expoPushToken, setExpoPushToken] = useState("");
-  const [notification, setNotification] = useState(false);
   const notificationListener = useRef();
   const responseListener = useRef();
 
@@ -40,7 +38,7 @@ export default function NotificationMessage() {
     };
   }, []);
 
-  return (
+  /*  return (
     <View
       style={{
         flex: 1,
@@ -67,21 +65,7 @@ export default function NotificationMessage() {
         }}
       />
     </View>
-  );
-}
-
-async function schedulePushNotification() {
-  await Notifications.scheduleNotificationAsync({
-    content: {
-      title: "You've got mail! 📬",
-      body: "Here is the notification body",
-      data: { data: "goes here" },
-      launchImageName: "../assest/images/Logo.png",
-      //attachments: [{ url: "../assets/images/Logo.png" }],
-    },
-
-    trigger: { seconds: 2 },
-  });
+  );*/
 }
 
 async function registerForPushNotificationsAsync() {

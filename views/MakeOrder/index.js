@@ -16,11 +16,12 @@ import Loader from "../../components/Loader";
 import { actions as GovernateActions } from "../../redux/Governate";
 import { actions as ZoneActions } from "../../redux/Zone";
 import { actions as OrderActions } from "../../redux/Order";
+
 import Toast from "react-native-toast-message";
 import SectionTitle from "../../components/SectionTitle";
-function MakeOrderPage({ navigation }) {
-  // OrderFormData
-  const [orderFormData, setOrderFormData] = useState({
+function MakeOrderPage({
+  navigation,
+  orderData = {
     description: "",
     order_governorate_from: "",
     order_zone_from: "",
@@ -32,7 +33,12 @@ function MakeOrderPage({ navigation }) {
     detailes_address_to: "",
     order_time: new Date(),
     price: 0,
-  });
+  },
+  hideReorder = () => {},
+}) {
+  // OrderFormData
+  const [orderFormData, setOrderFormData] = useState(orderData);
+
   // Redux Data
   const Governate = useSelector((state) => state?.governate?.data);
   const Zone = useSelector((state) => state?.zone?.data);
@@ -45,6 +51,7 @@ function MakeOrderPage({ navigation }) {
       try {
         await dispatch(GovernateActions.displayAllGovernorates());
         await dispatch(ZoneActions.getAll());
+        await dispatch(OrderActions.getAll());
       } catch (err) {
         Toast.show({ type: "error", text1: "Error", text2: err.message });
       }
@@ -72,6 +79,7 @@ function MakeOrderPage({ navigation }) {
               text1: "Success",
               text2: "Order posted successfully",
             });
+          hideReorder(false);
           setOrderFormData({
             description: "",
             order_governorate_from: "",

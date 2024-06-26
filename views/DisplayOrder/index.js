@@ -4,16 +4,14 @@ import { ScrollView, StyleSheet } from "react-native";
 import OrderCard from "../../components/OrderCard";
 import NavBar from "../../components/Navbar";
 
-const DisplayOrder = ({ navigation, active = false, orders }) => {
-  console.log(orders);
+const DisplayOrder = ({ navigation, active = false, orders, show }) => {
   return (
     <>
-      {console.log("hi")}
       <ScrollView contentContainerStyle={styles.container}>
         {orders &&
-          orders.map((order, index) => {
-            return <OrderCard key={index} order={{ ...order }} />;
-          })}
+          orders.map((order, index) => (
+            <OrderCard key={index} order={{ ...order }} />
+          ))}
       </ScrollView>
       {!active && <NavBar navigation={navigation} active="Orders" />}
     </>

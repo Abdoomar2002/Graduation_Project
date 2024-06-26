@@ -10,16 +10,25 @@ import AppRouters from "./routers";
 import "react-native-gesture-handler";
 import HttpHelpers from "./services/helpers";
 import Toast from "react-native-toast-message";
-import { useEffect } from "react";
+import { useEffect, createRef } from "react";
 import GetNewOffer from "./Hub/GetNewOffer";
 import GetNewStatusForOrder from "./Hub/GetNewStatusForOrder";
+import { setupNotifications } from "./Hub/setNotification";
 StorageService.setStorageProvider(LocalStorageProvider);
 LocaleService.setLocaleResolver(LocaleProvider);
 HttpHelpers.setBaseUrl(process.env.REACT_APP_API_URL);
 export default function App() {
+  const navigationRef = createRef();
   useEffect(() => {
-    //GetNewOffer();
-    // GetNewStatusForOrder();
+    const cleanup = setupNotifications(navigationRef.current);
+
+    return () => {
+      if (cleanup) cleanup();
+    };
+  }, []);
+  useEffect(() => {
+    GetNewOffer();
+    GetNewStatusForOrder();
   }, []);
   return (
     <Provider store={store}>

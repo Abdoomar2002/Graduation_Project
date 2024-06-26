@@ -57,6 +57,9 @@ const SignUp = ({ navigation }) => {
     };
     setLoading(true);
     if (validateForm()) sendData();
+    else {
+      setLoading(false);
+    }
   };
   function validateForm() {
     let err = "";
