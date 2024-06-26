@@ -8,8 +8,16 @@ namespace Hatley.DTO
 		public int rating_id { get; set; }
 		public int value { get; set; }
 		public DateTime createdat { get; set; }
-		public string rating_from { get; set; }
+		public string name_from { get; set; }
+		public string name_to { get; set; }
+		public int order_id { get; set; }
+		public int? delivery_id { get; set; }
+		public int? user_id { get; set; }
+
+
+
+		/*public string rating_from { get; set; }
 		public int? Delivery_ID { get; set; }
-		public int? User_ID { get; set; }
+		public int? User_ID { get; set; }*/
 	}
 }

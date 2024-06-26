@@ -9,7 +9,7 @@ namespace Hatley.DTO
 		public string phone { get; set; }
 		[EmailAddress]
 		public string Email { get; set; }
-		public string Password { get; set; }
+		public string? Password { get; set; }
 		public string? photo { get; set; }
 
 	}

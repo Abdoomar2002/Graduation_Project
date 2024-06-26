@@ -11,7 +11,7 @@ namespace Hatley.Services
         int Delete(int id);
 		UserDTO? GetUser(string email);      
 		List<UserDTO>? GetUsers();
-		int Update(int id, UserDTO userdto);
+		int Update(string email, UserDTO userdto);
 		Task<int> Reset(string mail);
 
 	}

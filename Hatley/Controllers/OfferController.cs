@@ -84,17 +84,18 @@ namespace Hatley.Controllers
 			return Ok();
 		}
 
+
+
 		[HttpGet("User/Accept")]
 		public IActionResult UserAcceptOffer([FromQuery][Required]int orderid
 			, [FromQuery][Required] double price_of_offer
-			, [FromQuery][Required]string delivery_email
-			, [FromQuery][Required] string state)
+			, [FromQuery][Required]string delivery_email)
 		{
 			if (type != "User")
 			{
 				return Unauthorized();
 			}
-			int raw = repo.UserAcceptOffer(orderid, price_of_offer, delivery_email, state);
+			int raw = repo.UserAcceptOffer(orderid, price_of_offer, delivery_email);
 			if (raw == 0)
 			{
 				return BadRequest("error while accept offer please try again");
@@ -103,11 +104,32 @@ namespace Hatley.Controllers
 			{
 				return BadRequest("error during processing please try again");
 			}
-			else if (raw == -2)
-			{
-				Ok("Decline offer successfully");
-			}
 			return Ok("Accept offer successfully");
+		}
+
+
+		[HttpGet("User/Decline")]
+		public IActionResult UserDeclineOffer([FromQuery][Required] int orderid
+			, [FromQuery][Required] double price_of_offer
+			, [FromQuery][Required] string delivery_email)
+		{
+			if (type != "User")
+			{
+				return Unauthorized();
+			}
+			int raw = repo.UserDeclineOffer(orderid, price_of_offer, delivery_email);
+			if (raw == 0)
+			{
+				return BadRequest("error while accept offer please try again");
+			}
+			else if (raw == -1)
+			{
+				return BadRequest("error during processing please try again");
+			}
+			
+			return Ok("Decline offer successfully");
+			
+			
 		}
 	}
 }

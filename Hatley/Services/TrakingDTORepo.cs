@@ -51,7 +51,7 @@ namespace Hatley.Services
 			var user = context.users.FirstOrDefault(x => x.Email == email);
 
 			List<Order> traking = context.orders.
-				Where(x => x.User_ID == user.User_ID && x.Delivery_ID!=null)
+				Where(x => x.User_ID == user.User_ID && x.Delivery_ID != null)
 				.OrderBy(x => x.Status).ToList();
 
 			if (traking.Count == 0)

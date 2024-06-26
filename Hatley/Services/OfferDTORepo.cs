@@ -27,7 +27,7 @@ namespace Hatley.Services
 			var order = context.orders.FirstOrDefault(x => x.Order_ID == orderId);
 
 			var user = context.users.FirstOrDefault(x => x.User_ID == order.User_ID);
-			
+
 			if (order == null || user == null)
 			{
 				return null;
@@ -75,17 +75,17 @@ namespace Hatley.Services
 				.Select(x => x.User_ID)
 				.FirstOrDefault();
 			var delivery = context.delivers.FirstOrDefault(x => x.Email == email);
-			
+
 			if (userid == null || delivery == null)
 			{
 				return null;
 			}
 
-			var user_email = context.users.Where(x => x.User_ID ==userid)
-				.Select(x=>x.Email) .FirstOrDefault();
+			var user_email = context.users.Where(x => x.User_ID == userid)
+				.Select(x => x.Email).FirstOrDefault();
 
 
-			List<int> rate = context.ratings.Where(x => x.Delivery_ID == delivery.Delivery_ID)
+			List<int> rate = context.ratings.Where(x => x.Id_for_delivery == delivery.Delivery_ID)
 				.Select(x => x.Value).ToList();
 
 			if (rate.Count() == 0)
@@ -98,7 +98,7 @@ namespace Hatley.Services
 					delivery_photo = delivery.Photo,
 					delivery_avg_rate = 0,
 					delivery_count_rate = 0,
-					
+
 					offer_value = value,
 					//delivery_id = delivery.Delivery_ID,
 					//userid = userid,
@@ -108,13 +108,13 @@ namespace Hatley.Services
 					email = user_email,
 					type = "User"
 				};
-				NewOfferForUser.Clients.All.SendAsync("NotifyNewOfferForUser", view,check);
+				NewOfferForUser.Clients.All.SendAsync("NotifyNewOfferForUser", view, check);
 				return view;
 			}
 
 			else
 			{
-			
+
 				ViewOfferForUserDTO view = new ViewOfferForUserDTO() // #### Hub ####
 				{
 					order_id = orderid,
@@ -125,7 +125,7 @@ namespace Hatley.Services
 					//userid = userid,
 					offer_value = value,
 					delivery_avg_rate = Math.Round(rate.Average(), 1),
-					delivery_count_rate = rate.Count() 
+					delivery_count_rate = rate.Count()
 				};
 
 				CheckNotificationDTO check = new CheckNotificationDTO()
@@ -138,52 +138,52 @@ namespace Hatley.Services
 			}
 		}
 
-		public int DeliveryAcceptOffer(int orederid,string email)
+		public int DeliveryAcceptOffer(int orederid, string email)
 		{
-			
-				var order = context.orders.FirstOrDefault(x=>x.Order_ID == orederid);
-				var delivery = context.delivers.FirstOrDefault(x=>x.Email == email);
-				if (order == null&& delivery == null)
-				{
-					return -1;//error during processing please try again
-				}
-				order.Delivery_ID = delivery.Delivery_ID;
-				int raw = context.SaveChanges();
-				return raw;//####Hub####
+
+			var order = context.orders.FirstOrDefault(x => x.Order_ID == orederid);
+			var delivery = context.delivers.FirstOrDefault(x => x.Email == email);
+			if (order == null && delivery == null)
+			{
+				return -1;//error during processing please try again
+			}
+			order.Delivery_ID = delivery.Delivery_ID;
+			int raw = context.SaveChanges();
+			return raw;//####Hub####
 
 
 		}
 
-		public int UserAcceptOffer(int orederid,double price_of_offer
-			,string email,string state)
+		public int UserAcceptOffer(int orederid, double price_of_offer
+			, string email)
 		{
-			if(state == "Accept")
+			/*if(state == "Accept")
+			{*/
+			var delivery = context.delivers.FirstOrDefault(x => x.Email == email);
+			var order = context.orders.FirstOrDefault(x => x.Order_ID == orederid);
+			if (order == null)
 			{
-				var delivery = context.delivers.FirstOrDefault(x => x.Email == email);
-				var order = context.orders.FirstOrDefault(x => x.Order_ID == orederid);
-				if (order == null)
-				{
-					return -1;//error during processing please try again
-				}
-				order.Delivery_ID = delivery.Delivery_ID;
-				order.Price = price_of_offer;
-				int raw = context.SaveChanges();
-				if (raw == 1)
-				{
-					var user = context.users.FirstOrDefault(x => x.User_ID == order.User_ID);
-					CheckNotificationDTO check = new CheckNotificationDTO()
-					{
-						email = email,
-						type = "Delivery"
-					};
-					acceptionHub.Clients.All.SendAsync("NotifyOfAcceptOrDeclineForDeliveryOffer",
-						state, price_of_offer, orederid, user.Name,user.Photo
-						,user.Orders.Count, check);
-				}
-				return raw;//####Hub####
+				return -1;//error during processing please try again
 			}
+			order.Delivery_ID = delivery.Delivery_ID;
+			order.Price = price_of_offer;
+			int raw = context.SaveChanges();
+			if (raw == 1)
+			{
+				var user = context.users.FirstOrDefault(x => x.User_ID == order.User_ID);
+				CheckNotificationDTO check = new CheckNotificationDTO()
+				{
+					email = email,
+					type = "Delivery"
+				};
+				acceptionHub.Clients.All.SendAsync("NotifyOfAcceptOrDeclineForDeliveryOffer"
+					,"Accept", price_of_offer, orederid, user.Name, user.Photo
+					, user.Orders.Count, check);
+			}
+			return raw;//####Hub####
+					   //}
 
-			else
+			/*else
 			{
 				var delivery = context.delivers.FirstOrDefault(x => x.Email == email);
 				var order = context.orders.FirstOrDefault(x => x.Order_ID == orederid);
@@ -204,11 +204,35 @@ namespace Hatley.Services
 						, user.Orders.Count, check);
 				
 				return -2;//####Hub####
-			}
-				
+			}*/
+
 
 		}
 
+
+		public int UserDeclineOffer(int orederid, double price_of_offer
+			, string email)
+		{
+			var delivery = context.delivers.FirstOrDefault(x => x.Email == email);
+			var order = context.orders.FirstOrDefault(x => x.Order_ID == orederid);
+			if (order == null)
+			{
+				return -1;//error during processing please try again
+			}
+			//order.Delivery_ID = delivery.Delivery_ID;
+
+			var user = context.users.FirstOrDefault(x => x.User_ID == order.User_ID);
+			CheckNotificationDTO check = new CheckNotificationDTO()
+			{
+				email = email,
+				type = "Delivery"
+			};
+			acceptionHub.Clients.All.SendAsync("NotifyOfAcceptOrDeclineForDeliveryOffer"
+				,"Decline", price_of_offer, orederid, user.Name, user.Photo
+				, user.Orders.Count, check);
+
+			return -2;//####Hub####
+		}
 
 	}
 }

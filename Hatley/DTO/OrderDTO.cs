@@ -5,7 +5,7 @@ namespace Hatley.DTO
 {
 	public class OrderDTO
 	{	
-		public int Id { get; set; }
+		public int order_id { get; set; }
 		public string description { get; set; }
 		public string order_governorate_from { get; set; }
 		public string order_zone_from { get; set; }

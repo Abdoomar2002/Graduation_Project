@@ -49,12 +49,14 @@ namespace Hatley.Controllers
 		[HttpGet("Ratings")]
 		public IActionResult getallforuserordelivery()
 		{
-			if (type != "Delivery")
+			if (type != "Delivery" && type != "User")
 			{
 				return Unauthorized();
 			}
 
-			List<RatingDTO>? ratingsdtoforuserordelivery = repo.GetRatingsForUserOrDelivery(email,type);
+			List<RatingDTO>? ratingsdtoforuserordelivery = repo
+				.GetRatingsForUserOrDelivery(email,type);
+
 			if (ratingsdtoforuserordelivery == null)
 			{
 				return BadRequest("No Records exist");
@@ -80,10 +82,10 @@ namespace Hatley.Controllers
 		}
 
 
-		[HttpGet("{id:int}")]
-		public IActionResult get(int id)
+		[HttpGet("{oder_id:int}")]
+		public IActionResult get(int oder_id)
 		{
-			var rating = repo.GetRating(id);
+			var rating = repo.GetRating(oder_id);
 			if (rating == null)
 			{
 				return NotFound("the rating is not exist");
@@ -98,7 +100,7 @@ namespace Hatley.Controllers
 		{
 			if (ModelState.IsValid == true)
 			{
-				int raw = repo.Create(value, orderid,email,type);
+				int raw = repo.Create(value, orderid);
 
 				if (raw == 0)
 				{
@@ -108,6 +110,11 @@ namespace Hatley.Controllers
 				{
 					return NotFound("the order id not exist or the order has not been delivered yet");
 				}
+				if(raw == -2)
+				{
+					return BadRequest("More than one rating is not allowed for the same order");
+
+				}
 
 				return Ok();
 			}
@@ -116,12 +123,12 @@ namespace Hatley.Controllers
 		}
 
 
-		[HttpPut("{id:int}/{value:int}")]
-		public IActionResult edit(int id,int value)
+		[HttpPut("{order_id:int}/{value:int}")]
+		public IActionResult edit(int order_id, int value)
 		{
 			if (ModelState.IsValid == true)
 			{
-				int raw = repo.Update(id, value);
+				int raw = repo.Update(order_id, value);
 				if (raw == -1)
 				{
 					return NotFound("the rating not exist");
@@ -136,10 +143,10 @@ namespace Hatley.Controllers
 		}
 
 
-		[HttpDelete("{id:int}")]
-		public IActionResult delete(int id)
+		[HttpDelete("{order_id:int}")]
+		public IActionResult delete(int order_id)
 		{
-			int raw = repo.Delete(id);
+			int raw = repo.Delete(order_id);
 			if (raw == -1)
 			{
 				return NotFound("the rating not exist");

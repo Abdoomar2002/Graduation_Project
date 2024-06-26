@@ -59,6 +59,20 @@ namespace Hatley.Controllers
         }
 
 
+        [HttpGet("RatingsWithComments")]
+        public IActionResult RatingWithCommentsForDelivery()
+        {
+            List<RatingsWithCommentsForDeliveryDTO> result =
+                deliveryRepository.RatingsWithCommentsForDelivery(email);
+
+            if(result == null)
+            {
+                return BadRequest("error occer");
+            }
+            return Ok(result);
+        }
+
+
         [HttpPost]
         public async Task<IActionResult> Insert([FromForm]DeliveryDTO deliveryDTO,
 			IFormFile frontImage, IFormFile backImage, IFormFile faceImage)
@@ -107,8 +121,8 @@ namespace Hatley.Controllers
 
 
 
-		[HttpPut("{id:int}")]
-        public IActionResult Edit(int id,[FromBody] DeliveryDTO person)
+		[HttpPut]
+        public IActionResult Edit([FromBody] DeliveryDTO person)
         {
 			if (userType != "Delivery")
 			{
@@ -117,7 +131,7 @@ namespace Hatley.Controllers
 
 			if (ModelState.IsValid == true)
             {
-                int raw = deliveryRepository.Edit(id, person);
+                int raw = deliveryRepository.Edit(email, person);
                 if (raw == 0)
                 {
                     return NotFound("There is not delivery");

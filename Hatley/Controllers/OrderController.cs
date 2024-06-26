@@ -44,7 +44,7 @@ namespace Hatley.Controllers
 
 
 		[HttpGet("related/orders")]
-		public IActionResult DisplayRelatedOrdersForDelivery() 
+		public IActionResult DisplayRelatedOrdersForDelivery()
 		{
 			if (type != "Delivery")
 			{
@@ -54,7 +54,24 @@ namespace Hatley.Controllers
 			List<RelatedOrdersForDeliveryDTO>? orders = repo.DisplayRelatedOrdersForDelivery(email);
 			if (orders == null)
 			{
-				return BadRequest("Not exist related orders");
+				return BadRequest("Error occur or not exist related orders");
+			}
+			return Ok(orders);
+		}
+
+
+		[HttpGet("unrelated/orders")]
+		public IActionResult DisplayUnRelatedOrdersForDelivery()
+		{
+			if (type != "Delivery")
+			{
+				return Unauthorized();
+			}
+
+			List<RelatedOrdersForDeliveryDTO>? orders = repo.DisplayUnRelatedOrdersForDelivery(email);
+			if (orders == null)
+			{
+				return BadRequest("Error occur or not exist unrelated orders");
 			}
 			return Ok(orders);
 		}
@@ -63,7 +80,7 @@ namespace Hatley.Controllers
 		[HttpGet("Orders")]
 		public IActionResult getallforuserordelivery()
 		{
-			List<OrderDTO>? ordersdtoforuserordelivery = repo.GetOrdersForUserOrDelivery(email, type);
+			List<RelatedOrdersForDeliveryDTO>? ordersdtoforuserordelivery = repo.GetOrdersForUserOrDelivery(email, type);
 			if (ordersdtoforuserordelivery == null)
 			{
 				return BadRequest("No Records exist");

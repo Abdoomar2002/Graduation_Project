@@ -31,7 +31,7 @@ namespace Hatley.Services
 			}
 			List<OrderDTO> ordersdto = orders.Select(x => new OrderDTO()
 			{
-				Id = x.Order_ID,
+				order_id = x.Order_ID,
 				description = x.Description,
 				//location = x.Location,
 				price = x.Price,
@@ -55,11 +55,136 @@ namespace Hatley.Services
 		}
 
 
+		public List<RelatedOrdersForDeliveryDTO>? DisplayUnRelatedOrdersForDelivery(string email)
+		{
+			var delivery = context.delivers.FirstOrDefault(x => x.Email == email);
+			List<Order> orders = context.orders.Where(x => x.Delivery_ID == null).ToList();
+			if (orders == null || delivery == null)
+			{
+				return null;
+			}
+
+			List<int?> userIds = orders.Select(x => x.User_ID).ToList();
+			List<User> users = context.users.Where(x => userIds.Contains(x.User_ID)).ToList();
+
+			// Calculate order counts for each user
+			var userOrderCounts = context.orders
+				.Where(o => userIds.Contains(o.User_ID))
+				.GroupBy(o => o.User_ID)
+				.Select(g => new { UserId = g.Key, OrderCount = g.Count() })
+				.ToList();
+
+			var governorate = context.governorates.FirstOrDefault(x => x.Governorate_ID == delivery.Governorate_ID);
+			var zone = context.zones.FirstOrDefault(x => x.Zone_ID == delivery.Zone_ID);
+
+			List<RelatedOrdersForDeliveryDTO> ordersdto = orders
+				.Join(users,
+					o => o.User_ID,
+					u => u.User_ID,
+					(o, u) => new { Order = o, User = u })
+				.Join(userOrderCounts,
+					ou => ou.User.User_ID,
+					uoc => uoc.UserId,
+					(ou, uoc) => new { OrderUser = ou, OrderCount = uoc.OrderCount })
+				.Where(our => our.OrderUser.Order.Order_governorate_to == governorate?.Name
+				&& (our.OrderUser.Order.Order_zone_to != zone?.Name
+				|| our.OrderUser.Order.Order_zone_from != zone?.Name))
+				.Select(our => new RelatedOrdersForDeliveryDTO()
+				{
+					order_id = our.OrderUser.Order.Order_ID,
+					description = our.OrderUser.Order.Description,
+					price = our.OrderUser.Order.Price,
+					status = our.OrderUser.Order.Status,
+					order_governorate_from = our.OrderUser.Order.Order_governorate_from,
+					order_zone_from = our.OrderUser.Order.Order_zone_from,
+					order_city_from = our.OrderUser.Order.Order_city_from,
+					detailes_address_from = our.OrderUser.Order.Detailes_address_from,
+					order_governorate_to = our.OrderUser.Order.Order_governorate_to,
+					order_zone_to = our.OrderUser.Order.Order_zone_to,
+					order_city_to = our.OrderUser.Order.Order_city_to,
+					detailes_address_to = our.OrderUser.Order.Detailes_address_to,
+					order_time = our.OrderUser.Order.Order_time,
+					created = our.OrderUser.Order.Created,
+					User_ID = our.OrderUser.Order.User_ID,
+					Delivery_ID = our.OrderUser.Order.Delivery_ID,
+					name = our.OrderUser.User.Name,
+					photo = our.OrderUser.User.Photo,
+					orders_count = our.OrderCount,
+					//user_orders_avg = our.OrderCount
+					
+				}).ToList();
+
+			return ordersdto;
+		}
+
+
+
 		public List<RelatedOrdersForDeliveryDTO>? DisplayRelatedOrdersForDelivery(string email)
 		{
 			var delivery = context.delivers.FirstOrDefault(x => x.Email == email);
-			List<Order> orders = context.orders.Where(x=>x.Delivery_ID == null).ToList();
-			if(orders == null)
+			List<Order> orders = context.orders.Where(x => x.Delivery_ID == null).ToList();
+			if (orders == null || delivery == null)
+			{
+				return null;
+			}
+
+			List<int?> userIds = orders.Select(x => x.User_ID).ToList();
+			List<User> users = context.users.Where(x => userIds.Contains(x.User_ID)).ToList();
+
+			// Calculate order counts for each user
+			var userOrderCounts = context.orders
+				.Where(o => userIds.Contains(o.User_ID))
+				.GroupBy(o => o.User_ID)
+				.Select(g => new { UserId = g.Key, OrderCount = g.Count() })
+				.ToList();
+
+			var governorate = context.governorates.FirstOrDefault(x => x.Governorate_ID == delivery.Governorate_ID);
+			var zone = context.zones.FirstOrDefault(x => x.Zone_ID == delivery.Zone_ID);
+
+			List<RelatedOrdersForDeliveryDTO> ordersdto = orders
+				.Join(users,
+					o => o.User_ID,
+					u => u.User_ID,
+					(o, u) => new { Order = o, User = u })
+				.Join(userOrderCounts,
+					ou => ou.User.User_ID,
+					uoc => uoc.UserId,
+					(ou, uoc) => new { OrderUser = ou, OrderCount = uoc.OrderCount })
+				.Where(our => our.OrderUser.Order.Order_governorate_to == governorate?.Name
+				&& (our.OrderUser.Order.Order_zone_to == zone?.Name
+				|| our.OrderUser.Order.Order_zone_from == zone?.Name))
+				.Select(our => new RelatedOrdersForDeliveryDTO()
+				{
+					order_id = our.OrderUser.Order.Order_ID,
+					description = our.OrderUser.Order.Description,
+					price = our.OrderUser.Order.Price,
+					status = our.OrderUser.Order.Status,
+					order_governorate_from = our.OrderUser.Order.Order_governorate_from,
+					order_zone_from = our.OrderUser.Order.Order_zone_from,
+					order_city_from = our.OrderUser.Order.Order_city_from,
+					detailes_address_from = our.OrderUser.Order.Detailes_address_from,
+					order_governorate_to = our.OrderUser.Order.Order_governorate_to,
+					order_zone_to = our.OrderUser.Order.Order_zone_to,
+					order_city_to = our.OrderUser.Order.Order_city_to,
+					detailes_address_to = our.OrderUser.Order.Detailes_address_to,
+					order_time = our.OrderUser.Order.Order_time,
+					created = our.OrderUser.Order.Created,
+					User_ID = our.OrderUser.Order.User_ID,
+					Delivery_ID = our.OrderUser.Order.Delivery_ID,
+					name = our.OrderUser.User.Name,
+					photo = our.OrderUser.User.Photo,
+					orders_count = our.OrderCount
+				}).ToList();
+
+			return ordersdto;
+		}
+
+
+		/*public List<RelatedOrdersForDeliveryDTO>? DisplayUnRelatedOrdersForDelivery(string email)
+		{
+			var delivery = context.delivers.FirstOrDefault(x => x.Email == email);
+			List<Order> orders = context.orders.Where(x => x.Delivery_ID == null).ToList();
+			if (orders == null || delivery == null)
 			{
 				return null;
 			}
@@ -71,10 +196,77 @@ namespace Hatley.Services
 			List<User> users = context.users
 				.Where(x => userIds.Contains(x.User_ID))
 				.ToList();
-			/*List<int> ratings = context.ratings
+			*//*List<int> ratings = context.ratings
 				.Where(x => userIds.Contains(x.User_ID))
 				.Select(x => x.Value)
-				.ToList();*/
+				.ToList();*//*
+
+
+			var governorate = context.governorates
+				.FirstOrDefault(x => x.Governorate_ID == delivery.Governorate_ID);
+			var zone = context.zones
+				.FirstOrDefault(x => x.Zone_ID == delivery.Zone_ID);
+
+			List<RelatedOrdersForDeliveryDTO> ordersdto = orders
+				.Join(users,
+					o => o.User_ID,
+					u => u.User_ID,
+					(o, u) => new { Order = o, User = u })
+				.Where(our => our.Order.Order_governorate_to == governorate?.Name
+				&& (our.Order.Order_zone_to != zone?.Name
+				|| our.Order.Order_zone_from != zone?.Name))
+				.Select(our => new RelatedOrdersForDeliveryDTO()
+				{
+					Id = our.Order.Order_ID,
+					description = our.Order.Description,
+					price = our.Order.Price,
+					status = our.Order.Status,
+					order_governorate_from = our.Order.Order_governorate_from,
+					order_zone_from = our.Order.Order_zone_from,
+					order_city_from = our.Order.Order_city_from,
+					detailes_address_from = our.Order.Detailes_address_from,
+					order_governorate_to = our.Order.Order_governorate_to,
+					order_zone_to = our.Order.Order_zone_to,
+					order_city_to = our.Order.Order_city_to,
+					detailes_address_to = our.Order.Detailes_address_to,
+					order_time = our.Order.Order_time,
+					created = our.Order.Created,
+					User_ID = our.Order.User_ID,
+					Delivery_ID = our.Order.Delivery_ID,
+
+					user_name = our.User.Name,
+					user_photo = our.User.Photo,
+					//user_avg_rate = ratings.Average(),
+					//user_count_rate = ratings.Count()
+
+				}).ToList();
+
+
+			return ordersdto;
+
+		}*/
+
+
+		/*public List<RelatedOrdersForDeliveryDTO>? DisplayRelatedOrdersForDelivery(string email)
+		{
+			var delivery = context.delivers.FirstOrDefault(x => x.Email == email);
+			List<Order> orders = context.orders.Where(x=>x.Delivery_ID == null).ToList();
+			if(orders == null || delivery == null)
+			{
+				return null;
+			}
+
+
+			List<int?> userIds = orders
+				.Select(x => x.User_ID)
+				.ToList();
+			List<User> users = context.users
+				.Where(x => userIds.Contains(x.User_ID))
+				.ToList();
+			*//*List<int> ratings = context.ratings
+				.Where(x => userIds.Contains(x.User_ID))
+				.Select(x => x.Value)
+				.ToList();*//*
 			
 
 			var governorate = context.governorates
@@ -119,13 +311,67 @@ namespace Hatley.Services
 
 			return ordersdto;
 
-		}
+		}*/
 
-		public List<OrderDTO>? GetOrdersForUserOrDelivery(string mail, string type)
+		public List<RelatedOrdersForDeliveryDTO>? GetOrdersForUserOrDelivery(string mail, string type)
 		{
 			if (type == "Delivery")
 			{
-				int deliveryrid = context.delivers
+				var delivery = context.delivers.FirstOrDefault(x => x.Email == mail);
+
+				List<Order> orders = context.orders
+					.Where(x => x.Delivery_ID == delivery.Delivery_ID)
+					.OrderBy(x => x.Status).ToList(); 
+
+				if (orders == null || delivery == null)
+				{
+					return null;
+				}
+
+				List<int?> userIds = orders.Select(x => x.User_ID).ToList();
+				List<User> users = context.users.Where(x => userIds.Contains(x.User_ID)).ToList();
+
+				// Calculate order counts for each user
+				var userOrderCounts = context.orders
+					.Where(o => userIds.Contains(o.User_ID))
+					.GroupBy(o => o.User_ID)
+					.Select(g => new { UserId = g.Key, OrderCount = g.Count() })
+					.ToList();
+
+				List<RelatedOrdersForDeliveryDTO> ordersdto = orders
+					.Join(users,
+						o => o.User_ID,
+						u => u.User_ID,
+						(o, u) => new { Order = o, User = u })
+					.Join(userOrderCounts,
+						ou => ou.User.User_ID,
+						uoc => uoc.UserId,
+						(ou, uoc) => new { OrderUser = ou, OrderCount = uoc.OrderCount })
+					.Select(our => new RelatedOrdersForDeliveryDTO()
+					{
+						order_id = our.OrderUser.Order.Order_ID,
+						description = our.OrderUser.Order.Description,
+						price = our.OrderUser.Order.Price,
+						status = our.OrderUser.Order.Status,
+						order_governorate_from = our.OrderUser.Order.Order_governorate_from,
+						order_zone_from = our.OrderUser.Order.Order_zone_from,
+						order_city_from = our.OrderUser.Order.Order_city_from,
+						detailes_address_from = our.OrderUser.Order.Detailes_address_from,
+						order_governorate_to = our.OrderUser.Order.Order_governorate_to,
+						order_zone_to = our.OrderUser.Order.Order_zone_to,
+						order_city_to = our.OrderUser.Order.Order_city_to,
+						detailes_address_to = our.OrderUser.Order.Detailes_address_to,
+						order_time = our.OrderUser.Order.Order_time,
+						created = our.OrderUser.Order.Created,
+						User_ID = our.OrderUser.Order.User_ID,
+						Delivery_ID = our.OrderUser.Order.Delivery_ID,
+						name = our.OrderUser.User.Name,
+						photo = our.OrderUser.User.Photo,
+						orders_count = our.OrderCount
+					}).ToList();
+
+				return ordersdto;
+				/*int deliveryrid = context.delivers
 								.Where(x => x.Email == mail)
 								.Select(x => x.Delivery_ID)
 								.FirstOrDefault();
@@ -141,7 +387,7 @@ namespace Hatley.Services
 
 				List<OrderDTO> ordersdto = orders.Select(x => new OrderDTO()
 				{
-					Id = x.Order_ID,
+					order_id = x.Order_ID,
 					description = x.Description,
 					price = x.Price,
 					order_governorate_from = x.Order_governorate_from,
@@ -161,26 +407,106 @@ namespace Hatley.Services
 					Delivery_ID = x.Delivery_ID
 
 				}).ToList();
-				return ordersdto;
+				return ordersdto;*/
 			}
 
 			//******************** User ******************************
-			int userid = context.users
-						.Where(x => x.Email == mail)
-						.Select(x => x.User_ID)
-						.FirstOrDefault();
+			int userId = context.users
+				.Where(x => x.Email == mail)
+				.Select(x => x.User_ID)
+				.FirstOrDefault();
 
-			List<Order> ordersuser = context.orders.
-				Where(x => x.User_ID == userid && x.Status<3 )
-				.OrderBy(x=>x.Status).ToList();
+			List<Order> ordersuser = context.orders
+				.Where(x => x.User_ID == userId && x.Status == -1)
+				.ToList();
 
 			if (ordersuser.Count == 0)
 			{
 				return null;
 			}
-			List<OrderDTO> ordersdtouser = ordersuser.Select(x => new OrderDTO()
+
+			/*List<int?> deliveryIds = ordersuser.Select(x => x.Delivery_ID).ToList();
+
+			List<Delivery> deliveries = context.delivers
+				.Where(x => deliveryIds.Contains(x.Delivery_ID))
+				.ToList();
+
+			var deliveryRatings = context.ratings
+				.Where(o => deliveryIds.Contains(o.Id_for_delivery))
+				.GroupBy(o => o.Id_for_delivery)
+				.Select(g => new
+				{
+					DeliveryId = g.Key,
+					Count = g.Count(),
+					Avg = g.Average(r => r.Value)
+				})
+				.ToList();*/
+
+			// Create the DTOs
+			List<RelatedOrdersForDeliveryDTO> ordersdtouser = ordersuser
+				.Select(order =>
+				{
+					//var delivery = deliveries.FirstOrDefault(d => d.Delivery_ID == order.Delivery_ID);
+					//var rating = deliveryRatings.FirstOrDefault(r => r.DeliveryId == order.Delivery_ID);
+
+					return new RelatedOrdersForDeliveryDTO()
+					{
+						order_id = order.Order_ID,
+						description = order.Description,
+						price = order.Price,
+						order_governorate_from = order.Order_governorate_from,
+						order_zone_from = order.Order_zone_from,
+						order_city_from = order.Order_city_from,
+						detailes_address_from = order.Detailes_address_from,
+						order_governorate_to = order.Order_governorate_to,
+						order_zone_to = order.Order_zone_to,
+						order_city_to = order.Order_city_to,
+						detailes_address_to = order.Detailes_address_to,
+						created = order.Created,
+						order_time = order.Order_time,
+						status = order.Status,
+						User_ID = order.User_ID,
+						Delivery_ID = order.Delivery_ID,
+						/*name = delivery.Name,
+						photo = delivery?.Photo,*/
+						count_rate = 0, //rating?.Count ?? 0,
+						avg_rate = 0, //Math.Round(rating?.Avg ?? 0, 1)
+					};
+				})
+				.ToList();
+
+			return ordersdtouser;
+
+
+			/*int userid = context.users
+						.Where(x => x.Email == mail)
+						.Select(x => x.User_ID)
+						.FirstOrDefault();
+
+			List<Order> ordersuser = context.orders.
+				Where(x => x.User_ID == userid && x.Status == -1 )
+				.OrderBy(x=>x.Status).ToList();
+			
+			if (ordersuser.Count == 0)
 			{
-				Id = x.Order_ID,
+				return null;
+			}
+
+
+			List<int?> deliveryIds = ordersuser.Select(x => x.Delivery_ID).ToList();
+			List<Delivery> delivers = context.delivers.Where(x => deliveryIds.Contains(x.Delivery_ID)).ToList();
+
+
+			var deliveryratingCounts = context.ratings
+					.Where(o => deliveryIds.Contains(o.Id_for_delivery))
+					.GroupBy(o => o.Id_for_delivery)
+					.Select(g => new { UserId = g.Key, OrderCount = g.Count() })
+					.ToList();
+
+			List<RelatedOrdersForDeliveryDTO> ordersdtouser = ordersuser
+				.Select(x => new RelatedOrdersForDeliveryDTO()
+			{
+				order_id = x.Order_ID,
 				description = x.Description,
 				price = x.Price,
 				order_governorate_from = x.Order_governorate_from,
@@ -191,71 +517,140 @@ namespace Hatley.Services
 				order_zone_to = x.Order_zone_to,
 				order_city_to = x.Order_city_to,
 				detailes_address_to = x.Detailes_address_to,
-				north = x.North,
-				east = x.East,
 				created = x.Created,
 				order_time = x.Order_time,
 				status = x.Status,
 				User_ID = x.User_ID,
-				Delivery_ID = x.Delivery_ID
+				Delivery_ID = x.Delivery_ID,
+				name = delivers.Name,
+				photo = delivers.Photo,
+				count_rate = ,
+				avg_rate = 
 
 			}).ToList();
-			return ordersdtouser;
+			return ordersdtouser;*/
 
 		}
 
 
+
 		public List<DeliveriesUserDTO>? Deliveries(string email)
 		{
-			var user = context.users.FirstOrDefault(x=>x.Email == email);
+			var user = context.users.FirstOrDefault(x => x.Email == email);
+			if (user == null)
+			{
+				return null;
+			}
+
+			List<Order> orders = context.orders
+				.Where(x => x.User_ID == user.User_ID && x.Status == 3)
+				.ToList();
+
+			if (orders.Count == 0)
+			{
+				return null;
+			}
+
+			List<int?> deliveryIds = orders.Select(o => o.Delivery_ID).ToList();
+			List<Delivery> deliveries = context.delivers
+				.Where(x => deliveryIds.Contains(x.Delivery_ID))
+				.ToList();
+
+			var deliveryRatings = context.ratings
+				.Where(x => deliveryIds.Contains(x.Id_for_delivery))
+				.GroupBy(x => x.Id_for_delivery)
+				.Select(g => new
+				{
+					Delivery_ID = g.Key,
+					AvgRating = g.Average(x => x.Value)
+				}).ToList();
+
+			var result = from o in orders
+						 join d in deliveries on o.Delivery_ID equals d.Delivery_ID into od
+						 from d in od.DefaultIfEmpty()
+						 join r in deliveryRatings on d.Delivery_ID equals r.Delivery_ID into dr
+						 from r in dr.DefaultIfEmpty()
+						 select new DeliveriesUserDTO
+						 {
+							 Order_id = o.Order_ID,
+							 description = o.Description,
+							 price = o.Price,
+							 status = o.Status,
+							 order_zone_from = o.Order_zone_from,
+							 order_city_from = o.Order_city_from,
+							 order_zone_to = o.Order_zone_to,
+							 order_city_to = o.Order_city_to,
+							 order_time = o.Order_time,
+							 detailes_address_from = o.Detailes_address_from,
+							 detailes_address_to = o.Detailes_address_to,
+							 created = o.Created,
+							 delivery_name = d.Name,
+							 delivery_photo = d.Photo,
+							 delivery_avg_rate = Math.Round(r?.AvgRating ?? 0, 1)
+						 };
+
+			return result.ToList();
+			/*var user = context.users.FirstOrDefault(x=>x.Email == email);
 
 			List<Order> orders = context.orders.
 				Where(x=>x.User_ID==user.User_ID && x.Status==3).ToList();
-			/*List<int> rate = context.ratings.Where(x=>x.User_ID == user.User_ID)
-				.Select(x=>x.Value).ToList();*/
+
+			List<int?> deliveryIds = orders.Select(o => o.Delivery_ID).ToList();
+
+			List<Delivery> delivers = context.delivers.Where(x => x.Delivery_ID == deliveryIds)
+				.Select(x => x.Value).ToList();
+
+			List<int> rate = context.ratings.Where(x => x.Id_for_delivery == deliveryIds)
+				.Select(x => x.Value).ToList();
 			if (orders.Count == 0)
 			{
 				return null;
 			}
 
 
-			/*if(rate.Count == 0)
+			if (rate.Count == 0)
 			{
 				List<DeliveriesUserDTO> orderdto = orders.Select(x => new DeliveriesUserDTO()
 				{
-					Id = x.Order_ID,
+					Order_id = x.Order_ID,
 					description = x.Description,
 					price = x.Price,
 					status = x.Status,
 					order_city_from = x.Order_city_from,
 					order_city_to = x.Order_city_to,
 					order_time = x.Order_time,
-					detailes_address = x.Detailes_address,
+					detailes_address_from = x.Detailes_address_from,
+					detailes_address_to = x.Detailes_address_to,
 					created = x.Created,
-					user_name = user.Name,// may be zero here
+					delivery_name = delivers.Delivery_name,
+					delivery_photo = delivers.Delivery_photo,
+					delivery_avg_rate = Math.Round(rate.Average(), 1)
 				}).ToList();
 
 				return orderdto;
 			}
-*/
+
 
 			List<DeliveriesUserDTO> ordersdto = orders.Select(x => new DeliveriesUserDTO()
 			{
-				Id = x.Order_ID,
+				Order_id = x.Order_ID,
 				description = x.Description,
 				price = x.Price,
 				status = x.Status,
+				order_zone_from = x.Order_zone_from,
 				order_city_from = x.Order_city_from,
+				order_zone_to = x.Order_zone_to,
 				order_city_to = x.Order_city_to,
 				order_time = x.Order_time,
 				detailes_address_from = x.Detailes_address_from,
 				detailes_address_to = x.Detailes_address_to,
 				created = x.Created,
-				user_name = user.Name,// may be zero here
-				//user_avg_rate = Math.Round(rate.Average(), 1)
+				delivery_name = delivers.Delivery_name,
+				delivery_photo = delivers.Delivery_photo,
+				delivery_avg_rate = Math.Round(rate.Average(), 1)
 			}).ToList();
 
-			return ordersdto;
+			return ordersdto;*/
 		}
 
 
@@ -268,7 +663,7 @@ namespace Hatley.Services
 			}
 			OrderDTO orderdto = new OrderDTO()
 			{
-				Id = order.Order_ID,
+				order_id = order.Order_ID,
 				description = order.Description,
 				//location = order.Location,
 				price = order.Price,
@@ -334,6 +729,27 @@ namespace Hatley.Services
 
 			if (raw == 1)
 			{
+				OrderDTO orderdtoHub = new OrderDTO()
+				{
+					order_id = order.Order_ID,
+					description = order.Description,
+					price = order.Price,
+					status = order.Status,
+					north = order.North,
+					east = order.East,
+					order_governorate_from = order.Order_governorate_from,
+					order_zone_from = order.Order_zone_from,
+					order_city_from = order.Order_city_from,
+					detailes_address_from = order.Detailes_address_from,
+					order_governorate_to = order.Order_governorate_to,
+					order_zone_to = order.Order_zone_to,
+					order_city_to = order.Order_city_to,
+					detailes_address_to = order.Detailes_address_to,
+					order_time = order.Order_time,
+					created = order.Created,
+					User_ID = order.User_ID,
+				};
+
 				var gonernorate_name = context.governorates
 					.FirstOrDefault(x => x.Name == order.Order_governorate_to);
 				var zone_name = context.zones
@@ -344,7 +760,7 @@ namespace Hatley.Services
 					.Select(x=>x.Email).ToList();
 
 				OrderHub.Clients.All.SendAsync
-					("NotifyOrderForDeliveryHup", order
+					("NotifyOrderForDeliveryHup", orderdtoHub
 					, user.Name, user.Orders.Count, delivers_emails, "Delivery");
 
 			}

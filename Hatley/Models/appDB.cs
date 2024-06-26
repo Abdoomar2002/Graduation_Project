@@ -13,7 +13,7 @@ namespace Hatley.Models
 		{
 			if (!optionsBuilder.IsConfigured)
 			{
-				optionsBuilder.UseSqlServer("Server=db5078.public.databaseasp.net; Database=db5078; User Id=db5078; Password=xZ%9!k8MF?g2; Encrypt=False; MultipleActiveResultSets=True");
+				optionsBuilder.UseSqlServer("Server=db5996.public.databaseasp.net; Database=db5996; User Id=db5996; Password=Q#d4qD3+-nL9; Encrypt=False; MultipleActiveResultSets=True");
 				//optionsBuilder.UseSqlServer("Server=SQL8010.site4now.net;Database=db_aa8903_hatleydata;User Id=db_aa8903_hatleydata_admin;Password=Smarter29.11");
 				//optionsBuilder.UseSqlServer("Data Source=DESKTOP-46IUSU0;Initial Catalog=Hatley;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False");
 				//optionsBuilder.UseSqlServer("Server=db5073.public.databaseasp.net; Database=db5073; User Id=db5073; Password=5b#H%9MsE_d6; Encrypt=False; MultipleActiveResultSets=True;");
@@ -42,6 +42,11 @@ namespace Hatley.Models
 				.HasMany(x => x.Orders)
 				.WithOne(y => y.User)
 				.OnDelete(DeleteBehavior.SetNull);
+
+			modelBuilder.Entity<Rating>()
+				.HasOne(r => r.Order)
+				.WithOne()
+				.HasForeignKey<Rating>(r => r.Order_ID);
 
 			modelBuilder
 				.Entity<Governorate>()

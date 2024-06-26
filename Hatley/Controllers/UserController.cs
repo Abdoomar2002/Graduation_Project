@@ -89,8 +89,8 @@ namespace Hatley.Controllers
 			return Ok("Uploaded successfully");
         }
 
-        [HttpPut("{id:int}")]
-		public IActionResult update(int id,[FromBody]UserDTO userdto)
+        [HttpPut]
+		public IActionResult update([FromBody]UserDTO userdto)
 		{
 			if (userType != "User")
 			{
@@ -99,7 +99,7 @@ namespace Hatley.Controllers
 
 			if (ModelState.IsValid==true)
 			{
-				int raw=repo.Update(id, userdto);
+				int raw=repo.Update(email, userdto);
 				if (raw == -2)
 				{
 					return NotFound("the user is not exist");

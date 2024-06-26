@@ -8,10 +8,12 @@ namespace Hatley.Services
     {
         List<DeliveryDTO>? Displayall();
         DeliveryDTO? Display(string email);
+		List<RatingsWithCommentsForDeliveryDTO>? RatingsWithCommentsForDelivery
+			(string email);
 		Task<string> Insert([FromForm] DeliveryDTO deliveryDTO,
 			IFormFile frontImage, IFormFile backImage, IFormFile faceImage);
 		Task<int> uploadImage(string email, IFormFile? profile_img);
-		int Edit(int id, DeliveryDTO person);
+		int Edit(string email, DeliveryDTO person);
         int Delete(int id);
         DeliveryDTO? Check(LoginDTO login);
 		Task<int> Reset(string mail);

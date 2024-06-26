@@ -63,6 +63,10 @@ namespace Hatley
 
 
 			builder.Services.AddSignalR();
+			builder.Services.AddSignalR(options =>
+			{
+				options.EnableDetailedErrors = true;
+			});
 
 
 

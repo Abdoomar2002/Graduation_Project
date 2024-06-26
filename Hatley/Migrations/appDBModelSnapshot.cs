@@ -238,14 +238,21 @@ namespace Hatley.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("Delivery_ID")
+                    b.Property<int?>("Id_for_delivery")
                         .HasColumnType("int");
 
-                    b.Property<string>("Rating_from")
+                    b.Property<int?>("Id_for_user")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name_from")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("User_ID")
+                    b.Property<string>("Name_to")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Order_ID")
                         .HasColumnType("int");
 
                     b.Property<int>("Value")
@@ -253,9 +260,8 @@ namespace Hatley.Migrations
 
                     b.HasKey("Rating_ID");
 
-                    b.HasIndex("Delivery_ID");
-
-                    b.HasIndex("User_ID");
+                    b.HasIndex("Order_ID")
+                        .IsUnique();
 
                     b.ToTable("ratings");
                 });
@@ -383,17 +389,13 @@ namespace Hatley.Migrations
 
             modelBuilder.Entity("Hatley.Models.Rating", b =>
                 {
-                    b.HasOne("Hatley.Models.Delivery", "Delivery")
-                        .WithMany("ratings")
-                        .HasForeignKey("Delivery_ID");
+                    b.HasOne("Hatley.Models.Order", "Order")
+                        .WithOne()
+                        .HasForeignKey("Hatley.Models.Rating", "Order_ID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.HasOne("Hatley.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("User_ID");
-
-                    b.Navigation("Delivery");
-
-                    b.Navigation("User");
+                    b.Navigation("Order");
                 });
 
             modelBuilder.Entity("Hatley.Models.Zone", b =>
@@ -409,8 +411,6 @@ namespace Hatley.Migrations
             modelBuilder.Entity("Hatley.Models.Delivery", b =>
                 {
                     b.Navigation("Comments");
-
-                    b.Navigation("ratings");
                 });
 
             modelBuilder.Entity("Hatley.Models.Governorate", b =>

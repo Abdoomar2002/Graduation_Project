@@ -10,12 +10,12 @@ namespace Hatley.Services
 	{
 		private readonly Rating rating;
 		private readonly appDB context;
-		
+
 		public RatingDTORepo(Rating _rating, appDB _context)
 		{
 			rating = _rating;
 			context = _context;
-			
+
 		}
 
 
@@ -30,15 +30,19 @@ namespace Hatley.Services
 			{
 				rating_id = x.Rating_ID,
 				value = x.Value,
-				rating_from = x.Rating_from,
-				createdat = rating.CreatedAt,
-				User_ID = x.User_ID,
-				Delivery_ID = x.Delivery_ID
+				name_from = x.Name_from,
+				name_to = x.Name_to,
+				createdat = x.CreatedAt,
+				order_id = x.Order_ID,
+				user_id = x.Id_for_user,
+				delivery_id = x.Id_for_delivery
+				//rating_from = x.Rating_from,
+
 			}).ToList();
 			return ratingsdto;
 		}
 
-		public List<RatingDTO>? GetRatingsForUserOrDelivery(string mail,string type)
+		public List<RatingDTO>? GetRatingsForUserOrDelivery(string mail, string type)
 		{
 			if (type == "Delivery")
 			{
@@ -47,7 +51,7 @@ namespace Hatley.Services
 								.Select(x => x.Delivery_ID)
 								.FirstOrDefault();
 
-				List<Rating> ratings = context.ratings.Where(x => x.Delivery_ID == deliveryrid).ToList();
+				List<Rating> ratings = context.ratings.Where(x => x.Id_for_delivery == deliveryrid).ToList();
 				if (ratings.Count == 0)
 				{
 					return null;
@@ -56,10 +60,12 @@ namespace Hatley.Services
 				{
 					rating_id = x.Rating_ID,
 					value = x.Value,
-					rating_from = x.Rating_from,
+					name_from = x.Name_from,
+					name_to = x.Name_to,
 					createdat = rating.CreatedAt,
-					User_ID = x.User_ID,
-					Delivery_ID = x.Delivery_ID
+					order_id = x.Order_ID,
+					user_id = x.Id_for_user,
+					delivery_id = x.Id_for_delivery
 				}).ToList();
 				return ratingsdto;
 			}
@@ -69,7 +75,7 @@ namespace Hatley.Services
 						.Select(x => x.User_ID)
 						.FirstOrDefault();
 
-			List<Rating> ratingsuser = context.ratings.Where(x => x.User_ID == userid).ToList();
+			List<Rating> ratingsuser = context.ratings.Where(x => x.Id_for_user == userid).ToList();
 			if (ratingsuser.Count == 0)
 			{
 				return null;
@@ -78,10 +84,12 @@ namespace Hatley.Services
 			{
 				rating_id = x.Rating_ID,
 				value = x.Value,
-				rating_from = x.Rating_from,
+				name_from = x.Name_from,
+				name_to = x.Name_to,
+				order_id = x.Order_ID,
 				createdat = rating.CreatedAt,
-				User_ID = x.User_ID,
-				Delivery_ID = x.Delivery_ID
+				user_id = x.Id_for_user,
+				delivery_id = x.Id_for_delivery
 			}).ToList();
 			return ratingsdtouser;
 
@@ -97,7 +105,7 @@ namespace Hatley.Services
 			}
 
 			List<Rating> last5Ratings = context.ratings
-				.Where(x => x.Delivery_ID == delivery.Delivery_ID)
+				.Where(x => x.Id_for_delivery == delivery.Delivery_ID)
 				.OrderByDescending(x => x.CreatedAt)
 				.Take(5)
 				.ToList();
@@ -108,16 +116,16 @@ namespace Hatley.Services
 
 			List<Last5RatingForDeliveryDTO> last = last5Ratings.Select(x => new Last5RatingForDeliveryDTO()
 			{
-				name = x.Rating_from,
+				name = x.Name_from,
 				value = x.Value
 			}).ToList();
 			return last;
 
 		}
 
-		public RatingDTO? GetRating(int id)
+		public RatingDTO? GetRating(int order_id)
 		{
-			var rating = context.ratings.FirstOrDefault(x => x.Rating_ID == id);
+			var rating = context.ratings.FirstOrDefault(x => x.Order_ID == order_id);
 			if (rating == null)
 			{
 				return null;
@@ -126,10 +134,13 @@ namespace Hatley.Services
 			{
 				rating_id = rating.Rating_ID,
 				value = rating.Value,
-				rating_from = rating.Rating_from,
+				//rating_from = rating.Rating_from,
 				createdat = rating.CreatedAt,
-				User_ID = rating.User_ID,
-				Delivery_ID = rating.Delivery_ID
+				name_from = rating.Name_from,
+				name_to = rating.Name_to,
+				order_id = rating.Order_ID,
+				user_id = rating.Id_for_user,
+				delivery_id = rating.Id_for_delivery
 
 
 			};
@@ -137,9 +148,41 @@ namespace Hatley.Services
 		}
 
 
-		public int Create(int rate, int order_id,string mail,string type)
+		public int Create(int rate, int order_id)
 		{
-			if (type == "Delivery")
+			var order = context.orders.FirstOrDefault(x => x.Order_ID == order_id);
+			if (order == null || order.Delivery_ID == null)
+			{
+				return -1;
+			}
+
+			var check = context.ratings.FirstOrDefault(x => x.Order_ID == order_id);
+			if (check != null)
+			{
+				return -2;
+			}
+			var user_name = context.users
+				.Where(x => x.User_ID == order.User_ID)
+				.Select(x => x.Name)
+				.FirstOrDefault();
+
+			var delvery_name = context.delivers
+				.Where(x => x.Delivery_ID == order.Delivery_ID)
+				.Select(x => x.Name)
+				.FirstOrDefault();
+
+			rating.Value = rate;
+			rating.CreatedAt = DateTime.Now;
+			rating.Name_from = user_name;
+			rating.Name_to = delvery_name;
+			rating.Order_ID = order_id;
+			rating.Id_for_user = order.User_ID;
+			rating.Id_for_delivery = order.Delivery_ID;
+			context.ratings.Add(rating);
+			int r = context.SaveChanges();
+			return r;
+
+			/*if (type == "Delivery")
 			{
 				string? createdfrom = context.delivers
 					.Where(x => x.Email == mail)
@@ -184,13 +227,13 @@ namespace Hatley.Services
 			rating.Delivery_ID = creatto;
 			context.ratings.Add(rating);
 			int raw = context.SaveChanges();
-			return raw;
+			return raw;*/
 		}
 
 
-		public int Update(int id, int value)
+		public int Update(int order_id, int value)
 		{
-			var oldrating = context.ratings.FirstOrDefault(x => x.Rating_ID == id);
+			var oldrating = context.ratings.FirstOrDefault(x => x.Order_ID == order_id);
 			if (oldrating == null)
 			{
 				return -1;
@@ -200,9 +243,9 @@ namespace Hatley.Services
 			return raw;
 		}
 
-		public int Delete(int id)
+		public int Delete(int order_id)
 		{
-			var rating = context.ratings.FirstOrDefault(x => x.Rating_ID == id);
+			var rating = context.ratings.FirstOrDefault(x => x.Order_ID == order_id);
 			if (rating != null)
 			{
 				context.ratings.Remove(rating);

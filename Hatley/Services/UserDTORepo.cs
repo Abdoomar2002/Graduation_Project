@@ -7,6 +7,7 @@ using System.Runtime.Intrinsics.Arm;
 using System.Text;
 using System.Security.Cryptography;
 using Microsoft.Extensions.Hosting.Internal;
+using System.Collections.Generic;
 
 namespace Hatley.Services
 {
@@ -153,9 +154,9 @@ namespace Hatley.Services
 		}
 
 		//################################################################
-		public int Update(int id, UserDTO userdto)
+		public int Update(string mail, UserDTO userdto)
 		{
-			var olduser = context.users.FirstOrDefault(y => y.User_ID == id);
+			var olduser = context.users.FirstOrDefault(y => y.Email == mail);
 			var email = context.users.FirstOrDefault(x => x.Email == userdto.Email);
 
 			if (olduser == null)
@@ -165,15 +166,15 @@ namespace Hatley.Services
 			
 			else if (email != null && email.User_ID == olduser.User_ID)
 			{
-				var sha = SHA256.Create();
+				/*var sha = SHA256.Create();
 				var asByteArray = Encoding.Default.GetBytes(userdto.Password);
 				var pass = sha.ComputeHash(asByteArray);
-				var hashed = Convert.ToBase64String(pass);
+				var hashed = Convert.ToBase64String(pass);*/
 
 				olduser.Name = userdto.Name;
 				olduser.Email = userdto.Email;
 				olduser.Phone = userdto.phone;
-				olduser.Password = hashed;
+				//olduser.Password = hashed;
 				int ra = context.SaveChanges();
 				return ra;
 			}
@@ -182,10 +183,16 @@ namespace Hatley.Services
 				return -1;
 
 			}
+
+			/*var Sha = SHA256.Create();
+			var AsByteArray = Encoding.Default.GetBytes(userdto.Password);
+			var Pass = Sha.ComputeHash(AsByteArray);
+			var Hashed = Convert.ToBase64String(Pass);*/
+
 			olduser.Name = userdto.Name;
 			olduser.Email = userdto.Email;
 			olduser.Phone = userdto.phone;
-			olduser.Password = userdto.Password;
+			//olduser.Password = Hashed;
 			int raw = context.SaveChanges();
 			return raw;
 		}

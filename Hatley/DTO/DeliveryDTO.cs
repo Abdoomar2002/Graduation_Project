@@ -11,7 +11,7 @@ namespace Hatley.DTO
         public string Phone { get; set; }
         [EmailAddress]
         public string Email { get; set; }
-        public string Password { get; set; }
+        public string? Password { get; set; }
         [MaxLength(14)]
         [MinLength(14)]
         public string national_id { get; set; }

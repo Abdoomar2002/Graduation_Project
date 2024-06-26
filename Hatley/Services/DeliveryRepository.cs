@@ -80,6 +80,59 @@ namespace Hatley.Services
 			return deliveryDto;
 		}
 
+
+		//############################################################################
+
+		public List<RatingsWithCommentsForDeliveryDTO>? RatingsWithCommentsForDelivery
+			(string email)
+		{
+			var delivery = context.delivers.FirstOrDefault(x => x.Email == email);
+			if (delivery == null)
+			{
+				return null;
+			}
+
+			List<Order> orders = context.orders
+				.Where(x => x.Delivery_ID == delivery.Delivery_ID)
+				.ToList();
+
+			List<int> orderIds = orders.Select(o => o.Order_ID).ToList();
+
+			List<Rating> ratings = context.ratings
+				.Where(x => orderIds.Contains(x.Order_ID) && x.Id_for_delivery == delivery.Delivery_ID)
+				.ToList();
+
+			List<int?> userIds = ratings.Select(r => r.Id_for_user).ToList();
+
+			List<Comment> comments = context.comments
+				.Where(x => x.Delivery_ID == delivery.Delivery_ID)
+				.ToList();
+
+			var users = context.users
+				.Where(u => userIds.Contains(u.User_ID))
+				.ToList();
+
+			List<RatingsWithCommentsForDeliveryDTO> result = (from r in ratings
+						  join o in orders on r.Order_ID equals o.Order_ID
+						  join c in comments on r.Order_ID equals c.Order_id into rc
+						  from c in rc.DefaultIfEmpty()
+						  join u in users on r.Id_for_user equals u.User_ID into ru
+						  from u in ru.DefaultIfEmpty()
+						  select new RatingsWithCommentsForDeliveryDTO
+						  {
+							  user_name = u.Name,
+							  user_photo = u?.Photo,
+							  comment = c?.Text,
+							  comment_created_at = c.CreatedAt,
+							  rating = r?.Value,
+							  order_id = o.Order_ID
+						  }).ToList();
+
+			return result;
+		}
+
+
+
 		//###############################################################################
 		public async Task<string> Insert([FromForm] DeliveryDTO deliveryDTO,
 			IFormFile frontImage, IFormFile backImage, IFormFile faceImage)
@@ -186,28 +239,29 @@ namespace Hatley.Services
 		}
 
 		//##################################################################
-		public int Edit(int id, DeliveryDTO person)
+		public int Edit(string mail, DeliveryDTO person)
 		{
-			var oldData = context.delivers.FirstOrDefault(x => x.Delivery_ID == id);
+			var oldData = context.delivers.FirstOrDefault(x => x.Email == mail);
 			var email = context.delivers.FirstOrDefault(x => x.Email == person.Email);
 			if (oldData != null)
 			{
-				var sha = SHA256.Create();
+
+				/*var sha = SHA256.Create();
 				var asByteArray = Encoding.Default.GetBytes(person.Password);
 				var pass = sha.ComputeHash(asByteArray);
-				var hashed = Convert.ToBase64String(pass);
+				var hashed = Convert.ToBase64String(pass);*/
 
 				if (email == null)
 				{
 
 					oldData.Name = person.Name;
 					oldData.Email = person.Email;
-					oldData.Password = hashed;
+					//oldData.Password = hashed;
 					oldData.Phone = person.Phone;
 					oldData.National_id = person.national_id;
-					oldData.Back_National_ID_img = person.back_National_ID_img;
+					/*oldData.Back_National_ID_img = person.back_National_ID_img;
 					oldData.Front_National_ID_img = person.front_National_ID_img;
-					oldData.Face_with_National_ID_img = person.face_with_National_ID_img;
+					oldData.Face_with_National_ID_img = person.face_with_National_ID_img;*/
 					oldData.Governorate_ID = person.Governorate_ID;
 					oldData.Zone_ID = person.Zone_ID;
 					int raw = context.SaveChanges();
@@ -217,12 +271,12 @@ namespace Hatley.Services
 				{
 					oldData.Name = person.Name;
 					oldData.Email = person.Email;
-					oldData.Password = hashed;
+					//oldData.Password = hashed;
 					oldData.Phone = person.Phone;
 					oldData.National_id = person.national_id;
-					oldData.Back_National_ID_img = person.back_National_ID_img;
+					/*oldData.Back_National_ID_img = person.back_National_ID_img;
 					oldData.Front_National_ID_img = person.front_National_ID_img;
-					oldData.Face_with_National_ID_img = person.face_with_National_ID_img;
+					oldData.Face_with_National_ID_img = person.face_with_National_ID_img;*/
 					oldData.Governorate_ID = person.Governorate_ID;
 					oldData.Zone_ID = person.Zone_ID;
 					int raw = context.SaveChanges();
