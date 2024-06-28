@@ -5,15 +5,39 @@ const actions = {
     return (dispatch) => {
       return Api.app.Order.displayRelatedOrders()
         .then((response) => {
+          const sorted = response.sort(
+            (a, b) => new Date(b.created) - new Date(a.created)
+          );
           dispatch({
             type: "DISPLAY_RELATED_ORDERS",
-            data: response,
+            data: sorted,
           });
           return response;
         })
         .catch((error) => {
           dispatch({
             type: "DISPLAY_RELATED_ORDERS",
+            error: true,
+          });
+        });
+    };
+  },
+  displayUnRelatedOrders: () => {
+    return (dispatch) => {
+      return Api.app.Order.displayUnRelatedOrders()
+        .then((response) => {
+          const sorted = response.sort(
+            (a, b) => new Date(b.created) - new Date(a.created)
+          );
+          dispatch({
+            type: "DISPLAY_UNRELATED_ORDERS",
+            data: sorted,
+          });
+          return response;
+        })
+        .catch((error) => {
+          dispatch({
+            type: "DISPLAY_UNRELATED_ORDERS",
             error: true,
           });
         });

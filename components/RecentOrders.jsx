@@ -1,79 +1,44 @@
 import React, { useEffect, useState } from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  FlatList,
-  Image,
-  Button,
-  Pressable,
-} from "react-native";
+import Toast from "react-native-toast-message";
+import RenderItem from "./RenderOrder";
+import { StyleSheet, Text, View, FlatList } from "react-native";
+import { Asset } from "expo-asset";
 import { useDispatch, useSelector } from "react-redux";
+import Loader from "./Loader";
 import { actions } from "../redux/Order";
-export default function RecentOrders() {
-  const [orders, setOrders] = useState([]);
-  const Orders = useSelector((state) => state?.order?.data);
+const image = Asset.fromModule(
+  require("../assets/images/profile.jpg")
+).downloadAsync((uri) => uri.uri);
+export default function RecentOrders({ unrelated = false }) {
+  const [isLoading, setIsLoading] = useState(false);
+  const Orders = useSelector((state) => state?.order?.orders);
   const dispatch = useDispatch();
   useEffect(() => {
     const fetchData = async () => {
-      const response = await dispatch(actions.displayRelatedOrders()).then(
-        (res) => res
-      );
-      setOrders(response);
+      try {
+        if (unrelated == false) await dispatch(actions.displayRelatedOrders());
+        else await dispatch(actions.displayUnRelatedOrders());
+      } catch (err) {
+        console.log(err);
+      } finally {
+        setIsLoading(false);
+      }
     };
+    setIsLoading(true);
     fetchData();
-  }, [dispatch]);
-
-  const renderItem = ({ item }) => (
-    <View style={styles.orderContainer}>
-      <Text style={styles.orderText}>ID: {item.id}</Text>
-      <Text style={styles.orderText}>Description: {item.description}</Text>
-      <Text style={styles.orderText}>
-        From: {item.order_governorate_from}, {item.order_zone_from},{" "}
-        {item.order_city_from}
-      </Text>
-      <Text style={styles.orderText}>
-        To: {item.order_governorate_to}, {item.order_zone_to},{" "}
-        {item.order_city_to}
-      </Text>
-      <Text style={styles.orderText}>Price: ${item.price}</Text>
-      <Text style={styles.orderText}>Status: {item.status}</Text>
-      <Text style={styles.orderText}>User: {item.user_name}</Text>
-      {item.user_photo && (
-        <Image
-          source={{
-            uri: item.user_photo.replace(
-              "E:\\College\\Graduation project\\Code\\Hatley\\wwwroot\\User_imgs\\",
-              "https://your-server.com/User_imgs/"
-            ),
-          }}
-          style={styles.userPhoto}
-        />
-      )}
-      <View style={styles.btnsCont}>
-        <Pressable>
-          <Text style={[{ backgroundColor: "#fe0421" }, styles.btn]}>
-            Ignore
-          </Text>
-        </Pressable>
-        <Pressable>
-          <Text style={[{ backgroundColor: "#02ea55" }, styles.btn]}>
-            Offer
-          </Text>
-        </Pressable>
-      </View>
-    </View>
-  );
+  }, [dispatch, unrelated]);
 
   return (
     <View style={styles.container}>
+      {isLoading && <Loader />}
       <View>
         <Text style={styles.title}>Recent Orders</Text>
       </View>
       <FlatList
-        data={orders}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.id.toString()}
+        data={Orders}
+        renderItem={(item) => <RenderItem item={item.item} image={image} />}
+        key={(item) => item.order_id}
+        keyExtractor={(item) => item.order_id}
       />
     </View>
   );
@@ -99,6 +64,7 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
     marginTop: 10,
+    borderRadius: 50,
   },
   btnsCont: {
     paddingHorizontal: "15",
@@ -112,7 +78,6 @@ const styles = StyleSheet.create({
     height: 30,
     color: "white",
     fontSize: 20,
-    borderRadius: 4,
     justifyContent: "center",
     alignItems: "center",
     textAlign: "center",

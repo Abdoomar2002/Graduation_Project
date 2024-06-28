@@ -12,9 +12,9 @@ const actions = {
       });
     };
   },
-  UpdateStatus: () => {
+  UpdateStatus: (id) => {
     return (dispatch) => {
-      return Api.app.Tracking.UpdateStatus().then((response) => {
+      return Api.app.Tracking.UpdateStatus(id).then((response) => {
         dispatch({
           type: "EDIT_STATUS",
           data: response,

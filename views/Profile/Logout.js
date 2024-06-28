@@ -38,9 +38,10 @@ function Logout({ handelPress, navigation }) {
   return (
     <View style={styles.container}>
       {isLoading && <Loader />}
-      <Button onPress={handel} title="back" />
-      <Text>Logout Page</Text>
-      <NotificationMessage />
+      <Text>if you are sure press here</Text>
+      <Button onPress={handel} title="Logout" />
+      <Text>If you are not press here</Text>
+      <Button onPress={handelPress} title="Back to profile" />
       <Toast />
     </View>
   );

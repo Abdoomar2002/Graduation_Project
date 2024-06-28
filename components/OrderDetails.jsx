@@ -1,76 +1,163 @@
 // OrderDetails.js
-import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
+import React, { useEffect, useState } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+  Pressable,
+} from "react-native";
+import { useDispatch } from "react-redux";
+import { actions } from "../redux/Order";
+import { actions as TrackingActions } from "../redux/Tracking";
+import Loader from "./Loader";
 
 const OrderDetails = ({ route }) => {
-  const { order } = route.params;
-  order.id = "15054";
-  order.date = new Date(Date.now()).toUTCString();
-  order.from = "elgendy street";
-  order.to = "elhelaly street";
-  order.status = "Pending";
-  const isCompleted = order.status === "Completed";
+  const { order_id } = route.params;
+  const [loading, setLoading] = useState(false);
+  const [track, setTrack] = useState(1);
+  const [order, setOrder] = useState({});
+  const dispatch = useDispatch();
+  function handelPress() {
+    const sendData = async () => {
+      try {
+        await dispatch(TrackingActions.UpdateStatus(order.order_id));
+        setTrack(-track);
+      } catch (err) {
+        console.log(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    setLoading(true);
+    sendData();
+  }
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const response = await dispatch(actions.getOrder(order_id));
+        setOrder(response);
+      } catch (err) {
+        console.log(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    setLoading(true);
+    getData();
+  }, [dispatch, track]);
 
   return (
     <View style={styles.container}>
+      {loading && <Loader />}
       <View style={styles.header}>
         <Text style={styles.orderId}>
-          Order ID: <Text style={styles.link}>{order.id}</Text>
+          Order ID: <Text style={styles.link}>{order.order_id}</Text>
         </Text>
-        <Text
-          style={[
-            styles.status,
-            isCompleted
-              ? styles.completed
-              : order.status === "Pending"
-              ? styles.pending
-              : styles.uncompleted,
-          ]}
-        >
-          {order.status}
-        </Text>
+        <Text style={[styles.status, styles.pending]}>{order.status}</Text>
       </View>
-      <Text style={styles.date}>Date: {order.date}</Text>
+      <Text style={styles.date}>
+        Date: {new Date(order.order_time).toLocaleString()}
+      </Text>
       <View style={styles.address}>
-        <Text style={styles.addressText}>From: {order.from}</Text>
+        <Text style={styles.addressText}>From: {order.order_zone_from}</Text>
         <Text style={styles.arrow}>➡</Text>
-        <Text style={styles.addressText}>To: {order.to}</Text>
+        <Text style={styles.addressText}>To: {order.order_zone_to}</Text>
       </View>
-      <View style={styles.tracking}>
-        <View style={[styles.trackingStep, styles.completedStep]}>
-          <Text style={styles.trackingText}>Order processed</Text>
+      <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+        <View style={styles.tracking}>
+          <View style={[styles.trackingStep, styles.completedStep]}>
+            <Text style={styles.trackingText}>Order processed</Text>
+          </View>
+          <View
+            style={[
+              styles.trackingStep,
+              order.status != -1 ? styles.completedStep : null,
+            ]}
+          >
+            <Text style={styles.trackingText}>Order completed</Text>
+          </View>
+          <View
+            style={[
+              styles.trackingStep,
+              order.status >= 1 ? styles.completedStep : null,
+            ]}
+          >
+            <Text style={styles.trackingText}>Order in route</Text>
+          </View>
+          <View
+            style={[
+              styles.trackingStep,
+              order.status == 3 ? styles.completedStep : null,
+            ]}
+          >
+            <Text style={styles.trackingText}>Order Arrived</Text>
+          </View>
         </View>
-        <View
-          style={[
-            styles.trackingStep,
-            order.status !== "Pending" ? styles.completedStep : null,
-          ]}
-        >
-          <Text style={styles.trackingText}>Order completed</Text>
-        </View>
-        <View
-          style={[
-            styles.trackingStep,
-            isCompleted || order.status === "In Route"
-              ? styles.completedStep
-              : null,
-          ]}
-        >
-          <Text style={styles.trackingText}>Order in route</Text>
-        </View>
-        <View
-          style={[
-            styles.trackingStep,
-            isCompleted ? styles.completedStep : null,
-          ]}
-        >
-          <Text style={styles.trackingText}>Order Arrived</Text>
+        <View>
+          <Pressable
+            style={[
+              styles.trackingStep,
+              order.status == -1 && styles.completedStep,
+              { cursor: "pointer" },
+            ]}
+            onPress={handelPress}
+          >
+            {order.status == -1 && (
+              <Text style={[styles.trackingText, styles.completedStep]}>
+                Update Status
+              </Text>
+            )}
+          </Pressable>
+          <Pressable
+            style={[
+              styles.trackingStep,
+              order.status == 0 && styles.completedStep,
+              { cursor: "pointer" },
+            ]}
+            onPress={handelPress}
+          >
+            {order.status == 0 && (
+              <Text style={[styles.trackingText, styles.completedStep]}>
+                Update Status
+              </Text>
+            )}
+          </Pressable>
+          <Pressable
+            style={[
+              styles.trackingStep,
+              order.status == 1 && styles.completedStep,
+              { cursor: "pointer" },
+            ]}
+            onPress={handelPress}
+          >
+            {order.status == 1 && (
+              <Text style={[styles.trackingText, styles.completedStep]}>
+                Update Status
+              </Text>
+            )}
+          </Pressable>
+          <Pressable
+            style={[
+              styles.trackingStep,
+              order.status == 2 && styles.completedStep,
+              { cursor: "pointer" },
+            ]}
+            onPress={handelPress}
+          >
+            {order.status == 2 && (
+              <Text style={[styles.trackingText, styles.completedStep]}>
+                Update Status
+              </Text>
+            )}
+          </Pressable>
         </View>
       </View>
-      {isCompleted && (
-        <TouchableOpacity style={styles.completeButton}>
-          <Text style={styles.completeButtonText}>Rating</Text>
-        </TouchableOpacity>
+      {order.status == 3 && (
+        <Text style={styles.completeButtonText}>
+          Order Completed Succefully
+        </Text>
       )}
     </View>
   );
@@ -161,7 +248,8 @@ const styles = StyleSheet.create({
     alignSelf: "center",
   },
   completeButtonText: {
-    color: "#fff",
+    color: "#000",
+    alignSelf: "center",
     fontSize: 16,
   },
 });

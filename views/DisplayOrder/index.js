@@ -1,9 +1,13 @@
 // OrderList.js
-import React from "react";
+import { useCallback, useState } from "react";
 import { ScrollView, StyleSheet } from "react-native";
+import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import OrderCard from "../../components/OrderCard";
 import NavBar from "../../components/Navbar";
-
+import { actions } from "../../redux/Tracking";
+import { useDispatch, useSelector } from "react-redux";
+import Loader from "../../components/Loader";
+import SectionTitle from "../../components/SectionTitle";
 const orders = [
   {
     id: "#1a21bf",
@@ -45,11 +49,35 @@ const orders = [
 ];
 
 const DisplayOrder = ({ navigation, active = false }) => {
+  const navigate = useNavigation();
+  const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
+  const TrackData = useSelector((state) => state?.tracking?.data);
+  useFocusEffect(
+    useCallback(() => {
+      // This will be executed when the screen is focused
+      const getData = async () => {
+        try {
+          const response = await dispatch(actions.getAll());
+        } catch (err) {
+        } finally {
+          setLoading(false);
+        }
+      };
+      setLoading(true);
+      getData();
+
+      // Clean up function, will be executed when the screen is unfocused
+      return () => {};
+    }, [navigate])
+  );
   return (
     <>
+      {loading && <Loader />}
       <ScrollView contentContainerStyle={styles.container}>
-        {orders.map((order, index) => (
-          <OrderCard key={index} order={order} />
+        <SectionTitle title={"Active Orders"} />
+        {TrackData.map((order, index) => (
+          <OrderCard key={index} order={order} navigation={navigation} />
         ))}
       </ScrollView>
       {!active && <NavBar navigation={navigation} active="Orders" />}
@@ -60,6 +88,7 @@ const DisplayOrder = ({ navigation, active = false }) => {
 const styles = StyleSheet.create({
   container: {
     padding: 15,
+    marginTop: 15,
     paddingBottom: 35,
   },
 });

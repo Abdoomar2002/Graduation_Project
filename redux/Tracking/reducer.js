@@ -7,9 +7,13 @@ const trackingReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case "GET_ALL":
       if (action.error) return state;
+      const data =
+        action.data != null
+          ? action.data.filter((elem) => elem.status != 3)
+          : null;
       return {
         ...state,
-        data: action.data,
+        data,
       };
 
     case "EDIT_STATUS":

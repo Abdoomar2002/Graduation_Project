@@ -15,6 +15,7 @@ import { Colors } from "react-native/Libraries/NewAppScreen";
 import { actions } from "../../redux/Auth";
 import { useDispatch } from "react-redux";
 import Loader from "../../components/Loader";
+import Toast from "react-native-toast-message";
 function SignIn({ navigation }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -23,16 +24,22 @@ function SignIn({ navigation }) {
   const handleLogin = () => {
     setIsLoading(true);
     const log = async () => {
-      const res = await dispatch(actions.login({ email: username, password }));
-      // console.log(res, "hello");
-      if (res != null) {
-        +navigation.navigate("Home");
-      } else
-        Alert.alert(
-          "Error",
-          "Username Or Password is wrong\n Please try again",
-          [{ text: "ok", style: "cancel" }, { cancelable: false }]
+      try {
+        const res = await dispatch(
+          actions.login({ email: username, password })
         );
+
+        navigation.navigate("Home");
+      } catch (err) {
+        Toast.show({
+          type: "error",
+          text1: "Error",
+          text2: err.message,
+        });
+      } finally {
+        setIsLoading(false);
+      }
+      // console.log(res, "hello");
     };
     log();
   };

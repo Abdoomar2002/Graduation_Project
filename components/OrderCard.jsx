@@ -1,36 +1,27 @@
 import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 
-const OrderCard = ({ order }) => {
+const OrderCard = ({ order, navigation }) => {
+  /**{"city_from": "Assiut City", "city_to": "Assiut City",
+   *  "delivery_id": 1, "order_id": 2, "order_time": "2024-06-25T03:42:43.089",
+   *  "status": -1, "zone_from": "Assiut City", "zone_to": "Assiut City"}   */
   return (
     <View style={styles.card}>
-      <View style={styles.header}>
-        <Image
-          source={require("../assets/images/profile.jpg")}
-          style={styles.image}
-        />
-        <View style={styles.headerText}>
-          <Text style={styles.name}>{order.name}</Text>
-          <View style={styles.stars}>
-            {[...Array(order.rating)].map((_, i) => (
-              <Text key={i} style={styles.star}>
-                ⭐
-              </Text>
-            ))}
-          </View>
-        </View>
-      </View>
       <Text style={styles.orderId}>
-        Order ID: <Text style={styles.link}>{order.id}</Text>
+        Order ID: <Text style={styles.link}>{order.order_id}</Text>
       </Text>
-      <Text style={styles.date}>Date: {order.date}</Text>
-      <Text style={styles.price}>Price: {order.price}</Text>
-      <Text style={styles.details}>Details: {order.details}</Text>
+      <Text style={styles.date}>
+        Date: {new Date(order.order_time).toLocaleString()}
+      </Text>
+      <Text style={styles.price}>From: {order.zone_from}</Text>
+      <Text style={styles.details}>To: {order.zone_to}</Text>
       <View style={styles.footer}>
-        <TouchableOpacity style={styles.buttonReport}>
-          <Text style={styles.buttonText}>Report</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.buttonReorder}>
-          <Text style={styles.buttonText}>Re-order</Text>
+        <TouchableOpacity
+          style={styles.buttonReorder}
+          onPress={() =>
+            navigation.navigate("Details", { order_id: order.order_id })
+          }
+        >
+          <Text style={styles.buttonText}>View Details</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -94,7 +85,7 @@ const styles = StyleSheet.create({
   },
   footer: {
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "flex-end",
   },
   buttonReport: {
     backgroundColor: "#FF7F7F",

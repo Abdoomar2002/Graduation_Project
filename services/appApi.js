@@ -1,4 +1,3 @@
-import SignUp from "../views/Register/SignUp";
 import HttpHelpers from "./helpers";
 const appApi = {
   Comment: {
@@ -100,9 +99,9 @@ const appApi = {
     },
   },
   Offer: {
-    getOffer: async (orderId) => {
+    getOffer: async (offer) => {
       const response = await HttpHelpers.authenticatedAxios.get(
-        `/Offer/view/${orderId}`
+        `/Offer/View?orderid=${offer.orderId}&value=${offer.value}&email=${offer.email}`
       );
       return response?.data;
     },
@@ -117,6 +116,12 @@ const appApi = {
     displayRelatedOrders: async () => {
       const response = await HttpHelpers.authenticatedAxios.get(
         "Order/related/orders"
+      );
+      return response?.data;
+    },
+    displayUnRelatedOrders: async () => {
+      const response = await HttpHelpers.authenticatedAxios.get(
+        "Order/unrelated/orders"
       );
       return response?.data;
     },

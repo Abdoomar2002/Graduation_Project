@@ -12,7 +12,6 @@ import NewPasswordPage from "../views/Register/NewPassword";
 import MapScreen from "../views/Map/Map";
 import DisplayOrder from "../views/DisplayOrder";
 import OrderDetails from "../components/OrderDetails";
-console.log(MakeOrderPage);
 const routes = [
   {
     name: "Splash",

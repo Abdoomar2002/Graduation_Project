@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FlatList, Image, StyleSheet, Text, View } from "react-native";
 import {
   Entypo,
@@ -17,8 +17,29 @@ import ProfileItem from "../../components/profileItem";
 import AboutUs from "../AboutUs";
 import ContactUs from "../ContactUs";
 import OurTeam from "../OurTeam";
+import storageService from "../../utils/storageService";
+import Loader from "../../components/Loader";
 
 const Profile = ({ navigation }) => {
+  const [name, setName] = useState("");
+  const [image, setImage] = useState(null);
+  const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const UserName = await storageService.get("Name");
+        setName(UserName);
+        const UserImage = await storageService.get("Image");
+        setImage(UserImage);
+      } catch (err) {
+        console.log(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    setLoading(true);
+    getData();
+  }, []);
   const ProfileList = [
     {
       Icon: <Entypo name="back-in-time" size={24} color="black" />,
@@ -83,14 +104,19 @@ const Profile = ({ navigation }) => {
   return (
     <>
       <View style={styles.container}>
+        {loading && <Loader />}
         {!activePage ? (
           <View>
             <View style={styles.titleContainer}>
               <Image
-                source={require("../../assets/images/profile.jpg")}
+                source={
+                  image != null
+                    ? { uri: image }
+                    : require("../../assets/images/profile.jpg")
+                }
                 style={styles.img}
               />
-              <Text style={styles.text}>Hello User</Text>
+              <Text style={styles.text}>Hello {name}</Text>
             </View>
             <FlatList
               data={ProfileList}
