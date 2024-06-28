@@ -1,13 +1,20 @@
 import { useEffect, useState } from "react";
 import { View, Text, Button, StyleSheet, Image } from "react-native";
 import { Asset } from "expo-asset";
+const imageDefault = Asset.fromModule(
+  require("../assets/images/user.png")
+).downloadAsync((uri) => uri.uri);
 const OrderItem = ({ orderData, onAccept, onDecline }) => {
-  const [image, setImage] = useState("");
+  const [image, setImage] = useState(orderData.delivery_photo);
   useEffect(() => {
     setImage(() => {
       const imageSource = orderData.photo;
       return imageSource;
     });
+    /**{"order_id":2,"delivery_email":"abdo20omar20@gmail.com",
+     * "delivery_name":"Abc","delivery_photo":null,"offer_value":25,
+     * "delivery_avg_rate":0,"delivery_count_rate":0},
+     */
   }, [image]);
   return (
     <View style={styles.container}>
@@ -19,53 +26,53 @@ const OrderItem = ({ orderData, onAccept, onDecline }) => {
         }}
       >
         <Text style={{ marginRight: 5 }}>
-          <Text style={{ fontWeight: 600 }}>Order Num : </Text>
-          {orderData.orderNumber}
-        </Text>
-        <Text style={{ marginRight: 5 }}>
-          <Text style={{ fontWeight: 600 }}>From : </Text>
-          {orderData.from}
-        </Text>
-        <Text style={{ marginRight: 5 }}>
-          <Text style={{ fontWeight: 600 }}>To : </Text>
-          {orderData.to}
+          <Text style={{ fontWeight: "600" }}>Order Num : </Text>
+          {orderData.order_id}
         </Text>
       </View>
       <View style={styles.cont}>
         <View style={{ height: 100, width: 100 }}>
-          {image != null ? (
-            <Image
-              src={`http://192.168.1.13:8081/assets/?unstable_path=.%2Fassets%2Fimages%2F${image}&platform=ios&hash=67014f93ab590c8c10b7ecc200dc8e90`}
-              onError={(e) =>
-                console.log("Image loading error:", e.nativeEvent.error)
-              }
-              style={styles.photo}
-            />
-          ) : (
-            <Text>no photo</Text>
-          )}
+          <Image
+            source={{ uri: image || imageDefault._j.uri }}
+            onError={(e) =>
+              console.log("Image loading error:", e.nativeEvent.error)
+            }
+            style={styles.photo}
+          />
         </View>
         <View>
-          <Text style={{ marginVertical: 2 }}>Customer: </Text>
-          <Text style={{ marginVertical: 2 }}>Vehicle: </Text>
-          <Text style={{ marginVertical: 2 }}>Price: </Text>
-          <Text style={{ marginVertical: 2 }}>Delivery Time: </Text>
-          <Text style={{ marginVertical: 2 }}>Customer Rating: </Text>
-          <Text style={{ marginVertical: 2 }}>Distance: </Text>
+          <Text style={{ marginVertical: 2, fontWeight: "600" }}>
+            Delivery:{" "}
+          </Text>
+
+          <Text style={{ marginVertical: 2, fontWeight: "600" }}>Price: </Text>
+          <Text style={{ marginVertical: 2, fontWeight: "600" }}>
+            Delivery Rating:{" "}
+          </Text>
+          <Text style={{ marginVertical: 2, fontWeight: "600" }}>
+            Recent Orders:{" "}
+          </Text>
         </View>
         <View>
-          <Text style={styles.text}>{orderData.customer}</Text>
-          <Text style={styles.text}>{orderData.VicType}</Text>
-          <Text style={styles.text}>EGP{orderData.price}</Text>
-          <Text style={styles.text}>{orderData.deliveryTime} mins</Text>
-          <Text style={styles.text}>{orderData.rating}</Text>
-          <Text style={styles.text}>{orderData.distance} km</Text>
+          <Text style={styles.text}>{orderData.delivery_name}</Text>
+          <Text style={styles.text}>EGP{orderData.offer_value}</Text>
+
+          <Text style={styles.text}>{orderData.delivery_avg_rate}</Text>
+          <Text style={styles.text}>{orderData.delivery_count_rate}</Text>
         </View>
       </View>
 
       <View style={{ flexDirection: "row", justifyContent: "space-around" }}>
-        <Button title="Decline" onPress={onDecline} color="#f00" />
-        <Button title="Accept" onPress={onAccept} color="#0f0" />
+        <Button
+          title="Decline"
+          onPress={() => onDecline(orderData)}
+          color="#f00"
+        />
+        <Button
+          title="Accept"
+          onPress={() => onAccept(orderData)}
+          color="#0f0"
+        />
       </View>
     </View>
   );

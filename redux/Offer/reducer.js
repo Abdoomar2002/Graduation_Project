@@ -5,7 +5,7 @@ const INITIAL_STATE = {
 
 const OfferReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case "GET_OFFER":
+    case "DECLINE_OFFER":
       if (action.error) return state;
       return {
         ...state,

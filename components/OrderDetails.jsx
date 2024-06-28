@@ -1,40 +1,47 @@
 // OrderDetails.js
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
+import { useDispatch } from "react-redux";
+import { actions } from "../redux/Order";
+import Loader from "./Loader";
 
 const OrderDetails = ({ route }) => {
-  const { order } = route.params;
-  order.id = "15054";
-  order.date = new Date(Date.now()).toUTCString();
-  order.from = "elgendy street";
-  order.to = "elhelaly street";
-  order.status = "Pending";
-  const isCompleted = order.status === "Completed";
+  const { order_id } = route.params;
+  const [loading, setLoading] = useState(false);
+  const [order, setOrder] = useState({});
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const response = await dispatch(actions.getOrder(order_id));
+        setOrder(response);
+      } catch (err) {
+        console.log(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    setLoading(true);
+    getData();
+  }, []);
 
   return (
     <View style={styles.container}>
+      {loading && <Loader />}
       <View style={styles.header}>
         <Text style={styles.orderId}>
-          Order ID: <Text style={styles.link}>{order.id}</Text>
+          Order ID: <Text style={styles.link}>{order.order_id}</Text>
         </Text>
-        <Text
-          style={[
-            styles.status,
-            isCompleted
-              ? styles.completed
-              : order.status === "Pending"
-              ? styles.pending
-              : styles.uncompleted,
-          ]}
-        >
-          {order.status}
-        </Text>
+        <Text style={[styles.status, styles.pending]}>{order.status}</Text>
       </View>
-      <Text style={styles.date}>Date: {order.date}</Text>
+      <Text style={styles.date}>
+        Date: {new Date(order.order_time).toLocaleString()}
+      </Text>
       <View style={styles.address}>
-        <Text style={styles.addressText}>From: {order.from}</Text>
+        <Text style={styles.addressText}>From: {order.order_zone_from}</Text>
         <Text style={styles.arrow}>➡</Text>
-        <Text style={styles.addressText}>To: {order.to}</Text>
+        <Text style={styles.addressText}>To: {order.order_zone_to}</Text>
       </View>
       <View style={styles.tracking}>
         <View style={[styles.trackingStep, styles.completedStep]}>
@@ -43,7 +50,7 @@ const OrderDetails = ({ route }) => {
         <View
           style={[
             styles.trackingStep,
-            order.status !== "Pending" ? styles.completedStep : null,
+            order.status != -1 ? styles.completedStep : null,
           ]}
         >
           <Text style={styles.trackingText}>Order completed</Text>
@@ -51,23 +58,18 @@ const OrderDetails = ({ route }) => {
         <View
           style={[
             styles.trackingStep,
-            isCompleted || order.status === "In Route"
-              ? styles.completedStep
-              : null,
+            order.status >= 1 ? styles.completedStep : null,
           ]}
         >
           <Text style={styles.trackingText}>Order in route</Text>
         </View>
         <View
-          style={[
-            styles.trackingStep,
-            isCompleted ? styles.completedStep : null,
-          ]}
+          style={[styles.trackingStep, false ? styles.completedStep : null]}
         >
           <Text style={styles.trackingText}>Order Arrived</Text>
         </View>
       </View>
-      {isCompleted && (
+      {order.status == 3 && (
         <TouchableOpacity style={styles.completeButton}>
           <Text style={styles.completeButtonText}>Rating</Text>
         </TouchableOpacity>

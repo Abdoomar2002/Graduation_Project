@@ -22,7 +22,7 @@ function Logout({ handelPress, navigation }) {
           position: "top",
         });
         setTimeout(() => {
-          navigation.navigate("SingIn");
+          navigation.navigate("SignIn");
         }, 2000);
       } catch (error) {
         Toast.show({
@@ -36,14 +36,16 @@ function Logout({ handelPress, navigation }) {
       }
     };
     sendData();
-    navigation.navigate("SignIn");
   }
   return (
     <View style={styles.container}>
       {isLoading && <Loader />}
-      <Button onPress={handel} title="back" />
-      <Text>Logout Page</Text>
-      <NotificationMessage />
+      <Text style={{ marginBottom: 10, fontSize: 16 }}>
+        If you are sure press here
+      </Text>
+      <Button onPress={handel} title="Logout" />
+      <Text style={{ marginBottom: 10, fontSize: 16 }}>If not press here</Text>
+      <Button onPress={handelPress} title="Back" color={"#fa8476"} />
     </View>
   );
 }

@@ -1,22 +1,22 @@
 import Api from "../../services";
 
 const actions = {
-  getOffer: (id) => {
+  acceptOffer: (offer) => {
     return (dispatch) => {
-      return Api.app.Offer.getOffer(id).then((response) => {
+      return Api.app.Offer.acceptOffer(offer).then((response) => {
         dispatch({
-          type: "GET_OFFER",
+          type: "ACCEPT_OFFER",
           data: response,
         });
         return response;
       });
     };
   },
-  acceptOffer: (id) => {
+  declineOffer: (offer) => {
     return (dispatch) => {
-      return Api.app.Offer.deliveryAcceptOffer(id).then((response) => {
+      return Api.app.Offer.declineOffer(offer).then((response) => {
         dispatch({
-          type: "ACCEPT_OFFER",
+          type: "DECLINE_OFFER",
           data: response,
         });
         return response;

@@ -12,7 +12,7 @@ const OrderCard = ({ order }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [reportModalVisible, setReportModalVisible] = useState(false);
   let date = new Date(order.created);
-  date.setHours(date.getHours() + 3);
+  date.setHours(date.getHours() + 1);
   let created = date.toLocaleString();
 
   return (
@@ -25,7 +25,7 @@ const OrderCard = ({ order }) => {
         </View>
       </View>
       <Text style={styles.orderId}>
-        Order ID: <Text style={styles.link}>{order.id}</Text>
+        Order ID: <Text style={styles.link}>{order.order_id}</Text>
       </Text>
       <Text style={styles.orderId}>
         Order Status: <Text style={styles.link}>{order.status}</Text>

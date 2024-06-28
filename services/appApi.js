@@ -107,15 +107,15 @@ const appApi = {
     },
   },
   Offer: {
-    getOffer: async (orderId) => {
+    acceptOffer: async (offer) => {
       const response = await HttpHelpers.authenticatedAxios.get(
-        `/Offer/view/${orderId}`
+        `/Offer/User/Accept?orderid=${offer.orderId}&price_of_offer=${offer.price}&delivery_email=${offer.email}`
       );
       return response?.data;
     },
-    deliveryAcceptOffer: async (orderId) => {
+    declineOffer: async (offer) => {
       const response = await HttpHelpers.authenticatedAxios.get(
-        `Offer/Delivery/Accept?orderid=${orderId}`
+        `/Offer/User/Decline?orderid=${offer.orderId}&price_of_offer=${offer.price}&delivery_email=${offer.email}`
       );
       return response?.data;
     },
