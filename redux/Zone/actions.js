@@ -21,6 +21,16 @@ const actions = {
       return response;
     };
   },
+  getZonesByGovernateName: (data) => {
+    return async (dispatch) => {
+      const response = await Api.app.Zone.getZonebyGovernateName(data);
+      dispatch({
+        type: "GET_ZONE_BY_GOVERNATE_ID",
+        data: response,
+      });
+      return response;
+    };
+  },
 };
 
 export default actions;

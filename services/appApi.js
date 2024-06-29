@@ -154,7 +154,9 @@ const appApi = {
       return response?.data;
     },
     getRate: async (id) => {
-      const response = await HttpHelpers.authenticatedAxios.get(`Rating/${id}`);
+      const path = `Rating/${id}`;
+      const response = await HttpHelpers.authenticatedAxios.get(path);
+
       return response?.data;
     },
     addRating: async (rate, orderId) => {
@@ -195,6 +197,12 @@ const appApi = {
     },
     display: async (id) => {
       const response = await HttpHelpers.unAuthenticatedAxios.get(`Zone/${id}`);
+      return response?.data;
+    },
+    getZonebyGovernateName: async (name) => {
+      const response = await HttpHelpers.unAuthenticatedAxios.get(
+        `Zone/ZonesForGovernorate/${name}`
+      );
       return response?.data;
     },
   },

@@ -50,7 +50,14 @@ export default function Home({ navigation }) {
             setSelectedTab("Related");
           }}
         >
-          <Text style={style.tabText}>Related Order</Text>
+          <Text
+            style={[
+              style.tabText,
+              selectedTab === "Related" && { color: "#0084ff" },
+            ]}
+          >
+            Related Order
+          </Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={[
@@ -61,7 +68,14 @@ export default function Home({ navigation }) {
             setSelectedTab("Unrelated");
           }}
         >
-          <Text style={style.tabText}>Unrelated Order</Text>
+          <Text
+            style={[
+              style.tabText,
+              selectedTab !== "Related" && { color: "#0084ff" },
+            ]}
+          >
+            Unrelated Order
+          </Text>
         </TouchableOpacity>
       </View>
       <RecentOrders unrelated={selectedTab != "Related"} />
@@ -79,7 +93,6 @@ const style = StyleSheet.create({
     marginTop: 5,
     flexDirection: "row",
     justifyContent: "space-around",
-    backgroundColor: "#ccc",
     paddingVertical: 10,
   },
   heading: {
@@ -112,6 +125,7 @@ const style = StyleSheet.create({
   },
   activeTab: {
     borderBottomWidth: 2,
-    borderBottomColor: "#000",
+
+    borderBottomColor: "#0084ff",
   },
 });

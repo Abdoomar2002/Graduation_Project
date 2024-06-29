@@ -35,22 +35,29 @@ const Settings = ({ handelPress, navigation }) => {
   const dispatch = useDispatch();
   const [editable, setEditable] = useState(false);
   const [governate, setGovernate] = useState("");
+  const [governateID, setGovernateID] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [zone, setZone] = useState("");
+  const [zoneID, setZoneID] = useState("");
 
   useEffect(() => {
     const getData = async () => {
       try {
         const data = await dispatch(AuthActions.displayProfile());
+        console.log(data);
         const governate = await dispatch(
           GovernateAction.displayGovernorate(data.governorate_ID)
         );
-        const zone = await dispatch(ZoneActions.getZoneByZoneId(data.zone_ID));
+        const zone = await dispatch(
+          ZoneActions.getZonesByGovernateName(governate.name)
+        );
         //console.log(zone);
         //console.log(governate);
         //console.log(data);
         setGovernate(governate.name);
+        setGovernate(governate.governorate_ID);
         setZone(zone.name);
+        setZone(zone.zone_id);
       } catch (error) {
         console.trace(error.message, "me");
         console.error(error.message, "me2");
@@ -60,10 +67,11 @@ const Settings = ({ handelPress, navigation }) => {
     };
     getData();
   }, []);
+
   useEffect(() => {
     const getLocationData = async () => {
       try {
-        await dispatch(ZoneActions.getAll());
+        await dispatch(ZoneActions.getZonesByGovernateName(governate));
         await dispatch(GovernateAction.displayAllGovernorates());
       } catch (error) {
         console.log(error.message);
@@ -71,7 +79,7 @@ const Settings = ({ handelPress, navigation }) => {
     };
     getLocationData();
     // console.log(Zone);
-  }, []);
+  }, [governate]);
   function handelRemove(text) {
     if (text == "YES I AM SURE") {
       Alert.alert("Account Deleted", "have a nice day", [
@@ -158,32 +166,34 @@ const Settings = ({ handelPress, navigation }) => {
 
               {Governate && (
                 <RNPickerSelect
+                  onValueChange={(value) => {
+                    value && setGovernate(value?.name);
+                    value && setGovernateID(value?.governorate_ID);
+                  }}
+                  value={governate}
                   items={Governate.map((e) => ({
                     label: e.name,
-                    value: e.governorate_ID,
+                    value: { ...e },
                   }))}
-                  itemKey={governate}
+                  disabled={!editable}
+                  itemKey={governateID}
+                  key={governateID}
                 />
               )}
-              <TextInput
-                style={!editable ? styles.disabledInput : styles.enabledInput}
-                value={governate}
-                editable={editable}
-              />
             </View>
             <View style={styles.row}>
               <Text style={styles.label}>Zone:</Text>
-              {Zone && Zone.length > 3 && (
+              {Zone && Zone.length > 1 && (
                 <RNPickerSelect
-                  items={Zone.map((e) => ({ label: e.name, value: e.zone_id }))}
+                  value={zone}
+                  onValueChange={(value) => setZone(value)}
+                  items={
+                    Zone &&
+                    Zone.map((e) => ({ label: e.name, value: e.zone_id }))
+                  }
+                  disabled={!editable}
                 />
               )}
-
-              <TextInput
-                style={!editable ? styles.disabledInput : styles.enabledInput}
-                value={zone}
-                editable={editable}
-              />
             </View>
           </View>
 

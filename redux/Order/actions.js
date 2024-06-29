@@ -45,7 +45,7 @@ const actions = {
   },
   getAllForUserOrDelivery: () => {
     return (dispatch) => {
-      return Api.app.Order.getAllForUserOrDelivery()
+      return Api.app.Order.getAllForDelivery()
         .then((response) => {
           dispatch({
             type: "GET_ALL_FOR_USER_OR_DELIVERY",

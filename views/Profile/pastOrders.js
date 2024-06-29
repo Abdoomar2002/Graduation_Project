@@ -11,15 +11,17 @@ function PastOrders({ handelPress, navigation }) {
       >
         <MaterialIcons name="arrow-back-ios" size={24} />
       </Pressable>
-      <DisplayOrder navigation={navigation} active={true} />
+      <DisplayOrder
+        navigation={navigation}
+        active={true}
+        trackOrRecent={true}
+      />
     </View>
   );
 }
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
   },
 });
 export default PastOrders;

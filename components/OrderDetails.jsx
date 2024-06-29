@@ -47,7 +47,18 @@ const OrderDetails = ({ route }) => {
     setLoading(true);
     getData();
   }, [dispatch, track]);
-
+  let status = "";
+  if (order.status == -1) {
+    status = "Pending";
+  } else if (order.status == 0) {
+    status = "Accepted";
+  } else if (order.status == 1) {
+    status = "Moved";
+  } else if (order.status == 2) {
+    status = "On the way";
+  } else if (order.status == 3) {
+    status = "Delivered";
+  }
   return (
     <View style={styles.container}>
       {loading && <Loader />}
@@ -55,20 +66,26 @@ const OrderDetails = ({ route }) => {
         <Text style={styles.orderId}>
           Order ID: <Text style={styles.link}>{order.order_id}</Text>
         </Text>
-        <Text style={[styles.status, styles.pending]}>{order.status}</Text>
+        <Text style={[styles.status, styles.pending]}>{status}</Text>
       </View>
       <Text style={styles.date}>
         Date: {new Date(order.order_time).toLocaleString()}
       </Text>
       <View style={styles.address}>
-        <Text style={styles.addressText}>From: {order.order_zone_from}</Text>
+        <Text style={styles.addressText}>
+          From: {order.order_zone_from} , {order.detailes_address_from}
+        </Text>
         <Text style={styles.arrow}>➡</Text>
-        <Text style={styles.addressText}>To: {order.order_zone_to}</Text>
+        <Text style={styles.addressText}>
+          To: {order.order_zone_to}, {order.detailes_address_to}
+        </Text>
       </View>
+      <Text style={styles.date}>Price: {order.price}</Text>
+      <Text style={styles.date}>Description: {order.description}</Text>
       <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
         <View style={styles.tracking}>
           <View style={[styles.trackingStep, styles.completedStep]}>
-            <Text style={styles.trackingText}>Order processed</Text>
+            <Text style={styles.trackingText}>Order Accepted</Text>
           </View>
           <View
             style={[
@@ -76,7 +93,7 @@ const OrderDetails = ({ route }) => {
               order.status != -1 ? styles.completedStep : null,
             ]}
           >
-            <Text style={styles.trackingText}>Order completed</Text>
+            <Text style={styles.trackingText}>Order Moved</Text>
           </View>
           <View
             style={[
@@ -84,7 +101,7 @@ const OrderDetails = ({ route }) => {
               order.status >= 1 ? styles.completedStep : null,
             ]}
           >
-            <Text style={styles.trackingText}>Order in route</Text>
+            <Text style={styles.trackingText}>Order on the way</Text>
           </View>
           <View
             style={[
@@ -92,7 +109,7 @@ const OrderDetails = ({ route }) => {
               order.status == 3 ? styles.completedStep : null,
             ]}
           >
-            <Text style={styles.trackingText}>Order Arrived</Text>
+            <Text style={styles.trackingText}>Order Delivered</Text>
           </View>
         </View>
         <View>

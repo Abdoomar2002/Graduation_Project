@@ -19,11 +19,26 @@ import ContactUs from "../ContactUs";
 import OurTeam from "../OurTeam";
 import storageService from "../../utils/storageService";
 import Loader from "../../components/Loader";
+import { useDispatch, useSelector } from "react-redux";
+import { actions } from "../../redux/Tracking";
 
 const Profile = ({ navigation }) => {
   const [name, setName] = useState("");
   const [image, setImage] = useState(null);
   const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
+  const TrackData = useSelector((state) => state?.tracking?.data);
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        await dispatch(actions.getAll());
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    getData();
+  }, [activePage]);
   useEffect(() => {
     const getData = async () => {
       try {
@@ -44,7 +59,12 @@ const Profile = ({ navigation }) => {
     {
       Icon: <Entypo name="back-in-time" size={24} color="black" />,
       Text: "My Orders",
-      Page: <PastOrders handelPress={() => handlePress(null)} />,
+      Page: (
+        <PastOrders
+          handelPress={() => handlePress(null)}
+          navigation={navigation}
+        />
+      ),
     },
     {
       Icon: <FontAwesome6 name="location-dot" size={24} color="black" />,
@@ -53,13 +73,9 @@ const Profile = ({ navigation }) => {
         <TrackOrders
           handelPress={() => handlePress(null)}
           navigation={navigation}
+          orders={TrackData}
         />
       ),
-    },
-    {
-      Icon: <AntDesign name="bars" size={24} color="black" />,
-      Text: "Previous Deliveries",
-      Page: <RecentDeliveries handelPress={() => handlePress(null)} />,
     },
     {
       Icon: <Ionicons name="settings-sharp" size={24} color="black" />,

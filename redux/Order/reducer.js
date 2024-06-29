@@ -25,9 +25,12 @@ const orderReducer = (state = INITIAL_STATE, action) => {
       };
     case "GET_ALL_FOR_USER_OR_DELIVERY":
       if (action.error) return state;
+      const data = action.data.sort(
+        (a, b) => new Date(b.created) - new Date(a.created)
+      );
       return {
         ...state,
-        orders: action.data,
+        orders: data,
       };
     case "GET_ORDER":
       if (action.error) return state;

@@ -1,19 +1,84 @@
-import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
+import { useEffect, useState } from "react";
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+  LogBox,
+} from "react-native";
+import { useDispatch, useSelector } from "react-redux";
+import { actions } from "../redux/Rating";
 
-const OrderCard = ({ order, navigation }) => {
-  /**{"city_from": "Assiut City", "city_to": "Assiut City",
-   *  "delivery_id": 1, "order_id": 2, "order_time": "2024-06-25T03:42:43.089",
-   *  "status": -1, "zone_from": "Assiut City", "zone_to": "Assiut City"}   */
+const OrderCard = ({ order, navigation, trackOrRecent = false, photo }) => {
+  let status = "";
+  const [Rating, setRating] = useState(null);
+  if (order.status == -1) {
+    status = "Pending";
+  } else if (order.status == 0) {
+    status = "Accepted";
+  } else if (order.status == 1) {
+    status = "Moved";
+  } else if (order.status == 2) {
+    status = "On the way";
+  } else if (order.status == 3) {
+    status = "Delivered";
+  }
+  const dispatch = useDispatch();
+  useEffect(() => {
+    const getRate = async () => {
+      try {
+        const response = await dispatch(actions.getRate(order.order_id));
+        setRating(response);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    if (trackOrRecent == true) getRate();
+  }, []);
+  function stars(num) {
+    let string = "";
+    for (let i = 0; i < num; i++) {
+      string += "⭐";
+    }
+    return string;
+  }
   return (
     <View style={styles.card}>
+      {trackOrRecent && (
+        <View>
+          <View style={{ gap: 20, alignItems: "flex-start" }}>
+            <Image
+              style={styles.image}
+              source={{ uri: order.photo == null ? photo : order.photo }}
+            />
+            <Text style={styles.name}>{order.name}</Text>
+          </View>
+          <View>
+            <Text style={styles.text}>Status: {status}</Text>
+          </View>
+          <View>
+            <Text style={styles.text}>
+              Rate:{" "}
+              {Rating != null && Rating.order_id == order.order_id
+                ? stars(Rating.value)
+                : "No Rate"}
+            </Text>
+          </View>
+        </View>
+      )}
       <Text style={styles.orderId}>
         Order ID: <Text style={styles.link}>{order.order_id}</Text>
       </Text>
       <Text style={styles.date}>
         Date: {new Date(order.order_time).toLocaleString()}
       </Text>
-      <Text style={styles.price}>From: {order.zone_from}</Text>
-      <Text style={styles.details}>To: {order.zone_to}</Text>
+      <Text style={styles.price}>
+        From: {order.zone_from || order.order_zone_from}
+      </Text>
+      <Text style={styles.details}>
+        To: {order.zone_to || order.order_zone_to}
+      </Text>
       <View style={styles.footer}>
         <TouchableOpacity
           style={styles.buttonReorder}

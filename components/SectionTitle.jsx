@@ -15,6 +15,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     justifyContent: "center",
     paddingLeft: 15,
+    paddingRight: 15,
     marginVertical: 15,
   },
   text: {
