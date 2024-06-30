@@ -55,14 +55,19 @@ namespace Hatley.Services
 		}
 
 		//##############################################################################
-		public DeliveryDTO? Display(string email)
+		public ProfileDeliveryDTO? Display(string email)
 		{
 			var delivery = context.delivers.FirstOrDefault(x => x.Email == email);
 			if (delivery == null)
 			{
 				return null;
 			}
-			DeliveryDTO deliveryDto = new DeliveryDTO()
+			var gov = context.governorates
+				.FirstOrDefault(x => x.Governorate_ID == delivery.Governorate_ID);
+			var zone = context.zones
+				.FirstOrDefault(x=>x.Zone_ID == delivery.Zone_ID);
+
+			ProfileDeliveryDTO deliveryDto = new ProfileDeliveryDTO()
 			{
 				Id = delivery.Delivery_ID,
 				Name = delivery.Name,
@@ -75,7 +80,9 @@ namespace Hatley.Services
 				back_National_ID_img = delivery.Back_National_ID_img,
 				face_with_National_ID_img = delivery.Face_with_National_ID_img,
 				Governorate_ID = delivery.Governorate_ID,
-				Zone_ID = delivery.Zone_ID
+				Zone_ID = delivery.Zone_ID,
+				Governorate_Name = gov.Name,
+				Zone_Name = zone.Name
 			};
 			return deliveryDto;
 		}
@@ -120,12 +127,12 @@ namespace Hatley.Services
 						  from u in ru.DefaultIfEmpty()
 						  select new RatingsWithCommentsForDeliveryDTO
 						  {
-							  user_name = u.Name,
+							  user_name = u?.Name,
 							  user_photo = u?.Photo,
 							  comment = c?.Text,
-							  comment_created_at = c.CreatedAt,
+							  comment_created_at = c?.CreatedAt,
 							  rating = r?.Value,
-							  order_id = o.Order_ID
+							  order_id = o?.Order_ID
 						  }).ToList();
 
 			return result;
@@ -206,12 +213,12 @@ namespace Hatley.Services
 
 
 		//#################################################################
-		public async Task<int> uploadImage(string email, IFormFile? profile_img)
+		public async Task<string> uploadImage(string email, IFormFile? profile_img)
 		{
 			var delivery = context.delivers.FirstOrDefault(x => x.Email == email);
 			delivery.Photo = await SaveImageProfile(profile_img);
-			int raw = await context.SaveChangesAsync();
-			return raw;
+			await context.SaveChangesAsync();
+			return delivery.Photo;
 		}
 
 		private async Task<string?> SaveImageProfile(IFormFile image)
@@ -287,6 +294,35 @@ namespace Hatley.Services
 			}
 			return 0;
 		}
+
+
+		//##########################################################
+
+		public int ChangePassword(string email, ChangePasswordDTO change)
+		{
+			var delivery = context.delivers.FirstOrDefault(x => x.Email == email);
+
+			var oldSha = SHA256.Create();
+			var oldAsByteArray = Encoding.Default.GetBytes(change.old_password);
+			var oldPass = oldSha.ComputeHash(oldAsByteArray);
+			var oldHashed = Convert.ToBase64String(oldPass);
+
+			if (oldHashed == delivery.Password)
+			{
+				var Sha = SHA256.Create();
+				var AsByteArray = Encoding.Default.GetBytes(change.new_password);
+				var Pass = Sha.ComputeHash(AsByteArray);
+				var Hashed = Convert.ToBase64String(Pass);
+				delivery.Password = Hashed;
+				int raw = context.SaveChanges();
+				return raw;
+			}
+
+			return -1;
+
+		}
+
+
 
 		//#########################################################################
 		public int Delete(int id)

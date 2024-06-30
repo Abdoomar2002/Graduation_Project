@@ -50,7 +50,7 @@ namespace Hatley.Controllers
 				return Unauthorized();
 			}
 
-			DeliveryDTO? deliveryMan = deliveryRepository.Display(email);
+			ProfileDeliveryDTO? deliveryMan = deliveryRepository.Display(email);
             if(deliveryMan == null)
             {
                 return NotFound("Not Found");
@@ -110,13 +110,10 @@ namespace Hatley.Controllers
 		[HttpPost("uploadImage")]
 		public async Task<IActionResult> uploadAsync(IFormFile? profile_img)
 		{
-			var raw = await deliveryRepository.uploadImage(email, profile_img);
+			var path = await deliveryRepository.uploadImage(email, profile_img);
 
-			if (raw == 0)
-			{
-				return BadRequest("Photo was not saved");
-			}
-			return Ok("Uploaded successfully");
+			
+			return Ok(path);
 		}
 
 
@@ -145,7 +142,29 @@ namespace Hatley.Controllers
             return BadRequest(ModelState);
         }
 
-        [HttpDelete("{id:int}")]
+
+		[HttpPost("changepassword")]
+		public IActionResult change(ChangePasswordDTO change)
+		{
+			if (userType != "Delivery")
+			{
+				return Unauthorized();
+			}
+			int raw = deliveryRepository.ChangePassword(email, change);
+			if (raw == -1)
+			{
+				return BadRequest("Old password not correct");
+			}
+			if (raw == 0)
+			{
+				return BadRequest("Error occur during saved ");
+			}
+			return Ok();
+		}
+
+
+
+		[HttpDelete("{id:int}")]
         public IActionResult Delete(int id)
         {
 			if (userType != "Delivery")

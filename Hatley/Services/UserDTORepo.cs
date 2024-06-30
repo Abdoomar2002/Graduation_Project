@@ -120,13 +120,13 @@ namespace Hatley.Services
 		}
 
 
-        public async Task<int> uploadImage(string email, IFormFile? profile_img)
+        public async Task<string> uploadImage(string email, IFormFile? profile_img)
 		{
 			var user = context.users.FirstOrDefault(x => x.Email == email);
             user.Photo = await SaveImage(profile_img);
             //context.users.Add(user);
-            int raw = await context.SaveChangesAsync();
-            return raw;
+            await context.SaveChangesAsync();
+            return user.Photo;
         }
 
         private async Task<string?> SaveImage(IFormFile image)
@@ -195,6 +195,32 @@ namespace Hatley.Services
 			//olduser.Password = Hashed;
 			int raw = context.SaveChanges();
 			return raw;
+		}
+
+
+
+		public int ChangePassword (string email ,ChangePasswordDTO change)
+		{
+			var user = context.users.FirstOrDefault(x=>x.Email == email);
+
+			var oldSha = SHA256.Create();
+			var oldAsByteArray = Encoding.Default.GetBytes(change.old_password);
+			var oldPass = oldSha.ComputeHash(oldAsByteArray);
+			var oldHashed = Convert.ToBase64String(oldPass);
+
+			if(oldHashed == user.Password)
+			{
+				var Sha = SHA256.Create();
+				var AsByteArray = Encoding.Default.GetBytes(change.new_password);
+				var Pass = Sha.ComputeHash(AsByteArray);
+				var Hashed = Convert.ToBase64String(Pass);
+				user.Password = Hashed;
+				int raw = context.SaveChanges();
+				return raw;
+			}
+
+			return -1;
+
 		}
 
 

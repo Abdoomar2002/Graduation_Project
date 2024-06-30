@@ -127,6 +127,17 @@ namespace Hatley.Controllers
 			return Ok(order);
 		}
 
+		[HttpGet("Statistics")]
+		public IActionResult Statistics()
+		{
+			StatisticsDTO? statistics = repo.Statistics(email, type);
+			if(statistics == null)
+			{
+				return BadRequest("No orders exist");
+			}
+			return Ok(statistics);
+		}
+
 
 		[HttpPost]
 		public IActionResult add([FromBody]OrderDTO order)

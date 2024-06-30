@@ -35,8 +35,11 @@ namespace Hatley.Services
 					order_id = x.Order_ID,
 					order_time = x.Order_time,
 					status = x.Status,
-					from = x.Order_zone_from,
-					to = x.Order_zone_to
+					zone_from = x.Order_zone_from,
+					city_from = x.Order_city_from,
+					zone_to = x.Order_zone_to,
+					city_to = x.Order_city_to,
+					delivery_id = delivery.Delivery_ID
 					/*to=x.Order_zone_to != null ? x.Order_zone_to : context.zones
 											.Where(y => y.North == x.North && y.East == x.East)
 											.Select(y => y.Name)
@@ -63,8 +66,10 @@ namespace Hatley.Services
 				order_id = x.Order_ID,
 				order_time = x.Order_time,
 				status = x.Status,
-				from = x.Order_zone_from,
-				to = x.Order_zone_to,
+				zone_from = x.Order_zone_from,
+				city_from = x.Order_city_from,
+				zone_to = x.Order_zone_to,
+				city_to = x.Order_city_to,
 				delivery_id = x.Delivery_ID
 				/*to = x.Order_zone_to != null ? x.Order_zone_to : context.zones
 										.Where(y => y.North == x.North && y.East == x.East)
@@ -92,7 +97,7 @@ namespace Hatley.Services
 				}
 				if (order.Status == 3)
 				{
-					return 1;
+					return -2;
 				}
 
 				order.Status++;
@@ -128,7 +133,7 @@ namespace Hatley.Services
 
                 return raw;
 			}
-			return 3; // 403 forbidden
+			return -3; // 403 forbidden
 		}
 	}
 }

@@ -2,11 +2,14 @@
 {
 	public class DeliveriesUserDTO
 	{
-		public int Order_id { get; set; }
+		public int order_id { get; set; }
+		public int? order_rate { get; set; }
 		public string description { get; set; }
+		public string order_governorate_from { get; set; }
 		public string order_zone_from { get; set; }
 		public string? order_city_from { get; set; }
 		public string? detailes_address_from { get; set; }
+		public string order_governorate_to { get; set; }
 		public string? order_zone_to { get; set; }
 		public string? order_city_to { get; set; }
 		public string? detailes_address_to { get; set; }

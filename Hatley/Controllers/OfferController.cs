@@ -58,7 +58,7 @@ namespace Hatley.Controllers
 			ViewOfferForUserDTO? view = repo.ViewOffer(orderid,value,email);
 			if(view == null)
 			{
-				return BadRequest("Error occured");
+				return BadRequest("order already accepted by another delivery man , please try placing an offer on another order");
 			}
 			return Ok(view);
 		}
@@ -81,6 +81,7 @@ namespace Hatley.Controllers
 			{
 				return BadRequest("error during processing please try again");
 			}
+			
 			return Ok();
 		}
 
@@ -89,13 +90,13 @@ namespace Hatley.Controllers
 		[HttpGet("User/Accept")]
 		public IActionResult UserAcceptOffer([FromQuery][Required]int orderid
 			, [FromQuery][Required] double price_of_offer
-			, [FromQuery][Required]string delivery_email)
+			, [FromQuery][Required]string delivery_email, [FromQuery]string? offer_id)
 		{
 			if (type != "User")
 			{
 				return Unauthorized();
 			}
-			int raw = repo.UserAcceptOffer(orderid, price_of_offer, delivery_email);
+			int raw = repo.UserAcceptOffer(orderid, price_of_offer, delivery_email, offer_id);
 			if (raw == 0)
 			{
 				return BadRequest("error while accept offer please try again");
@@ -103,6 +104,10 @@ namespace Hatley.Controllers
 			else if (raw == -1)
 			{
 				return BadRequest("error during processing please try again");
+			}
+			else if (raw == -2)
+			{
+				return BadRequest("order already accepted");
 			}
 			return Ok("Accept offer successfully");
 		}
@@ -111,13 +116,13 @@ namespace Hatley.Controllers
 		[HttpGet("User/Decline")]
 		public IActionResult UserDeclineOffer([FromQuery][Required] int orderid
 			, [FromQuery][Required] double price_of_offer
-			, [FromQuery][Required] string delivery_email)
+			, [FromQuery][Required] string delivery_email,[FromQuery] string? offer_id)
 		{
 			if (type != "User")
 			{
 				return Unauthorized();
 			}
-			int raw = repo.UserDeclineOffer(orderid, price_of_offer, delivery_email);
+			int raw = repo.UserDeclineOffer(orderid, price_of_offer, delivery_email, offer_id);
 			if (raw == 0)
 			{
 				return BadRequest("error while accept offer please try again");
@@ -126,7 +131,10 @@ namespace Hatley.Controllers
 			{
 				return BadRequest("error during processing please try again");
 			}
-			
+			else if (raw == -2)
+			{
+				return BadRequest("order already accepted");
+			}
 			return Ok("Decline offer successfully");
 			
 			

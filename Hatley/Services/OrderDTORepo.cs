@@ -88,7 +88,7 @@ namespace Hatley.Services
 					(ou, uoc) => new { OrderUser = ou, OrderCount = uoc.OrderCount })
 				.Where(our => our.OrderUser.Order.Order_governorate_to == governorate?.Name
 				&& (our.OrderUser.Order.Order_zone_to != zone?.Name
-				|| our.OrderUser.Order.Order_zone_from != zone?.Name))
+				&& our.OrderUser.Order.Order_zone_from != zone?.Name))
 				.Select(our => new RelatedOrdersForDeliveryDTO()
 				{
 					order_id = our.OrderUser.Order.Order_ID,
@@ -321,7 +321,7 @@ namespace Hatley.Services
 
 				List<Order> orders = context.orders
 					.Where(x => x.Delivery_ID == delivery.Delivery_ID)
-					.OrderBy(x => x.Status).ToList(); 
+					.OrderBy(x => x.Status).ToList();
 
 				if (orders == null || delivery == null)
 				{
@@ -338,6 +338,12 @@ namespace Hatley.Services
 					.Select(g => new { UserId = g.Key, OrderCount = g.Count() })
 					.ToList();
 
+				// Get order ratings
+				var orderRatings = context.ratings
+					.Where(r => orders.Select(o => o.Order_ID).Contains(r.Order_ID))
+					.Select(r => new { r.Order_ID, r.Value })
+					.ToList();
+
 				List<RelatedOrdersForDeliveryDTO> ordersdto = orders
 					.Join(users,
 						o => o.User_ID,
@@ -347,6 +353,11 @@ namespace Hatley.Services
 						ou => ou.User.User_ID,
 						uoc => uoc.UserId,
 						(ou, uoc) => new { OrderUser = ou, OrderCount = uoc.OrderCount })
+					.GroupJoin(orderRatings,
+						ou => ou.OrderUser.Order.Order_ID,
+						r => r.Order_ID,
+						(ou, ratings) => new { ou.OrderUser, ou.OrderCount, Ratings = ratings })
+					.SelectMany(our => our.Ratings.DefaultIfEmpty(), (our, rating) => new { our.OrderUser, our.OrderCount, Rating = rating })
 					.Select(our => new RelatedOrdersForDeliveryDTO()
 					{
 						order_id = our.OrderUser.Order.Order_ID,
@@ -367,10 +378,12 @@ namespace Hatley.Services
 						Delivery_ID = our.OrderUser.Order.Delivery_ID,
 						name = our.OrderUser.User.Name,
 						photo = our.OrderUser.User.Photo,
-						orders_count = our.OrderCount
+						orders_count = our.OrderCount,
+						order_rate = our.Rating?.Value ?? 0 // Default value if rating is null
 					}).ToList();
 
 				return ordersdto;
+
 				/*int deliveryrid = context.delivers
 								.Where(x => x.Email == mail)
 								.Select(x => x.Delivery_ID)
@@ -417,7 +430,7 @@ namespace Hatley.Services
 				.FirstOrDefault();
 
 			List<Order> ordersuser = context.orders
-				.Where(x => x.User_ID == userId && x.Status == -1)
+				.Where(x => x.User_ID == userId && x.Status == -1 && x.Delivery_ID == null)
 				.ToList();
 
 			if (ordersuser.Count == 0)
@@ -565,28 +578,42 @@ namespace Hatley.Services
 					AvgRating = g.Average(x => x.Value)
 				}).ToList();
 
+			var orderRatings = context.ratings
+				.Where(x => orders.Select(o => o.Order_ID).Contains(x.Order_ID))
+				.GroupBy(x => x.Order_ID)
+				.Select(g => new
+				{
+					Order_ID = g.Key,
+					OrderRating = g.Average(x => x.Value)
+				}).ToList();
+
 			var result = from o in orders
 						 join d in deliveries on o.Delivery_ID equals d.Delivery_ID into od
 						 from d in od.DefaultIfEmpty()
 						 join r in deliveryRatings on d.Delivery_ID equals r.Delivery_ID into dr
 						 from r in dr.DefaultIfEmpty()
+						 join or in orderRatings on o.Order_ID equals or.Order_ID into orj
+						 from or in orj.DefaultIfEmpty()
 						 select new DeliveriesUserDTO
 						 {
-							 Order_id = o.Order_ID,
+							 order_id = o.Order_ID,
 							 description = o.Description,
 							 price = o.Price,
 							 status = o.Status,
+							 order_governorate_from = o.Order_governorate_from,
 							 order_zone_from = o.Order_zone_from,
 							 order_city_from = o.Order_city_from,
+							 order_governorate_to = o.Order_governorate_to,
 							 order_zone_to = o.Order_zone_to,
 							 order_city_to = o.Order_city_to,
 							 order_time = o.Order_time,
 							 detailes_address_from = o.Detailes_address_from,
 							 detailes_address_to = o.Detailes_address_to,
 							 created = o.Created,
-							 delivery_name = d.Name,
-							 delivery_photo = d.Photo,
-							 delivery_avg_rate = Math.Round(r?.AvgRating ?? 0, 1)
+							 delivery_name = d?.Name,
+							 delivery_photo = d?.Photo,
+							 delivery_avg_rate = Math.Round(r?.AvgRating ?? 0, 1),
+							 order_rate = (int?)or?.OrderRating
 						 };
 
 			return result.ToList();
@@ -685,6 +712,93 @@ namespace Hatley.Services
 
 			};
 			return orderdto;
+		}
+
+
+		public StatisticsDTO? Statistics(string email , string type)
+		{
+			if(type == "Delivery")
+			{
+				var delivery = context.delivers.FirstOrDefault(x => x.Email == email);
+				if (delivery == null)
+				{
+					return null;
+				}
+				List<Order> orders = context.orders
+					.Where(x => x.Delivery_ID == delivery.Delivery_ID).ToList();
+				
+				if (orders.Count == 0)
+				{
+					return null;
+				}
+
+				var com = orders.Where(x => x.Status == 3);
+				var incom = orders.Where(x => x.Status == -1);
+				var pen = orders.Count - (com.Count() + incom.Count());
+
+				DateTime thirtyDaysAgo = DateTime.Now.AddDays(-30);
+				var ordersLast30Days = orders.Where(x => x.Created >= thirtyDaysAgo).ToList();
+
+				List<Rating> ratings = context.ratings
+					.Where(x => x.Id_for_delivery == delivery.Delivery_ID).ToList();
+				double averageRating = ratings.Count > 0 ? ratings.Average(x => x.Value) : 0;
+
+				var statistics = new StatisticsDTO
+				{
+					total_orders = orders.Count,
+					complete_orders = com.Count(),
+					incomplete_orders = incom.Count(),
+					pending = pen,
+					orders_last_30_days = ordersLast30Days.Count,
+					rate = averageRating
+				};
+
+				return statistics;
+
+			}
+
+			//###########User########################
+
+			var user = context.users.FirstOrDefault(x => x.Email == email);
+
+			if (user == null)
+			{
+				return null;
+			}
+
+			List<Order> U_orders = context.orders
+				.Where(x => x.User_ID == user.User_ID).ToList();
+
+			if (U_orders.Count == 0)
+			{
+				return null;
+			}
+
+			var U_com = U_orders.Where(x => x.Status == 3);
+			var U_incom = U_orders.Where(x => x.Status == -1);
+
+			var U_pen = U_orders.Count - (U_com.Count() + U_incom.Count());
+
+			DateTime U_thirtyDaysAgo = DateTime.Now.AddDays(-30);
+			var U_ordersLast30Days = U_orders.Where(x => x.Created >= U_thirtyDaysAgo).ToList();
+
+			/*List<Rating> U_ratings = context.ratings
+				.Where(x => x.Id_for_user == user.User_ID).ToList();
+			double U_averageRating = U_ratings.Count > 0 ? U_ratings.Average(x => x.Value) : 0;
+*/
+			var avg = ((double)U_com.Count() / U_orders.Count()) * 5;
+
+			var U_statistics = new StatisticsDTO
+			{
+				total_orders = U_orders.Count,
+				complete_orders = U_com.Count(),
+				incomplete_orders = U_incom.Count(),
+				pending = U_pen,
+				orders_last_30_days = U_ordersLast30Days.Count,
+				rate = avg
+			};
+
+			return U_statistics;
 		}
 
 

@@ -74,9 +74,12 @@ namespace Hatley.Services
 			int? userid = context.orders.Where(x => x.Order_ID == orderid)
 				.Select(x => x.User_ID)
 				.FirstOrDefault();
+			int? deliveryid = context.orders.Where(x => x.Order_ID == orderid)
+				.Select(x => x.Delivery_ID)
+				.FirstOrDefault();
 			var delivery = context.delivers.FirstOrDefault(x => x.Email == email);
 
-			if (userid == null || delivery == null)
+			if (userid == null || delivery == null || deliveryid != null)
 			{
 				return null;
 			}
@@ -92,6 +95,7 @@ namespace Hatley.Services
 			{
 				ViewOfferForUserDTO view = new ViewOfferForUserDTO() // #### Hub ####
 				{
+					offer_id = Guid.NewGuid().ToString(),
 					order_id = orderid,
 					delivery_email = email,
 					delivery_name = delivery.Name,
@@ -117,6 +121,7 @@ namespace Hatley.Services
 
 				ViewOfferForUserDTO view = new ViewOfferForUserDTO() // #### Hub ####
 				{
+					offer_id = Guid.NewGuid().ToString(),
 					order_id = orderid,
 					delivery_email = email,
 					delivery_name = delivery.Name,
@@ -155,7 +160,7 @@ namespace Hatley.Services
 		}
 
 		public int UserAcceptOffer(int orederid, double price_of_offer
-			, string email)
+			, string email,string? offer_id)
 		{
 			/*if(state == "Accept")
 			{*/
@@ -164,6 +169,10 @@ namespace Hatley.Services
 			if (order == null)
 			{
 				return -1;//error during processing please try again
+			}
+			if(order.Delivery_ID != null)
+			{
+				return -2;
 			}
 			order.Delivery_ID = delivery.Delivery_ID;
 			order.Price = price_of_offer;
@@ -178,7 +187,7 @@ namespace Hatley.Services
 				};
 				acceptionHub.Clients.All.SendAsync("NotifyOfAcceptOrDeclineForDeliveryOffer"
 					,"Accept", price_of_offer, orederid, user.Name, user.Photo
-					, user.Orders.Count, check);
+					, user.Orders.Count, check, offer_id);
 			}
 			return raw;//####Hub####
 					   //}
@@ -211,13 +220,17 @@ namespace Hatley.Services
 
 
 		public int UserDeclineOffer(int orederid, double price_of_offer
-			, string email)
+			, string email, string? offer_id)
 		{
 			var delivery = context.delivers.FirstOrDefault(x => x.Email == email);
 			var order = context.orders.FirstOrDefault(x => x.Order_ID == orederid);
 			if (order == null)
 			{
 				return -1;//error during processing please try again
+			}
+			if(order.Delivery_ID != null)
+			{
+				return -2;
 			}
 			//order.Delivery_ID = delivery.Delivery_ID;
 
@@ -229,9 +242,9 @@ namespace Hatley.Services
 			};
 			acceptionHub.Clients.All.SendAsync("NotifyOfAcceptOrDeclineForDeliveryOffer"
 				,"Decline", price_of_offer, orederid, user.Name, user.Photo
-				, user.Orders.Count, check);
+				, user.Orders.Count, check, offer_id);
 
-			return -2;//####Hub####
+			return -3;//####Hub####
 		}
 
 	}

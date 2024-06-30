@@ -80,6 +80,16 @@ namespace Hatley.Controllers
 			return Ok(comment);
 		}
 
+		[HttpGet("orderid/{orderid:int}")]
+		public IActionResult getbyorderid(int orderid)
+		{
+			var comment = repo.GetCommentByOrderId(orderid);
+			if (comment == null)
+			{
+				return NotFound("the Comment for order is not exist");
+			}
+			return Ok(comment);
+		}
 
 		[HttpPost]
 		public IActionResult add([FromBody]CommentDTO commentdto)
@@ -113,8 +123,8 @@ namespace Hatley.Controllers
 		}
 
 
-		[HttpPut("{id:int}")]
-		public IActionResult edit(int id,[FromBody]CommentDTO commentdto)
+		[HttpPut("{orderid:int}/{text}")]
+		public IActionResult edit(int orderid,string text)
 		{
 			if (userType != "User")
 			{
@@ -123,10 +133,10 @@ namespace Hatley.Controllers
 
 			if (ModelState.IsValid == true)
 			{
-				int raw = repo.Update(id, commentdto);
+				int raw = repo.Update(orderid, text);
 				if (raw == -1)
 				{
-					return NotFound("the comment not exist");
+					return NotFound("the comment for order not exist");
 				}
 				if (raw == 0)
 				{

@@ -7,8 +7,9 @@ namespace Hatley.Services
 		int Create(CommentDTO commentdto);
 		int Delete(int id);
 		CommentDTO? GetComment(int id);
+		CommentDTO? GetCommentByOrderId(int order_id);
 		List<CommentDTO>? GetComments();
 		List<CommentDTO>? CommentsForDelivery(string email);
-		int Update(int id, CommentDTO commentdto);
+		int Update(int id, string text);
 	}
 }

@@ -11,7 +11,8 @@ namespace Hatley.Services
 		List<RelatedOrdersForDeliveryDTO>? DisplayRelatedOrdersForDelivery(string email);
 		List<RelatedOrdersForDeliveryDTO>? DisplayUnRelatedOrdersForDelivery(string email);
 		List<RelatedOrdersForDeliveryDTO>? GetOrdersForUserOrDelivery(string mail, string type);
-		List<DeliveriesUserDTO>? Deliveries(string email);       
+		List<DeliveriesUserDTO>? Deliveries(string email);
+		StatisticsDTO? Statistics(string email, string type);
 		int Update(int id, OrderDTO orderdto);
 	}
 }

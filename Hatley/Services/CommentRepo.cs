@@ -43,8 +43,26 @@ namespace Hatley.Services
 			{
 				Id = comment.Comment_ID,
 				Text = comment.Text,
-				CreatedAt=comment.CreatedAt,
-				order_id=comment.Order_id,
+				CreatedAt = comment.CreatedAt,
+				order_id = comment.Order_id,
+				delivery_id = comment.Delivery_ID
+
+			};
+			return CommentDTO;
+		}
+		public CommentDTO? GetCommentByOrderId(int order_id)
+		{
+			var comment = context.comments.FirstOrDefault(x => x.Order_id == order_id);
+			if (comment == null)
+			{
+				return null;
+			}
+			CommentDTO CommentDTO = new CommentDTO()
+			{
+				Id = comment.Comment_ID,
+				Text = comment.Text,
+				CreatedAt = comment.CreatedAt,
+				order_id = comment.Order_id,
 				delivery_id = comment.Delivery_ID
 
 			};
@@ -99,14 +117,14 @@ namespace Hatley.Services
 			return raw;
 		}
 
-		public int Update(int id, CommentDTO commentdto)
+		public int Update(int order_id, string text)
 		{
-			var oldComment = context.comments.FirstOrDefault(x => x.Comment_ID == id);
+			var oldComment = context.comments.FirstOrDefault(x => x.Order_id == order_id);
 			if (oldComment == null)
 			{
 				return -1;
 			}
-			oldComment.Text = commentdto.Text;
+			oldComment.Text = text;
 
 			int raw = context.SaveChanges();
 			return raw;

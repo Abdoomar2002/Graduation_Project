@@ -2,6 +2,7 @@
 {
 	public class ViewOfferForUserDTO
 	{
+		public string offer_id { get; set; }
 		public int order_id { get; set; }
 		public string delivery_email { get; set; }
 		public string delivery_name { get; set;}

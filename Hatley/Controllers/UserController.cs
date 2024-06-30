@@ -80,13 +80,9 @@ namespace Hatley.Controllers
         [HttpPost("uploadImage")]
 		public async Task<IActionResult> uploadAsync(IFormFile? profile_img)
 		{
-            var raw = await repo.uploadImage(email, profile_img);
+            var path = await repo.uploadImage(email, profile_img);
 
-			if(raw == 0)
-			{
-				return BadRequest("Photo was not saved");
-			}
-			return Ok("Uploaded successfully");
+			return Ok(path);
         }
 
         [HttpPut]
@@ -119,6 +115,25 @@ namespace Hatley.Controllers
 			return BadRequest(ModelState);
 		}
 
+		[HttpPost("changepassword")]
+		public IActionResult change (ChangePasswordDTO change)
+		{
+			if (userType != "User")
+			{
+				return Unauthorized();
+			}
+
+			int raw = repo.ChangePassword(email, change);
+			if(raw == -1)
+			{
+				return BadRequest("Old password not correct");
+			}
+			if(raw == 0)
+			{
+				return BadRequest("Error occur during saved ");
+			}
+			return Ok();
+		}
 
 		[HttpDelete("{id:int}")]
 		public IActionResult delete(int id)

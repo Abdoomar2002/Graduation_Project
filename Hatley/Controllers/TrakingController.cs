@@ -52,11 +52,11 @@ namespace Hatley.Controllers
 			{
 				return BadRequest("Error occured during find the order");
 			}
-			if (raw == 1)
+			if (raw == -2)
 			{
 				return BadRequest("Order complete");
 			}
-			if (raw == 3)
+			if (raw == -3)
 			{
 				return StatusCode(403);
 			}
