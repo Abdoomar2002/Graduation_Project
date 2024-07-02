@@ -44,7 +44,7 @@ const Settings = ({ handelPress, navigation }) => {
     const getData = async () => {
       try {
         const data = await dispatch(AuthActions.displayProfile());
-        console.log(data);
+        //console.log(data);
         const governate = await dispatch(
           GovernateAction.displayGovernorate(data.governorate_ID)
         );
@@ -59,8 +59,8 @@ const Settings = ({ handelPress, navigation }) => {
         setZone(zone.name);
         setZone(zone.zone_id);
       } catch (error) {
-        console.trace(error.message, "me");
-        console.error(error.message, "me2");
+        //console.trace(error.message, "me");
+        console.log(error.message, "me2");
       } finally {
         setIsLoading(false);
       }
@@ -72,14 +72,16 @@ const Settings = ({ handelPress, navigation }) => {
     const getLocationData = async () => {
       try {
         await dispatch(ZoneActions.getZonesByGovernateName(governate));
-        await dispatch(GovernateAction.displayAllGovernorates());
+        governate == null &&
+          (await dispatch(GovernateAction.displayAllGovernorates()));
       } catch (error) {
         console.log(error.message);
       }
     };
+
     getLocationData();
     // console.log(Zone);
-  }, [governate]);
+  }, []);
   function handelRemove(text) {
     if (text == "YES I AM SURE") {
       Alert.alert("Account Deleted", "have a nice day", [
@@ -166,24 +168,24 @@ const Settings = ({ handelPress, navigation }) => {
 
               {Governate && (
                 <RNPickerSelect
+                  value={governate}
                   onValueChange={(value) => {
                     value && setGovernate(value?.name);
                     value && setGovernateID(value?.governorate_ID);
                   }}
-                  value={governate}
                   items={Governate.map((e) => ({
                     label: e.name,
-                    value: { ...e },
+                    value: e,
                   }))}
                   disabled={!editable}
-                  itemKey={governateID}
-                  key={governateID}
+                  itemKey={Math.random()}
+                  key={Math.random()}
                 />
               )}
             </View>
             <View style={styles.row}>
               <Text style={styles.label}>Zone:</Text>
-              {Zone && Zone.length > 1 && (
+              {Zone && Zone.length >= 1 && (
                 <RNPickerSelect
                   value={zone}
                   onValueChange={(value) => setZone(value)}
@@ -191,6 +193,7 @@ const Settings = ({ handelPress, navigation }) => {
                     Zone &&
                     Zone.map((e) => ({ label: e.name, value: e.zone_id }))
                   }
+                  itemKey={Math.random()}
                   disabled={!editable}
                 />
               )}
@@ -198,17 +201,25 @@ const Settings = ({ handelPress, navigation }) => {
           </View>
 
           <View
-            style={[styles.editButton, { display: editable ? "none" : "flex" }]}
+            style={[
+              styles.editButton,
+              { display: editable ? "none" : "flex", flexWrap: "wrap" },
+            ]}
           >
+            <Button
+              title="set new password"
+              onPress={() => navigation.navigate("Password")}
+            />
+
+            <Button
+              color={"#40ee40"}
+              title="Edit information"
+              onPress={() => setEditable(true)}
+            />
             <Button
               color={"#fe0000"}
               title="Remove Account"
               onPress={handelDelete}
-            />
-            <Button
-              color={"#00fe00"}
-              title="Edit information"
-              onPress={() => setEditable(true)}
             />
           </View>
           <View
@@ -238,7 +249,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    paddingBottom: 75,
+    paddingBottom: 275,
   },
   top: {
     flexDirection: "row",

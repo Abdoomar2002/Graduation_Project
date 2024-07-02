@@ -5,13 +5,6 @@ import Offer from "./Offer";
 
 const RenderItem = ({ item, image }) => {
   const [offerModelShowStatus, setOfferModelShowStatus] = useState(false);
-  const [photo, setPhoto] = useState(item.photo);
-  useEffect(() => {
-    if (item.photo != null);
-    setPhoto(image._j.uri);
-    // if (!item.photo && item.photo.length < 6) setPhoto(image._j.uri);
-    // else setPhoto(item.photo);
-  }, []);
   let date = new Date(item.created);
   date.setHours(date.getHours() + 1);
   const d = new Date();
@@ -41,9 +34,7 @@ const RenderItem = ({ item, image }) => {
           }}
           style={styles.userPhoto}
         />
-        <Text style={{ fontWeight: "600", fontSize: 20 }}>
-          {item.user_name}
-        </Text>
+        <Text style={{ fontWeight: "600", fontSize: 20 }}>{item.name}</Text>
       </View>
 
       <Text style={styles.orderText}>
@@ -100,7 +91,7 @@ const RenderItem = ({ item, image }) => {
         </Pressable>
       </View>
       {offerModelShowStatus && (
-        <Offer order={item} hide={setOfferModelShowStatus} />
+        <Offer order={item} hide={setOfferModelShowStatus} image={image} />
       )}
     </View>
   );

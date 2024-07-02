@@ -9,63 +9,10 @@ import {
   Pressable,
 } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons"; // Import for icons
-
-const orderData = [
-  { orderId: 5, customerName: "ahmed", status: "pending", Date: Date.now() },
-  {
-    orderId: 6,
-    customerName: "abdallah",
-    status: "completed",
-    Date: Date.now(),
-  },
-  {
-    orderId: 7,
-    customerName: "abdelrahman",
-    status: "cancelled",
-    Date: Date.now(),
-  },
-  { orderId: 8, customerName: "hussin", status: "pending", Date: Date.now() },
-];
-const OrderItem = ({
-  orderId,
-  customerName,
-  status,
-  date,
-  imageUrl,
-  navigation,
-}) => {
-  const order = {
-    orderId,
-    customerName,
-    status,
-    date,
-    imageUrl,
-  };
-  return (
-    <View style={styles.orderItemContainer}>
-      <View style={styles.orderDetails}>
-        <Text style={styles.orderId}>Order ID: {orderId}</Text>
-        <Text style={styles.customerName}>{customerName}</Text>
-        <Text style={styles.orderStatus}>Status: {status}</Text>
-        <Text style={styles.orderDate}>Date: {date}</Text>
-      </View>
-      <View style={styles.actionButton}>
-        <Button
-          title="View Details"
-          onPress={() => {
-            navigation.navigate("Details", { order });
-          }}
-        />
-      </View>
-      {imageUrl && (
-        <Image source={{ uri: imageUrl }} style={styles.orderImage} />
-      )}
-    </View>
-  );
-};
+import OrderCard from "../../components/OrderCard";
 
 const TrackOrderPage = ({ orders, handelPress, navigation }) => {
-  const OrderList = orders ? orders : orderData;
+  const OrderList = orders;
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -77,9 +24,9 @@ const TrackOrderPage = ({ orders, handelPress, navigation }) => {
       <FlatList
         data={OrderList}
         renderItem={({ item }) => (
-          <OrderItem {...item} navigation={navigation} />
+          <OrderCard order={item} navigation={navigation} />
         )}
-        keyExtractor={(item) => item.orderId}
+        keyExtractor={(item) => Math.random()}
       />
     </View>
   );

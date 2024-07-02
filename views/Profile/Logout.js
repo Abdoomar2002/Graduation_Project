@@ -65,6 +65,7 @@ const styles = StyleSheet.create({
       alignItems: "center",
       backgroundColor: "rgba(0, 0, 0, 0.5)",
     },
+    gap: 15,
   },
 });
 export default Logout;

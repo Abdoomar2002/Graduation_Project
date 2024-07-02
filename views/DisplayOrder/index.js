@@ -5,6 +5,7 @@ import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import OrderCard from "../../components/OrderCard";
 import NavBar from "../../components/Navbar";
 import { actions } from "../../redux/Order";
+import { actions as trackAction } from "../../redux/Tracking";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../../components/Loader";
 import SectionTitle from "../../components/SectionTitle";
@@ -16,8 +17,10 @@ const DisplayOrder = ({
   navigation,
   active = false,
   trackOrRecent = false,
+  route,
 }) => {
   const navigate = useNavigation();
+
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const OrdersData = useSelector((state) => state?.order?.orders);
@@ -26,6 +29,7 @@ const DisplayOrder = ({
     useCallback(() => {
       // This will be executed when the screen is focused
       const getRecentData = async () => {
+        console.log("called");
         try {
           const response = await dispatch(actions.getAllForUserOrDelivery());
         } catch (err) {
@@ -35,8 +39,9 @@ const DisplayOrder = ({
         }
       };
       const getTrackData = async () => {
+        console.log("called");
         try {
-          const response = await dispatch(actions.getAllForUserOrDelivery());
+          const response = await dispatch(trackAction.getAll());
         } catch (err) {
           console.log(err);
         } finally {
@@ -44,7 +49,7 @@ const DisplayOrder = ({
         }
       };
       setLoading(true);
-      trackOrRecent ? getTrackData() : getRecentData();
+      !trackOrRecent ? getTrackData() : getRecentData();
 
       // Clean up function, will be executed when the screen is unfocused
       return () => {};

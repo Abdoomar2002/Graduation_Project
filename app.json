@@ -8,7 +8,10 @@
     "userInterfaceStyle": "light",
     "extra": {
       "API_URL": "https://api.example.com",
-      "API_KEY": "your_api_key_here"
+      "API_KEY": "your_api_key_here",
+      "eas": {
+        "projectId": "05a8ff44-cbf3-48d8-8631-eee485afb4b6"
+      }
     },
     "plugins": [
       [
@@ -26,8 +29,7 @@
       [
         "expo-notifications",
         {
-          "icon": "assets/images/Logo.png",
-          "sounds": ["local/path/to/mySoundFile.wav"]
+          "icon": "assets/images/Logo.png"
         }
       ]
     ],
@@ -37,9 +39,14 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
-      }
+        "foregroundImage": "./assets/images/Logo.png"
+      },
+      "permissions": [
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.ACCESS_FINE_LOCATION",
+        "android.permission.RECORD_AUDIO"
+      ],
+      "package": "com.abdoomar.HatleyMobileDelivery"
     },
     "web": {
       "favicon": "./assets/favicon.png"

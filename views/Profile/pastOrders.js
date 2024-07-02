@@ -1,10 +1,17 @@
-import { Button, Pressable, StyleSheet, Text, View } from "react-native";
+import {
+  Button,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import DisplayOrder from "../DisplayOrder";
 import { MaterialIcons } from "@expo/vector-icons";
 
 function PastOrders({ handelPress, navigation }) {
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <Pressable
         style={{ alignItems: "flex-start", width: "100%" }}
         onPress={handelPress}
@@ -16,7 +23,7 @@ function PastOrders({ handelPress, navigation }) {
         active={true}
         trackOrRecent={true}
       />
-    </View>
+    </ScrollView>
   );
 }
 const styles = StyleSheet.create({

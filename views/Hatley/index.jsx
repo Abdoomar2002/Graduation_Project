@@ -5,29 +5,33 @@ import NavBar from "../../components/Navbar";
 import RecentOrders from "../../components/RecentOrders";
 import logo from "../../assets/images/Logo.png";
 import { actions } from "../../redux/Auth";
+import { actions as orderActions } from "../../redux/Order";
 
 import storageService from "../../utils/storageService";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigation, useFocusEffect } from "@react-navigation/native";
 
 export default function Home({ navigation }) {
   const dispatch = useDispatch();
   const [selectedTab, setSelectedTab] = useState("Related");
   const navigation2 = useNavigation();
+  const orders = useSelector((state) => state?.order?.data);
   useFocusEffect(
     useCallback(() => {
       const getData = async () => {
         try {
           const response = await dispatch(actions.displayProfile());
+          await dispatch(orderActions.displayRelatedOrders());
           storageService.set("Email", response.email);
           console.log(response.zone_Name);
           response.photo && storageService.set("Image", response.photo);
           storageService.set("Name", response.name);
           storageService.set("Zone", response.zone_Name);
         } catch (err) {
-          console.log(err);
-          storageService.remove("isAuth");
-          navigation.navigate("SignIn");
+          if (err.message.contains("401")) {
+            storageService.remove("isAuth");
+            navigation.navigate("SignIn");
+          }
         }
       };
       getData();

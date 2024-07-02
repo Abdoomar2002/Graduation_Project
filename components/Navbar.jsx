@@ -7,7 +7,7 @@ export default function NavBar({ navigation, active }) {
     setActive(active);
   }, []);
   function HandelPress(page) {
-    navigation.navigate(page);
+    navigation.navigate(page, { flag: true });
     setActive(page);
   }
   return (
@@ -32,17 +32,6 @@ export default function NavBar({ navigation, active }) {
         />
       </Pressable>
 
-      <Pressable
-        style={style.imgConatiner}
-        onPress={() => HandelPress("Notification")}
-      >
-        <FontAwesome
-          name="bell"
-          size={30}
-          color={activePage == "Notification" ? "#0084ff" : "black"}
-          style={style.img}
-        />
-      </Pressable>
       <Pressable
         style={style.imgConatiner}
         onPress={() => HandelPress("Profile")}

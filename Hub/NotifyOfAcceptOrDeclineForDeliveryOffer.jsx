@@ -30,8 +30,8 @@ function GetAcceptOrReject() {
   async function schedulePushNotification(delivery) {
     await Notifications.scheduleNotificationAsync({
       content: {
-        title: "You've got New Offer",
-        body: `on ${delivery}`,
+        title: "You've got New response",
+        body: ` ${delivery}`,
         data: {
           screen: "Notification", // Add the target screen here
         },

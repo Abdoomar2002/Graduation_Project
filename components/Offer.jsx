@@ -15,8 +15,7 @@ import { useDispatch } from "react-redux";
 import { actions } from "../redux/Auth";
 import Toast from "react-native-toast-message";
 
-function Offer({ order, hide }) {
-  const [image, setImage] = useState(order.user_photo);
+function Offer({ order, hide, image }) {
   const [value, setValue] = useState(order.price);
   const dispatch = useDispatch();
 
@@ -58,9 +57,14 @@ function Offer({ order, hide }) {
             }}
           >
             <View style={styles.Head}>
-              <Image source={{ uri: image }} style={styles.userPhoto} />
+              <Image
+                source={{
+                  uri: order.photo == null ? image._j.uri : order.photo,
+                }}
+                style={styles.userPhoto}
+              />
               <Text style={{ fontWeight: "700", fontSize: 20 }}>
-                {order.user_name}
+                {order.name}
               </Text>
             </View>
             <View style={styles.description}>
