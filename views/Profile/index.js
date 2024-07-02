@@ -59,7 +59,12 @@ const Profile = ({ navigation }) => {
     {
       Icon: <AntDesign name="bars" size={24} color="black" />,
       Text: "Previous Deliveries",
-      Page: <RecentDeliveries handelPress={() => handlePress(null)} />,
+      Page: (
+        <RecentDeliveries
+          handelPress={() => handlePress(null)}
+          navigation={navigation}
+        />
+      ),
     },
     {
       Icon: <Ionicons name="settings-sharp" size={24} color="black" />,

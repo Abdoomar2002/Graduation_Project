@@ -23,6 +23,17 @@ const actions = {
       });
     };
   },
+  createComment: (data) => {
+    return (dispatch) => {
+      return Api.app.Comment.addComment(data).then((response) => {
+        dispatch({
+          type: "CREATE",
+          data: response,
+        });
+        return response;
+      });
+    };
+  },
 };
 
 export default actions;

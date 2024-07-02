@@ -23,22 +23,18 @@
         "expo-notifications",
         {
           "icon": "assets/images/Logo.png",
-          "sounds": [
-            "local/path/to/mySoundFile.wav"
-          ]
+          "sounds": []
         }
       ]
     ],
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.abdoomar.HatleyMobileUser"
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "foregroundImage": "./assets/images/Logo.png"
       },
       "permissions": [
         "android.permission.ACCESS_COARSE_LOCATION",

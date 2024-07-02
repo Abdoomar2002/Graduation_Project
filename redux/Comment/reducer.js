@@ -15,6 +15,12 @@ const commentReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
       };
+    case "CREATE":
+      if (action.error) return state;
+      return {
+        ...state,
+        data: action.data,
+      };
     default:
       return state;
   }

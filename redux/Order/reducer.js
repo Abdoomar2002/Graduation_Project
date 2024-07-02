@@ -11,6 +11,12 @@ const orderReducer = (state = INITIAL_STATE, action) => {
         ...state,
         orders: action.data,
       };
+    case "GET_ALL_DELIVERIES":
+      if (action.error) return state;
+      return {
+        ...state,
+        orders: action.data,
+      };
     case "POST_ORDER":
       if (action.error) return state;
       return {

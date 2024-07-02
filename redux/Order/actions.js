@@ -19,6 +19,24 @@ const actions = {
         });
     };
   },
+  getAllDeliveries: () => {
+    return (dispatch) => {
+      return Api.app.Order.getAllDeliveries()
+        .then((response) => {
+          dispatch({
+            type: "GET_ALL_DELIVERIES",
+            data: response,
+          });
+          return response;
+        })
+        .catch((error) => {
+          dispatch({
+            type: "GET_ALL",
+            error: true,
+          });
+        });
+    };
+  },
   postOrder: (data) => {
     return (dispatch) => {
       return Api.app.Order.postOrder(data)

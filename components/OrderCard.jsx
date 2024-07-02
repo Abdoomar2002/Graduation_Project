@@ -1,13 +1,16 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import Reorder from "../views/MakeOrder/Re-order";
 import Report from "../views/Report";
-
-const OrderCard = ({ order }) => {
+import { useDispatch } from "react-redux";
+import { actions } from "../redux/Order";
+import Toast from "react-native-toast-message";
+const OrderCard = ({ order, mode = null }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [reportModalVisible, setReportModalVisible] = useState(false);
   const date = new Date(order.created);
+  const dispatch = useDispatch();
   date.setHours(date.getHours() + 1);
   const created = date.toLocaleString();
   let status = "";
@@ -22,6 +25,18 @@ const OrderCard = ({ order }) => {
   } else if (order.status == 3) {
     status = "Delivered";
   }
+
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const res = await dispatch(actions.getAll());
+
+        // console.log(res);
+        Toast.show({ type: "error", text1: "Error", text2: err.message });
+      } catch (err) {}
+    };
+    getData();
+  }, [modalVisible]);
   return (
     <View style={styles.card}>
       <View style={styles.header}>

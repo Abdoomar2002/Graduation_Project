@@ -4,11 +4,14 @@ import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { useDispatch } from "react-redux";
 import { actions } from "../redux/Order";
 import Loader from "./Loader";
+import RateReview from "./Rating";
+import Toast from "react-native-toast-message";
 
 const OrderDetails = ({ route }) => {
   const { order_id } = route.params;
   const [loading, setLoading] = useState(false);
   const [order, setOrder] = useState({});
+  const [modalVisible, setModalVisible] = useState(false);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -70,10 +73,19 @@ const OrderDetails = ({ route }) => {
         </View>
       </View>
       {order.status == 3 && (
-        <TouchableOpacity style={styles.completeButton}>
+        <TouchableOpacity
+          style={styles.completeButton}
+          onPress={() => setModalVisible(true)}
+        >
           <Text style={styles.completeButtonText}>Rating</Text>
         </TouchableOpacity>
       )}
+      <RateReview
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+        id={order_id}
+      />
+      <Toast position="top" />
     </View>
   );
 };

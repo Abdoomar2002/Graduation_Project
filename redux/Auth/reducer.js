@@ -43,6 +43,12 @@ const AuthReducer = (state = INITIAL_STATE, action) => {
         ...state,
         data: action.data,
       };
+    case "PASSWORD":
+      if (action.error) return state;
+      return {
+        ...state,
+        data: action.data,
+      };
     case "GET_PROFILE":
       if (action.error) return state;
       return {

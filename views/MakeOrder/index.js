@@ -42,6 +42,7 @@ function MakeOrderPage({
   // Redux Data
   const Governate = useSelector((state) => state?.governate?.data);
   const Zone = useSelector((state) => state?.zone?.data);
+  const Order = useSelector((state) => state?.order?.orders);
   const dispatch = useDispatch();
   // loader
   const [isLoading, setIsLoading] = useState(false);
@@ -50,14 +51,14 @@ function MakeOrderPage({
     const getData = async () => {
       try {
         await dispatch(GovernateActions.displayAllGovernorates());
-        await dispatch(ZoneActions.getAll());
-        await dispatch(OrderActions.getAll());
-      } catch (err) {
+        const res = await dispatch(ZoneActions.getAll());
+
+        // console.log(res);
         Toast.show({ type: "error", text1: "Error", text2: err.message });
-      }
+      } catch (err) {}
     };
     getData();
-  }, []);
+  }, [dispatch]);
 
   const onChangeData = (id, value) => {
     setOrderFormData((elem) => {
@@ -72,7 +73,7 @@ function MakeOrderPage({
           const response = await dispatch(
             OrderActions.postOrder(orderFormData)
           );
-          console.log(response);
+          //console.log(response);
           if (response != null)
             Toast.show({
               type: "success",
@@ -139,24 +140,6 @@ function MakeOrderPage({
         return { ...elem, [id]: value };
       });
   }
-
-  const handleTextInputPress = (addressType) => {
-    /* Alert.alert(
-      "Select Address Source",
-      "Do you want to input the address manually or select it from the map?",
-      [
-        {
-          text: "Manually",
-          onPress: () => console.log("Input address manually"),
-        },
-        {
-          text: "Map",
-          onPress: () => navigation.navigate("Map", { addressType }),
-        },
-      ],
-      { cancelable: true }
-    );*/
-  };
   return (
     <>
       {isLoading && <Loader />}

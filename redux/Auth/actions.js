@@ -35,6 +35,18 @@ const actions = {
       });
     };
   },
+  setPassword: (data) => {
+    return (dispatch) => {
+      //console.log(data);
+      return Api.app.User.setPassword(data).then((response) => {
+        dispatch({
+          type: "PASSWORD",
+          data: response,
+        });
+        return response;
+      });
+    };
+  },
   logout: () => {
     return (dispatch) => {
       return Api.app.User.logout().then((response) => {

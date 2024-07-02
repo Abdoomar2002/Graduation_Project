@@ -9,21 +9,37 @@ import {
   Image,
 } from "react-native";
 import logo from "../../assets/images/Logo.png";
+import validate from "../../utils/validate";
+import Toast from "react-native-toast-message";
+import { useDispatch } from "react-redux";
+import { actions } from "../../redux/Auth";
 function NewPasswordPage({ navigation }) {
+  const [oldPassword, setOldPassword] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-
+  const dispatch = useDispatch();
   const handleResetPassword = () => {
     // Check if passwords match
-    if (password === confirmPassword) {
-      // Passwords match, proceed with password reset
-      // You can add your logic here, such as updating the password in the database
-      Alert.alert("Success", "Password has been reset successfully.");
-      // Navigate to the login page or any other appropriate screen
-      navigation.navigate("SignIn");
+    let err = validate.validatePassword(password, confirmPassword);
+    err += validate.validatePassword(oldPassword, oldPassword);
+    if (err.length > 0) {
+      Toast.show({
+        type: "error",
+        text1: "Error",
+        text2: err,
+      });
     } else {
-      // Passwords don't match, display an error message
-      Alert.alert("Error", "Passwords do not match.");
+      dispatch(
+        actions.setPassword({
+          old_password: oldPassword,
+          new_password: password,
+        })
+      );
+      Toast.show({
+        type: "success",
+        text1: "Success",
+        text2: "Password changed successfully",
+      });
     }
   };
 
@@ -37,8 +53,8 @@ function NewPasswordPage({ navigation }) {
         style={styles.input}
         placeholder="Old Password"
         secureTextEntry={true}
-        value={password}
-        onChangeText={setPassword}
+        value={oldPassword}
+        onChangeText={setOldPassword}
       />
       <TextInput
         style={styles.input}
@@ -55,6 +71,7 @@ function NewPasswordPage({ navigation }) {
         onChangeText={setConfirmPassword}
       />
       <Button title="Reset Password" onPress={handleResetPassword} />
+      <Toast position="top" />
     </View>
   );
 }

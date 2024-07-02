@@ -3,14 +3,22 @@ const appApi = {
   Comment: {
     getAllComment: async () => {
       const response = await HttpHelpers.authenticatedAxios.get(
-        "comment/delivery"
+        "Comment/delivery"
       );
       return response?.data;
     },
     getComment: async (id) => {
       const response = await HttpHelpers.authenticatedAxios.get(
-        `comment/${id}`
+        `Comment/${id}`
       );
+      return response?.data;
+    },
+    addComment: async (data) => {
+      const response = await HttpHelpers.authenticatedAxios
+        .post(`Comment`, {
+          data,
+        })
+        .catch((err) => console.log(err));
       return response?.data;
     },
   },
@@ -56,6 +64,13 @@ const appApi = {
             "Content-Type": "multipart/form-data",
           },
         }
+      );
+      return response?.data;
+    },
+    setPassword: async (data) => {
+      const response = await HttpHelpers.authenticatedAxios.post(
+        "User/changepassword",
+        data
       );
       return response?.data;
     },
@@ -129,6 +144,12 @@ const appApi = {
       const response = await HttpHelpers.authenticatedAxios.get("Order/Orders");
       return response?.data;
     },
+    getAllDeliveries: async () => {
+      const response = await HttpHelpers.authenticatedAxios.get(
+        "Order/Deliveries"
+      );
+      return response?.data;
+    },
     getOrder: async (id) => {
       const response = await HttpHelpers.authenticatedAxios.get(`Order/${id}`);
       return response?.data;
@@ -158,9 +179,10 @@ const appApi = {
       return response?.data;
     },
     addRating: async (rate, orderId) => {
-      const response = await HttpHelpers.authenticatedAxios.post(
-        `Rating?value=${rate}&orderid=${orderId}`
-      );
+      console.log(rate, orderId);
+      const response = await HttpHelpers.authenticatedAxios
+        .post(`Rating?value=${rate}&orderid=${orderId}`)
+        .catch((err) => console.log(err));
       return response?.data;
     },
     editRating: async (rate, orderId) => {

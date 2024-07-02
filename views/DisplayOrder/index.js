@@ -1,9 +1,11 @@
 // OrderList.js
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { ScrollView, StyleSheet } from "react-native";
 import OrderCard from "../../components/OrderCard";
 import NavBar from "../../components/Navbar";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigation, useFocusEffect } from "@react-navigation/native";
+
 import { actions } from "../../redux/Order";
 import Loader from "../../components/Loader";
 import Toast from "react-native-toast-message";
@@ -13,34 +15,39 @@ const DisplayOrder = ({ navigation, active = false, show = true }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   let OrderData = useSelector((state2) => state2?.order?.orders);
-  useEffect(() => {
-    const getData = async () => {
-      try {
-        const response = await dispatch(actions.getAll());
-      } catch (err) {
-        Toast.show({
-          type: "error",
-          text1: "Error",
-          text2: err.message || "Failed to fetch orders",
-        });
-        console.log(err.message);
-      } finally {
-        setIsLoading(false);
-      }
-    };
+  const nav = useNavigation();
+  const [ord, setOrd] = useState();
+  useFocusEffect(
+    useCallback(() => {
+      const getData = async () => {
+        try {
+          const response = await dispatch(actions.getAll());
+        } catch (err) {
+          Toast.show({
+            type: "error",
+            text1: "Error",
+            text2: err.message || "Failed to fetch orders",
+          });
+          console.log(err.message);
+        } finally {
+          setIsLoading(false);
+        }
+      };
 
-    setIsLoading(true);
-    getData();
-  }, [dispatch]);
+      setIsLoading(true);
+      getData();
+      return () => {};
+    }, [nav, active, dispatch])
+  );
 
   return (
     <>
-      <ScrollView contentContainerStyle={styles.container}>
+      <ScrollView style={styles.container}>
         {isLoading && <Loader />}
         {!isLoading &&
           OrderData != null &&
           OrderData.map((order, index) => (
-            <OrderCard key={index} order={{ ...order }} />
+            <OrderCard key={index} order={{ ...order }} mode={setOrd} />
           ))}
       </ScrollView>
       {!active && <NavBar navigation={navigation} active="Orders" />}
