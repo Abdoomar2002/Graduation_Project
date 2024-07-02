@@ -10,6 +10,7 @@ import logo from "../../assets/images/Logo.png";
 
 export default function Home({ navigation }) {
   const dispatch = useDispatch();
+
   useEffect(() => {
     const getData = async () => {
       try {

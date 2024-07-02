@@ -31,6 +31,18 @@ const OrderItem = ({
   const minutes = Math.floor(diff / (1000 * 60));
   const hours = Math.floor(diff / (1000 * 60 * 60));
   const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+  let Status = "";
+  if (status == -1) {
+    Status = "Pending";
+  } else if (status == 0) {
+    Status = "Accepted";
+  } else if (status == 1) {
+    Status = "Moved";
+  } else if (status == 2) {
+    Status = "On the way";
+  } else if (status == 3) {
+    Status = "Delivered";
+  }
   const formattedDifference = {
     days,
     hours: hours % 24,
@@ -55,7 +67,7 @@ const OrderItem = ({
           {formattedDifference.minutes > 0 && formattedDifference.minutes}
           {formattedDifference.minutes > 1 ? " minutes" : " minute"}{" "}
         </Text>
-        <Text style={styles.orderStatus}>Status: {status}</Text>
+        <Text style={styles.orderStatus}>Status: {Status}</Text>
         <Text style={styles.orderDate}>from: {zone_from}</Text>
         <Text style={styles.orderDate}>to: {zone_to}</Text>
       </View>
@@ -93,7 +105,7 @@ const TrackOrderPage = ({ orders, handelPress, navigation, home = true }) => {
 
       // Clean up function, will be executed when the screen is unfocused
       return () => {};
-    }, [navigation])
+    }, [native])
   );
   useEffect(() => {}, [dispatch, navigation, native]);
   return (
@@ -111,7 +123,7 @@ const TrackOrderPage = ({ orders, handelPress, navigation, home = true }) => {
         </View>
       )}
       <SectionTitle title={"Track Your Orders"} />
-      {TrackData ? (
+      {TrackData?.length > 0 ? (
         <FlatList
           data={TrackData}
           renderItem={({ item }) => (

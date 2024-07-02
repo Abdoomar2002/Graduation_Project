@@ -157,9 +157,9 @@ const Settings = ({ handelPress, navigation }) => {
         <Text style={styles.topText}>Settings </Text>
       </View>
       <View style={styles.header}>
-        {Auth && !editImage && (
+        {!editImage && (
           <Image
-            src={photo}
+            source={{ uri: Auth.photo == null ? image._j.uri : Auth.photo }}
             onError={(e) => setPhoto(image._j.uri)}
             style={styles.profileImage}
           />
@@ -211,14 +211,19 @@ const Settings = ({ handelPress, navigation }) => {
         style={[styles.editButton, { display: editable ? "none" : "flex" }]}
       >
         <Button
-          color={"#fe0000"}
-          title="Remove Account"
-          onPress={handelDelete}
+          title="set new password"
+          onPress={() => navigation.navigate("Password")}
         />
+
         <Button
           color={"#00fe00"}
           title="Edit information"
           onPress={() => setEditable(true)}
+        />
+        <Button
+          color={"#fe0000"}
+          title="Remove Account"
+          onPress={handelDelete}
         />
       </View>
       <View
@@ -296,6 +301,7 @@ const styles = StyleSheet.create({
     gap: 20,
     justifyContent: "space-between",
     alignItems: "center",
+    flexWrap: "wrap",
   },
   label: {
     width: 100,

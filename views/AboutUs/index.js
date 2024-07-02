@@ -37,7 +37,7 @@ function AboutUs({ handelPress }) {
           padding: 20,
           marginTop: 10,
           opacity: 5,
-          backgroundColor: "rgba(0, 0, 0, 0.2)",
+          backgroundColor: "rgba(0, 0, 0, 0.4)",
         }}
       >
         <View style={styles.header}>
@@ -58,7 +58,9 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: 20,
+    paddingBottom: 20,
+    paddingHorizontal: 10,
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
   logoImage: {
     width: 100,
@@ -75,6 +77,8 @@ const styles = StyleSheet.create({
   aboutTextContainer: {
     marginBottom: 20,
     color: "#fff",
+    padding: 10,
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
   aboutDescription: {
     fontSize: 18,

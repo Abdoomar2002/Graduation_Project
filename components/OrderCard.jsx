@@ -1,20 +1,27 @@
-import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
-import { Asset } from "expo-asset";
+import React, { useState } from "react";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
-import { useEffect, useState } from "react";
 import Reorder from "../views/MakeOrder/Re-order";
 import Report from "../views/Report";
 
-const photo = Asset.fromModule(
-  require("../assets/images/profile.jpg")
-).downloadAsync((uri) => uri);
 const OrderCard = ({ order }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [reportModalVisible, setReportModalVisible] = useState(false);
-  let date = new Date(order.created);
+  const date = new Date(order.created);
   date.setHours(date.getHours() + 1);
-  let created = date.toLocaleString();
-
+  const created = date.toLocaleString();
+  let status = "";
+  if (order.status == -1) {
+    status = "Pending";
+  } else if (order.status == 0) {
+    status = "Accepted";
+  } else if (order.status == 1) {
+    status = "Moved";
+  } else if (order.status == 2) {
+    status = "On the way";
+  } else if (order.status == 3) {
+    status = "Delivered";
+  }
   return (
     <View style={styles.card}>
       <View style={styles.header}>
@@ -28,28 +35,45 @@ const OrderCard = ({ order }) => {
         Order ID: <Text style={styles.link}>{order.order_id}</Text>
       </Text>
       <Text style={styles.orderId}>
-        Order Status: <Text style={styles.link}>{order.status}</Text>
+        Order Status: <Text style={styles.link}>{status}</Text>
       </Text>
       <Text style={styles.date}>Date: {created}</Text>
       <Text style={styles.price}>Price: {order.price}</Text>
       <Text style={styles.details}>
-        Details: {order?.description?.substr(0, 25)}
+        Details: {order?.description?.substr(0, 25)}...
       </Text>
       <View style={styles.footer}>
         <TouchableOpacity
           style={styles.buttonReport}
-          onPress={() => {
-            setReportModalVisible(true);
-          }}
+          onPress={() => setReportModalVisible(true)}
         >
           <Text style={styles.buttonText}>Report</Text>
         </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.buttonReorder}
-          onPress={() => setModalVisible(true)}
-        >
-          <Text style={styles.buttonText}>Re-order</Text>
-        </TouchableOpacity>
+
+        {order.status === 3 && (
+          <TouchableOpacity
+            style={styles.buttonReorder}
+            onPress={() => setModalVisible(true)}
+          >
+            <Text style={styles.buttonText}>Re-order</Text>
+          </TouchableOpacity>
+        )}
+        {order.status === -1 && (
+          <TouchableOpacity
+            style={styles.buttonReport}
+            onPress={() => setModalVisible(true)}
+          >
+            <Text style={styles.buttonText}>Delete</Text>
+          </TouchableOpacity>
+        )}
+        {order.status === -1 && (
+          <TouchableOpacity
+            style={styles.buttonReorder}
+            onPress={() => setModalVisible(true)}
+          >
+            <Text style={styles.buttonText}>Edit</Text>
+          </TouchableOpacity>
+        )}
         {modalVisible && <Reorder order={order} setVis={setModalVisible} />}
         {reportModalVisible && (
           <Report id={order.id} setModel={setReportModalVisible} />
@@ -76,12 +100,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginBottom: 10,
   },
-  image: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    marginRight: 10,
-  },
   headerText: {
     flex: 1,
     flexDirection: "row",
@@ -91,12 +109,6 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 16,
     fontWeight: "bold",
-  },
-  stars: {
-    flexDirection: "row",
-  },
-  star: {
-    color: "#FFD700",
   },
   orderId: {
     fontSize: 14,

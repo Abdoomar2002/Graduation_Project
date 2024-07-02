@@ -4,9 +4,10 @@ const actions = {
   getAll: () => {
     return (dispatch) => {
       return Api.app.Tracking.getAll().then((response) => {
+        const tdata = response.filter((elem) => elem.status != 3);
         dispatch({
           type: "GET_ALL",
-          data: response,
+          data: tdata,
         });
         return response;
       });

@@ -35,6 +35,13 @@ function NewPasswordPage({ navigation }) {
       </View>
       <TextInput
         style={styles.input}
+        placeholder="Old Password"
+        secureTextEntry={true}
+        value={password}
+        onChangeText={setPassword}
+      />
+      <TextInput
+        style={styles.input}
         placeholder="New Password"
         secureTextEntry={true}
         value={password}

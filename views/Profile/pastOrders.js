@@ -3,10 +3,11 @@ import DisplayOrder from "../DisplayOrder";
 import { MaterialIcons } from "@expo/vector-icons";
 
 import SectionTitle from "../../components/SectionTitle";
+import { ScrollView } from "react-native-gesture-handler";
 
 function PastOrders({ handelPress, navigation }) {
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <Pressable
         style={{ alignItems: "flex-start", width: "100%" }}
         onPress={handelPress}
@@ -15,7 +16,7 @@ function PastOrders({ handelPress, navigation }) {
       </Pressable>
       <SectionTitle title={"My Orders"} />
       <DisplayOrder navigation={navigation} active={true} />
-    </View>
+    </ScrollView>
   );
 }
 const styles = StyleSheet.create({

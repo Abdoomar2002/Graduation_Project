@@ -9,6 +9,7 @@ import {
   StyleSheet,
   ImageBackground,
   Pressable,
+  ScrollView,
 } from "react-native";
 import { actions } from "../../redux/ContactMail";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons"; // Import for icons
@@ -74,7 +75,7 @@ function ContactUs({ handelPress }) {
     return true;
   }
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       {isLoading && <Loader />}
       <ImageBackground
         src={imageUrl._j}
@@ -150,7 +151,7 @@ function ContactUs({ handelPress }) {
         </View>
         <Toast />
       </ImageBackground>
-    </View>
+    </ScrollView>
   );
 }
 
